@@ -47,15 +47,15 @@ const { cta = true } = Astro.props;
       </div>
       <div class="ftr__col">
         <span class="label label--dim">Showroom</span>
-        <address>{BIZ.address.map((l) => <>{l}<br /></>)}</address>
-        <a class="link" href={BIZ.mapsHref} target="_blank" rel="noopener">Directions</a>
+        <address>{BIZ.showroom.map((l) => <>{l}<br /></>)}</address>
+        <a class="link" href={BIZ.mapsHref} target="_blank" rel="noopener">Directions ↗</a>
       </div>
       <div class="ftr__col">
         <span class="label label--dim">Talk to us</span>
         <ul>
           <li><a href={BIZ.phoneHref}>{BIZ.phone}</a></li>
           <li><a href={BIZ.phoneAltHref}>{BIZ.phoneAlt}</a></li>
-          <li><a href={BIZ.whatsapp} target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href={BIZ.whatsapp} target="_blank" rel="noopener">WhatsApp ↗</a></li>
         </ul>
       </div>
     </div>
@@ -63,9 +63,9 @@ const { cta = true } = Astro.props;
     <div class="ftr__word" aria-hidden="true">Coastal</div>
 
     <div class="ftr__legal">
-      <p>{BIZ.legal}, trading as {BIZ.trading}. Registered in England, company no. {BIZ.companyNo}. Registered office: {BIZ.registered}. VAT no. {BIZ.vat}.</p>
+      <p>{BIZ.legal}, trading as {BIZ.trading}. Registered in England &amp; Wales, company no. {BIZ.companyNo}. Registered office: {BIZ.registered}. VAT no. {BIZ.vat}.</p>
       <p>{BIZ.financeDisclosure}</p>
-      <p class="ftr__concept"><strong>Independent design concept.</strong> This website is an unofficial demonstration created by Conquer AI to propose a new digital experience for Coastal Windows &amp; Conservatories. It is not the company's official website and has not been commissioned or endorsed by them. Interactive tools, visualisations and forms are demonstrations only — nothing you enter is sent anywhere. Visuals are generated illustrations, not photographs of completed installations. For the official site, visit <a href={BIZ.currentSite} target="_blank" rel="noopener">coastal-windows.co.uk</a>.</p>
+      <p class="ftr__concept"><strong>Independent design concept.</strong> This website is an unofficial demonstration created by Conquer AI to propose a new digital experience for Coastal Windows &amp; Conservatories. It is not the company's official website and has not been commissioned or endorsed by them. Interactive tools, visualisations and forms are demonstrations only — nothing you enter is sent anywhere. Visuals are generated illustrations, not photographs of completed installations. For the official site, visit <a href={BIZ.currentSite} target="_blank" rel="noopener">coastal-windows.co.uk ↗</a>.</p>
     </div>
   </div>
 </footer>
@@ -80,7 +80,7 @@ const { cta = true } = Astro.props;
   .fcta__frame { position: absolute; right: var(--gutter); top: 50%; transform: translateY(-50%); width: min(34vw, 420px); height: auto; opacity: .14; }
   @media (max-width: 860px) { .fcta__frame { display: none; } }
 
-  .ftr { background: var(--ink); color: var(--paper); padding: 72px 0 36px; border-top: 1px solid var(--line-light); }
+  .ftr { background: var(--ink); color: var(--paper); padding: 72px 0 72px; border-top: 1px solid var(--line-light); }
   .ftr__grid { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 36px; }
   .ftr__col { display: flex; flex-direction: column; gap: 14px; font-size: 15px; }
   .ftr__intro p { max-width: 34ch; opacity: .75; margin: 0; }

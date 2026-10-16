@@ -30,11 +30,11 @@ const { items = [], id = 'ox', title = 'How it opens', kicker = 'Operating style
         ))}
       </div>
       <div class="ox__main">
-        <div class="ox__stage" aria-label="Interactive 3D model — drag to rotate">
+        <div class="ox__stage" role="group" tabindex="0" aria-label="Interactive 3D model. Drag, or use the arrow keys, to look around.">
           <span class="ox__hint label">Drag to look around</span>
         </div>
         <div class="ox__ctrl">
-          <button type="button" class="btn btn--light btn--sm ox__op" aria-pressed="false">Open</button>
+          <button type="button" class="btn btn--light btn--sm ox__op">Open</button>
           <label class="ox__range"><span class="sr-only">Open amount</span><input type="range" min="0" max="100" value="0" class="ox__slider" /></label>
           <div class="seg ox__modes" hidden>
             <button type="button" aria-pressed="true" data-m="a"></button>
@@ -60,7 +60,7 @@ const { items = [], id = 'ox', title = 'How it opens', kicker = 'Operating style
   .ox__stage { position: relative; height: min(68vh, 620px); min-height: 380px; perspective: 1700px; perspective-origin: 50% 40%; overflow: hidden; cursor: grab; touch-action: pan-y;
     background: radial-gradient(120% 90% at 50% 10%, #2d3b3e 0%, #142022 60%, #0c1618 100%); border: 1px solid var(--line-light); user-select: none; }
   .ox__stage.is-drag { cursor: grabbing; }
-  .ox__hint { position: absolute; left: 16px; top: 14px; opacity: .55; z-index: 2; pointer-events: none; }
+  .ox__hint { position: absolute; left: 14px; top: 12px; z-index: 2; pointer-events: none; color: var(--paper); background: rgba(12,22,24,.6); padding: 6px 10px; border-radius: 999px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
   .ox__ctrl { display: flex; align-items: center; gap: 18px; margin-top: 16px; flex-wrap: wrap; }
   .ox__range { flex: 1; min-width: 160px; display: flex; }
   .ox__slider { width: 100%; accent-color: var(--gold); }
@@ -108,10 +108,12 @@ const { items = [], id = 'ox', title = 'How it opens', kicker = 'Operating style
     const op = grid.querySelector('.ox__op');
     const modes = grid.querySelector('.ox__modes');
     const ex = createExplorer(stage, {
-      onChange: ({ o }) => { slider.value = String(Math.round(o * 100)); op.textContent = o > 0.5 ? 'Close' : 'Open'; op.setAttribute('aria-pressed', String(o > 0.5)); },
+      onChange: ({ o }) => { slider.value = String(Math.round(o * 100)); slider.setAttribute('aria-valuetext', `${Math.round(o * 100)}% open`); op.textContent = o > 0.5 ? 'Close' : 'Open'; },
     });
     let cur = 0;
+    let modeT = 0;
     const select = (i) => {
+      clearTimeout(modeT);
       cur = i;
       grid.querySelectorAll('.ox__tab').forEach((t) => t.setAttribute('aria-selected', String(+t.dataset.i === i)));
       grid.querySelectorAll('.ox__info').forEach((p) => (p.hidden = +p.dataset.i !== i));
@@ -129,13 +131,15 @@ const { items = [], id = 'ox', title = 'How it opens', kicker = 'Operating style
     };
     grid.querySelectorAll('.ox__tab').forEach((t) => t.addEventListener('click', () => select(+t.dataset.i)));
     slider.addEventListener('input', () => ex.set(+slider.value / 100));
+    stage.addEventListener('keydown', (e) => { const k = { ArrowLeft: [-8, 0], ArrowRight: [8, 0], ArrowUp: [0, 4], ArrowDown: [0, -4] }[e.key]; if (!k) return; e.preventDefault(); ex.nudge(k[0], k[1]); });
     op.addEventListener('click', () => ex.animateTo(ex.open > 0.5 ? 0 : 1));
     modes.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
       modes.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-      const o = ex.open;
+      const o = ex.open, at = cur;
       ex.animateTo(0, 500);
-      setTimeout(() => { ex.setMode(b.dataset.m); ex.animateTo(Math.max(o, 0.7), 1200); }, 520);
+      clearTimeout(modeT);
+      modeT = setTimeout(() => { if (at !== cur) return; ex.setMode(b.dataset.m); ex.animateTo(Math.max(o, 0.7), 1200); }, 520);
     });
     // build lazily when in view
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { select(0); io.disconnect(); } }, { rootMargin: '200px' });

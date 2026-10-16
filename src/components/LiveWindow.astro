@@ -91,14 +91,14 @@ import Arrow from './Arrow.astro';
   @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(159,224,168,.55); } 70% { box-shadow: 0 0 0 10px rgba(159,224,168,0); } 100% { box-shadow: 0 0 0 0 rgba(159,224,168,0); } }
   .lw__copy { align-self: end; padding: 0 clamp(4px, 2vw, 32px) clamp(10px, 2vh, 26px); max-width: 980px; text-shadow: 0 2px 30px rgba(0,0,0,.35); }
   .lw__copy { position: relative; isolation: isolate; }
-  .lw__copy::before { content: ''; position: absolute; inset: -18% -30% -25% -20%; z-index: -1; background: radial-gradient(closest-side, rgba(8,16,18,.42), rgba(8,16,18,0)); pointer-events: none; }
-  .lw__kicker { opacity: .85; margin-bottom: 18px; }
+  .lw__copy::before { content: ''; position: absolute; inset: -18% -30% -25% -20%; z-index: -1; background: radial-gradient(closest-side, rgba(8,16,18,.58), rgba(8,16,18,0)); pointer-events: none; }
+  .lw__kicker { margin-bottom: 18px; }
   .lw__h { font-size: clamp(2.9rem, 8.4vw, 8.6rem); line-height: .94; letter-spacing: -0.04em; }
   .lw__h em { font-weight: 280; color: color-mix(in srgb, var(--sun) 70%, white); }
-  .lw__sub { margin: 22px 0 0; max-width: 52ch; text-wrap: pretty; font-size: clamp(15px, 1.2vw, 17px); opacity: .9; min-height: 3em; }
+  .lw__sub { margin: 22px 0 0; max-width: 52ch; text-wrap: pretty; font-size: clamp(15px, 1.2vw, 17px); min-height: 3em; }
   .lw__ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
   .lw__moods { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 0 clamp(4px, 2vw, 32px); }
-  .lw__moods-k { opacity: .7; }
+  .lw__moods-k { text-shadow: 0 1px 12px rgba(0,0,0,.6); }
   .seg--glass button { color: var(--paper); border-color: rgba(255,255,255,.28); background: rgba(12,22,24,.28); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); min-height: 34px; padding: 0 12px; }
   .seg--glass button:hover { border-color: var(--paper); }
   .seg--glass button[aria-pressed='true'] { background: var(--paper); color: var(--ink); border-color: var(--paper); }
@@ -116,7 +116,20 @@ import Arrow from './Arrow.astro';
     .seg--glass button { flex: none; }
     .lw__live { justify-self: start; margin-left: 4px; }
     .lw__scroll { display: none; }
+    .lw__copy, .lw__moods { padding-inline: 18px; }
+    .lw__live { margin-left: 18px; }
+    .lw__h { font-size: clamp(2.5rem, 11vw, 3.4rem); }
+    .seg--glass button { min-height: 40px; }
   }
+  @media (max-height: 500px) and (orientation: landscape) {
+    .lw__h { font-size: clamp(2rem, 11vh, 3.6rem); }
+    .lw__kicker { display: none; }
+    .lw__sub { margin-top: 10px; min-height: 0; }
+    .lw__ui { padding-top: calc(var(--header-h) + 8px); padding-bottom: 56px; }
+    .lw__ctas { margin-top: 12px; }
+  }
+  .lw.is-static .lw__moods, .lw.is-static .lw__live { display: none; }
+  @media (prefers-reduced-motion: reduce) { .lw { height: 100vh; height: 100svh; } .lw__scroll { display: none; } }
 </style>
 
 <script>
@@ -134,7 +147,7 @@ import Arrow from './Arrow.astro';
 
   const lines = {
     live: (d) => {
-      if (d.rain > 0.3) return `It's ${d.label?.toLowerCase() || 'raining'} in Newton Abbot right now. Warm and dry on this side of the glass.`;
+      if (d.rain > 0.3) { const ph = { Drizzle: 'drizzly', Rain: 'raining', 'Heavy rain': 'pouring', Showers: 'showery', Thunderstorm: 'stormy', Snow: 'snowing' }[d.label] || 'raining'; return `It's ${ph} in Newton Abbot right now. Warm and dry on this side of the glass.`; }
       if (d.alt < -6) return `Night over South Devon. Sunrise in Newton Abbot at ${d.sunrise}.`;
       if (d.alt < 8 && d.alt >= -6) return `Low sun over Newton Abbot — sunset today at ${d.sunset}.`;
       return `Daylight over Newton Abbot${d.temp != null ? `, ${d.temp}°C` : ''}. Sunset today at ${d.sunset}.`;
@@ -147,8 +160,10 @@ import Arrow from './Arrow.astro';
   };
 
   let mood = 'live';
+  let lastLive = null;
   const sky = initSky(canvas, {
     onLive: (d) => {
+      lastLive = d;
       liveTxt.textContent = `Live · Newton Abbot · ${d.time}${d.temp != null ? ` · ${d.temp}°C` : ''}${d.label ? ` · ${d.label}` : ''}`;
       if (mood === 'live') sub.textContent = lines.live(d);
     },
@@ -157,6 +172,15 @@ import Arrow from './Arrow.astro';
     const d = sky.describe();
     liveTxt.textContent = `Live · Newton Abbot · ${d.time}`;
     sub.textContent = lines.live(d);
+    setInterval(() => {
+      const n = sky.describe();
+      const w = lastLive || {};
+      liveTxt.textContent = `Live · Newton Abbot · ${n.time}${w.temp != null ? ` · ${w.temp}°C` : ''}${w.label ? ` · ${w.label}` : ''}`;
+      if (mood === 'live') sub.textContent = lines.live({ ...n, temp: w.temp, label: w.label, rain: w.rain || 0 });
+    }, 30000);
+  } else {
+    section.classList.add('is-static');
+    sub.textContent = 'An illustrated view from a Newton Abbot window, looking out towards the coast.';
   }
 
   document.getElementById('lw-moods').addEventListener('click', (e) => {
@@ -165,7 +189,8 @@ import Arrow from './Arrow.astro';
     mood = b.dataset.mood;
     document.querySelectorAll('#lw-moods button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
     sky?.setMood(mood);
-    sub.textContent = mood === 'live' ? lines.live(sky.describe()) : lines[mood]();
+    if (!sky) return;
+    sub.textContent = mood === 'live' ? lines.live({ ...sky.describe(), ...(lastLive ? { temp: lastLive.temp, label: lastLive.label, rain: lastLive.rain } : {}) }) : lines[mood]();
   });
 
   addEventListener('pointermove', (e) => { sheen.style.setProperty('--sx', `${(e.clientX / innerWidth) * 100}%`); }, { passive: true });

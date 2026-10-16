@@ -241,5 +241,6 @@ export function createExplorer(stage, { onChange } = {}) {
     setMode: (m) => { mode = m; apply(); },
     get open() { return o; },
     view: (y, x) => { ry = y; rx = x; apply(); },
+    nudge: (dy, dx) => { ry = Math.max(-62, Math.min(62, ry + dy)); rx = Math.max(-8, Math.min(26, rx + dx)); model.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`; },
   };
 }

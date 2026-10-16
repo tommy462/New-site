@@ -41,7 +41,7 @@ const win = (side) => `
         </div>
       </div>
     ))}
-    <p class="dc__note">Dual colour lets the outside suit the street while the inside suits the room — Coastal's projects include combinations like anthracite grey outside with white inside. Colours on screen are approximate; see real samples in the showroom.</p>
+    <p class="dc__note">Dual colour lets the outside suit the street while the inside suits the room — Coastal's projects include rosewood on white, and one customer chose "white on the outside and irish light oak on the inside". Colours on screen are approximate; see real samples in the showroom.</p>
   </div>
 </div>
 
@@ -81,6 +81,7 @@ const win = (side) => `
       const { hex, n, grain } = s.dataset;
       if (same) { paint('out', hex, n, grain); paint('in', hex, n, grain); }
       else paint(face, hex, n, grain);
+      dc.querySelectorAll('.swatch').forEach((x) => x.setAttribute('aria-pressed', String(x === s)));
     }));
   }
 </script>

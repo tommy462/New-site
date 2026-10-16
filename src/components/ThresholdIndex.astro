@@ -2,7 +2,7 @@
 import Elevations from './Elevations.astro';
 import Arrow from './Arrow.astro';
 const items = [
-  { n: '01', kind: 'window', title: 'Windows', href: '/windows/', text: 'Casement, flush casement, tilt & turn, vertical sliding sash, bow & bay — and slim Cortizo aluminium.', tags: ['Casement', 'Flush', 'Tilt & turn', 'Sash', 'Bow & bay', 'Aluminium'] },
+  { n: '01', kind: 'window', title: 'Windows', href: '/windows/', text: 'Casement, flush casement, tilt & turn, vertical sliding sash, bow & bay — in uPVC and slim aluminium.', tags: ['Casement', 'Flush', 'Tilt & turn', 'Sash', 'Bow & bay', 'Aluminium'] },
   { n: '02', kind: 'door', title: 'Front doors', href: '/doors/', text: 'Solidor composite doors and residential doors with Vista panels made at our own Newton Abbot factory.', tags: ['Composite', 'Residential', 'Door Studio'] },
   { n: '03', kind: 'bifold', title: 'Garden doors', href: '/doors/#garden', text: 'Bifold, French, sliding and aluminium patio doors — for rooms that open straight onto the garden.', tags: ['Bifold', 'French', 'Sliding', 'Aluminium patio'] },
   { n: '04', kind: 'conservatory', title: 'Conservatories', href: '/conservatories/', text: 'Lean-to, Victorian, Edwardian, P-shaped and gable-end designs, hup! extensions and replacement roofs.', tags: ['Styles', 'hup!', 'New roofs', 'Light Lab'] },
@@ -58,8 +58,9 @@ const items = [
   .ti__arrow { opacity: 0; transform: translateX(-8px); transition: .5s var(--ease); }
   .ti__item.is-open .ti__arrow { opacity: 1; transform: none; }
   .ti__ap { position: relative; flex: 1; display: grid; place-items: center; min-height: 0; padding: 14px 0; }
-  .ti__svg { width: auto; height: 100%; max-height: 300px; max-width: 100%; color: rgba(243,239,231,.6); transition: color .6s, transform 1s var(--ease); }
-  .ti__item.is-open .ti__svg { color: var(--paper); transform: scale(1.04); }
+  .ti__ap > :global(svg), .ti__svg { width: auto; height: 100%; max-height: 260px; max-width: 100%; color: rgba(243,239,231,.6); transition: color .6s; }
+  .ti__item.is-open .ti__svg { color: var(--paper); }
+  .ti__ap { overflow: hidden; }
   .ti__glow { position: absolute; left: 50%; top: 50%; width: 70%; aspect-ratio: 2/3; transform: translate(-50%, -50%); border-radius: 50%;
     background: radial-gradient(closest-side, color-mix(in srgb, var(--sun) 55%, transparent), transparent); filter: blur(26px); opacity: 0; transition: opacity .9s; z-index: -1; }
   .ti__item.is-open .ti__glow { opacity: .5; }

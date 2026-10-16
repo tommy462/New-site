@@ -8,7 +8,7 @@ export const BIZ = {
   addressLine: 'Silverhills Buildings, Silverhills Road, Decoy Industrial Estate, Newton Abbot, TQ12 5LZ',
   registered: 'Unit 8, Silverhills Buildings, Decoy Industrial Estate, Newton Abbot, TQ12 5LZ',
   showroom: ['Unit 12, Silverhills Units', 'Decoy Industrial Estate', 'Newton Abbot', 'Devon TQ12 5LZ'],
-  hours: [['Monday – Thursday', '10am – 6.30pm'], ['Friday', '10am – 4pm'], ['Saturday & Sunday', 'Closed']],
+  hours: [['Monday – Thursday', '10am – 6.30pm'], ['Friday', '10am – 4pm'], ['Weekends', 'Call to check']],
   hoursData: { 1: [10, 18.5], 2: [10, 18.5], 3: [10, 18.5], 4: [10, 18.5], 5: [10, 16] },
   emails: [
     ['Windows, doors, fascias & guttering', 'windows@coastal-windows.co.uk'],
@@ -21,7 +21,7 @@ export const BIZ = {
   phoneAlt: '01626 354438',
   phoneAltHref: 'tel:+441626354438',
   whatsapp: 'https://api.whatsapp.com/send/?phone=447476940854',
-  companyNo: '3973690',
+  companyNo: '03973690',
   vat: '793078592',
   frn: '673550',
   founded: 1988,

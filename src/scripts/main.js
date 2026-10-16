@@ -59,6 +59,7 @@ function onScroll() {
   hdr.classList.toggle('is-scrolled', y > 30);
   if (!root.classList.contains('menu-open')) hdr.classList.toggle('is-hidden', y > 400 && y > lastY + 2);
   if (y < lastY - 2 || y < 400) hdr.classList.remove('is-hidden');
+  root.classList.toggle('hdr-hidden', hdr.classList.contains('is-hidden'));
   lastY = y;
   const probe = 34;
   const dark = darkZones.some((z) => { if (z.dataset.headerDark === '0') return false; const r = z.getBoundingClientRect(); return r.top <= probe && r.bottom >= probe; });
@@ -119,6 +120,9 @@ const menuBtn = document.getElementById('menu-btn');
 function setMenu(open) {
   menuBtn.setAttribute('aria-expanded', String(open));
   root.classList.toggle('menu-open', open);
+  document.querySelectorAll('main, footer, .fcta, .skip-link, #concept-pill').forEach((el) => { el.inert = open; });
+  const mt = document.getElementById('menu-txt'); if (mt) mt.textContent = open ? 'Close' : 'Menu';
+  menuBtn.querySelector('.sr-only').textContent = open ? 'Close menu' : 'Menu';
   if (open) {
     menu.hidden = false;
     requestAnimationFrame(() => menu.classList.add('is-open'));
@@ -131,7 +135,12 @@ function setMenu(open) {
   }
 }
 menuBtn?.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
-addEventListener('keydown', (e) => { if (e.key === 'Escape' && root.classList.contains('menu-open')) { setMenu(false); menuBtn.focus(); } });
+addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  if (root.classList.contains('menu-open')) { setMenu(false); menuBtn.focus(); }
+  const n = document.getElementById('concept-note');
+  if (n && !n.hidden) { n.hidden = true; const p = document.getElementById('concept-pill'); p.setAttribute('aria-expanded', 'false'); p.focus(); }
+});
 
 /* ── Concept note ───────────────────────────────────────── */
 const pill = document.getElementById('concept-pill');
@@ -206,7 +215,7 @@ document.addEventListener('click', (e) => {
   if (url.origin !== location.origin) return;
   if (url.pathname === location.pathname && url.hash) {
     const el = document.getElementById(decodeURIComponent(url.hash.slice(1)));
-    if (el) { e.preventDefault(); if (root.classList.contains('menu-open')) setMenu(false); scrollToEl(el); history.replaceState(null, '', url.hash); }
+    if (el) { e.preventDefault(); if (root.classList.contains('menu-open')) setMenu(false); scrollToEl(el); history.replaceState(null, '', url.hash); if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1'); el.focus({ preventScroll: true }); }
     return;
   }
   if (url.pathname === location.pathname && !url.hash) { if (root.classList.contains('menu-open')) { e.preventDefault(); setMenu(false); } return; }
@@ -233,3 +242,31 @@ if (matchMedia('(hover: hover)').matches && !reduce) {
     el.addEventListener('pointerleave', () => { el.style.transform = ''; });
   });
 }
+
+/* ── Keyboard model for tablists and radiogroups (arrow keys + roving tabindex) ── */
+const ITEM = '[role=tab], [role=radio]';
+const isOn = (el) => el.getAttribute('aria-selected') === 'true' || el.getAttribute('aria-checked') === 'true';
+function rove(group) {
+  const items = [...group.querySelectorAll(ITEM)].filter((i) => i.closest('[role=tablist], [role=radiogroup]') === group);
+  if (!items.length) return;
+  const on = items.find(isOn) || items[0];
+  items.forEach((i) => i.setAttribute('tabindex', i === on ? '0' : '-1'));
+}
+document.querySelectorAll('[role=tablist], [role=radiogroup]').forEach(rove);
+document.addEventListener('click', (e) => { const g = e.target.closest?.('[role=tablist], [role=radiogroup]'); if (g) requestAnimationFrame(() => rove(g)); });
+document.addEventListener('focusin', (e) => { const g = e.target.closest?.('[role=tablist], [role=radiogroup]'); if (g && !g.querySelector('[tabindex="0"]')) rove(g); });
+document.addEventListener('keydown', (e) => {
+  const item = e.target.closest?.(ITEM); if (!item) return;
+  const g = item.closest('[role=tablist], [role=radiogroup]'); if (!g) return;
+  const items = [...g.querySelectorAll(ITEM)].filter((i) => i.closest('[role=tablist], [role=radiogroup]') === g);
+  const i = items.indexOf(item);
+  let n = -1;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % items.length;
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + items.length) % items.length;
+  else if (e.key === 'Home') n = 0; else if (e.key === 'End') n = items.length - 1;
+  if (n < 0) return;
+  e.preventDefault();
+  items[n].focus(); items[n].click();
+});
+// keep the auto-hiding header visible while it has keyboard focus
+hdr?.addEventListener('focusin', () => { hdr.classList.remove('is-hidden'); root.classList.remove('hdr-hidden'); });

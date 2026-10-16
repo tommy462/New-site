@@ -6,10 +6,10 @@ import Arrow from '../components/Arrow.astro';
 const parts = [
   { k: 'fascia', n: 'Fascias', x: 132, y: 214, t: 'Fascias support the lower edge of the roof — and carry the guttering. Our uPVC roofline products are resistant to rot, warping and discolouration.' },
   { k: 'soffit', n: 'Soffits', x: 178, y: 236, t: 'Soffits provide ventilation beneath the roof overhang, and finish the underside of the eaves neatly.' },
-  { k: 'gutter', n: 'Guttering', x: 96, y: 236, t: 'Guttering safely channels rainwater away from the home. Press "Make it rain" to watch it work.' },
+  { k: 'gutter', n: 'Guttering', x: 96, y: 236, t: 'Guttering safely channels rainwater away from the home — use the rain button to watch it work.' },
   { k: 'downpipe', n: 'Downpipes', x: 112, y: 380, t: 'Downpipes carry water from the gutters down to the drain, keeping it off your walls.' },
   { k: 'cladding', n: 'Cladding', x: 300, y: 300, t: 'Durable PVC-U shiplap cladding with realistic woodgrain finishes and hidden fixings — or composite Coastline cladding, with minimal expansion or contraction.' },
-  { k: 'flat', n: 'Flat roofing', x: 640, y: 290, t: 'Flat roofs finished in RubberBond FleeceBack EPDM — a single-piece rubber membrane for extensions, porches and garages.' },
+  { k: 'flat', n: 'Flat roofing', x: 640, y: 290, t: 'Flat roofing in RubberBond FleeceBack EPDM — ask the team about flat roofs on extensions and porches.' },
 ];
 const kit = [
   { k: 'modern', n: 'Ultra-modern', d: 'Sleek lines and minimalist fixtures — handleless, high-gloss fronts.' },
@@ -19,7 +19,7 @@ const kit = [
 ];
 ---
 <Base title="Home improvements & roofline" description="Kitchens, fascias, soffits and guttering, PVC-U shiplap and Coastline cladding, and RubberBond FleeceBack EPDM flat roofing in Newton Abbot and Devon.">
-  <PageHero n="04" kicker="Home & roofline" meta={['Kitchens', 'Roofline & cladding', 'Flat roofing']} title="The details|<em>make</em> the house." lede="Roofline and cladding built to stand Devon's coastal climate, flat roofs that stay watertight, and kitchens designed with you from the first sketch to the final fitting.">
+  <PageHero n="04" kicker="Home & roofline" meta={['Kitchens', 'Roofline & cladding', 'Flat roofing']} title="The details|<em>make</em> the house." lede="Roofline and cladding built to stand Devon's coastal climate, RubberBond flat roofing, and kitchens designed with you from conception to installation.">
     <Fragment slot="dim">Roof to worktop</Fragment>
     <Fragment slot="actions"><a class="btn" href="#anatomy">Explore the roofline <Arrow /></a><a class="btn btn--ghost" href="#kitchens">Kitchens</a></Fragment>
     <Fragment slot="art"><Elevations kind="roofline" /></Fragment>
@@ -36,7 +36,7 @@ const kit = [
       </div>
       <div class="an" id="an">
         <figure class="an__fig">
-          <svg viewBox="0 0 800 470" class="an__svg" role="img" aria-label="Illustrated house showing fascias, soffits, guttering, downpipes, cladding and a flat roof extension.">
+          <svg viewBox="0 0 800 470" class="an__svg" aria-label="Illustrated house showing fascias, soffits, guttering, downpipes, cladding and a flat roof extension." role="group">
             <defs>
               <pattern id="an-ship" width="8" height="22" patternUnits="userSpaceOnUse"><rect width="8" height="22" fill="#d6dbd6" /><rect y="18" width="8" height="4" fill="#bcc4bf" /></pattern>
               <pattern id="an-tile" width="26" height="14" patternUnits="userSpaceOnUse"><rect width="26" height="14" fill="#4b5052" /><path d="M0 13.5 H26 M13 0 V7 M0 7 H26" stroke="#373b3d" stroke-width="1.2" /></pattern>
@@ -45,7 +45,7 @@ const kit = [
             <line x1="0" y1="440" x2="800" y2="440" stroke="var(--ink)" stroke-width="2" />
             <!-- main house -->
             <rect x="120" y="230" width="380" height="210" fill="#efe9de" stroke="var(--ink)" stroke-width="1.5" />
-            <rect x="250" y="230" width="250" height="140" fill="url(#an-ship)" />
+            <rect x="250" y="230" width="250" height="140" fill="url(#an-ship)" class="an__part" data-part="cladding" />
             <path d="M80 222 L310 70 L540 222 Z" fill="url(#an-tile)" stroke="var(--ink)" stroke-width="1.5" />
             <!-- fascia boards + soffits -->
             <rect x="80" y="222" width="460" height="12" fill="#f8f8f5" stroke="var(--ink)" class="an__part" data-part="fascia" />
@@ -73,9 +73,10 @@ const kit = [
               {Array.from({ length: 34 }, (_, i) => <line x1={70 + i * 20} y1="-20" x2={64 + i * 20} y2="0" style={`--i:${(i * 37) % 17}`} />)}
             </g>
             {parts.map((p, i) => (
-              <g class="an__hot" data-part={p.k} tabindex="0" role="button" aria-label={p.n}>
-                <circle cx={p.x} cy={p.y} r="15" />
-                <text x={p.x} y={p.y + 4} text-anchor="middle">{i + 1}</text>
+              <g class="an__hot" data-part={p.k} aria-hidden="true">
+                <circle cx={p.x} cy={p.y} r="34" class="an__hit" />
+                <circle cx={p.x} cy={p.y} r="15" class="an__dot" />
+                <text x={p.x} y={p.y + 4} text-anchor="middle" dominant-baseline="auto">{i + 1}</text>
               </g>
             ))}
           </svg>
@@ -90,7 +91,7 @@ const kit = [
           <div class="an__list">
             {parts.map((p, i) => <button type="button" data-part={p.k} aria-pressed={i === 0 ? 'true' : 'false'}><span class="idx">0{i + 1}</span>{p.n}</button>)}
           </div>
-          <button type="button" class="btn" id="an-rain-btn" aria-pressed="false">Make it rain</button>
+          <button type="button" class="btn" id="an-rain-btn">Make it rain</button>
         </div>
       </div>
       <script type="application/json" id="an-data" set:html={JSON.stringify(parts)} />
@@ -107,7 +108,7 @@ const kit = [
       <div class="clad__cards">
         <article data-reveal><span class="idx">A</span><h3>PVC-U shiplap</h3><p>Realistic woodgrain finishes with hidden fixings for a clean appearance. Available in a selection of modern colours and finishes.</p></article>
         <article data-reveal style="--d:.06s"><span class="idx">B</span><h3>Coastline composite</h3><p>Innovative composite cladding that offers exceptional resilience, with minimal expansion or contraction.</p></article>
-        <article data-reveal style="--d:.12s"><span class="idx">C</span><h3>RubberBond FleeceBack EPDM</h3><p>Flat roofing for extensions, porches and garages — a seamless rubber finish.</p></article>
+        <article data-reveal style="--d:.12s"><span class="idx">C</span><h3>RubberBond FleeceBack EPDM</h3><p>An EPDM rubber membrane for flat roofing. Ask the team whether it suits your roof.</p></article>
       </div>
     </div>
   </section>
@@ -156,9 +157,11 @@ const kit = [
   .an__fig { margin: 0; }
   .an__svg { width: 100%; height: auto; display: block; overflow: hidden; }
   .an__hot { cursor: pointer; outline: none; }
-  .an__hot circle { fill: var(--clay); stroke: var(--paper); stroke-width: 3; transition: r .3s var(--ease); }
+  .an__hot .an__hit { fill: transparent; stroke: none; }
+  .an__hot .an__dot { fill: var(--clay); stroke: var(--paper); stroke-width: 3; }
+  @media (max-width: 640px) { .an__hot .an__dot { r: 24px; } .an__hot text { font-size: 20px; } }
   .an__hot text { font-family: var(--f-mono); font-size: 12px; fill: var(--paper); font-weight: 600; pointer-events: none; }
-  .an__hot:hover circle, .an__hot:focus-visible circle, .an__hot.is-on circle { fill: var(--ink); }
+  .an__hot:hover .an__dot, .an__hot:focus-visible .an__dot, .an__hot.is-on .an__dot { fill: var(--ink); }
   .an__hot::before { content: ''; }
   .an__part { transition: filter .4s, opacity .4s; }
   .an.has-sel .an__part { opacity: .55; }
@@ -235,7 +238,7 @@ const kit = [
   rb.addEventListener('click', () => {
     const on = !an.classList.contains('is-raining');
     an.classList.toggle('is-raining', on);
-    rb.setAttribute('aria-pressed', String(on)); rb.textContent = on ? 'Stop the rain' : 'Make it rain';
+    rb.textContent = on ? 'Stop the rain' : 'Make it rain';
     if (on) select('gutter');
   });
   const ki = document.getElementById('ki');

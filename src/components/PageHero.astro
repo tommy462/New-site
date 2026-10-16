@@ -22,18 +22,18 @@ const { n = '', kicker = '', title = '', lede = '', meta = [], dark = false, cls
 
 <style>
   .phero__grid { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(28px, 5vw, 80px); align-items: end; }
-  .phero__h { font-size: clamp(3rem, 8vw, 8.4rem); max-width: 11ch; }
+  .phero__h { font-size: clamp(3rem, min(8vw, 13vh), 8.4rem); max-width: 11ch; }
   .phero__h :global(em) { color: var(--clay); }
   .section--ink .phero__h :global(em) { color: var(--gold); }
-  .phero__dim { margin: clamp(26px, 3vw, 40px) 0 0; display: flex; align-items: center; gap: 14px; max-width: 640px; }
+  .phero__dim { margin: clamp(20px, 2.4vw, 32px) 0 0; display: flex; align-items: center; gap: 14px; max-width: 640px; }
   .phero__dim i { flex: 1; height: 9px; border-left: 1px solid currentColor; position: relative; opacity: .45; }
   .phero__dim i:last-child { border-left: 0; border-right: 1px solid currentColor; }
   .phero__dim i::after { content: ''; position: absolute; left: 0; right: 0; top: 4px; height: 1px; background: currentColor; }
   .phero__dim .label { font-size: 10px; white-space: nowrap; }
-  .phero__lede { margin-top: clamp(26px, 3vw, 40px); max-width: 44ch; }
-  .phero__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+  .phero__lede { margin-top: clamp(20px, 2.4vw, 32px); max-width: 44ch; }
+  .phero__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
   .phero__actions:empty { display: none; }
-  .phero__art { color: var(--ink); max-width: 460px; justify-self: end; width: 100%; }
+  .phero__art { color: var(--ink); max-width: min(420px, 58vh); justify-self: end; width: 100%; }
   .section--ink .phero__art { color: var(--paper); }
   @media (max-width: 900px) { .phero__grid { grid-template-columns: 1fr; } .phero__art { justify-self: start; max-width: 300px; } }
 </style>

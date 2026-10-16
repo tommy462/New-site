@@ -161,7 +161,8 @@ export function renderDoor(cfg = DEFAULT, opts = {}) {
   if (TH) {
     const tx = ox + FR, ty = oy + FR, tw = totalW - FR * 2;
     parts.push(glassRect(tx, ty, tw, TH, c.glass === 'leaded' ? 'leaded' : 'clear'));
-    if (c.number) parts.push(`<text x="${tx + tw / 2}" y="${ty + TH / 2 + 30}" text-anchor="middle" font-family="Newsreader Variable, Georgia, serif" font-size="96" fill="${c.dusk ? '#3a2a14' : '#f7f4ec'}" opacity=".92" letter-spacing="4">${escapeXml(c.number)}</text>`);
+    const tfs = Math.min(96, (tw * 0.86) / Math.max(1, String(c.number).length * 0.56));
+    if (c.number) parts.push(`<text x="${tx + tw / 2}" y="${ty + TH / 2 + tfs * 0.32}" text-anchor="middle" font-family="Newsreader Variable, Georgia, serif" font-size="${tfs.toFixed(0)}" fill="${c.dusk ? '#3a2a14' : '#f7f4ec'}" opacity=".92" letter-spacing="4">${escapeXml(c.number)}</text>`);
   }
   // frame rebate lines
   parts.push(`<rect x="${leafX - 6}" y="${leafY - 6}" width="${LW + 12}" height="${LH + 6}" fill="none" stroke="#000" stroke-opacity=".22" stroke-width="3"/>`);
@@ -224,12 +225,14 @@ export function renderDoor(cfg = DEFAULT, opts = {}) {
     const kx = X + W / 2;
     parts.push(`<circle cx="${kx}" cy="${ky}" r="13" fill="url(#${id}-hw)" stroke="${hw.b}"/><path d="M${kx - 40} ${ky + 8} a40 40 0 0 0 80 0" fill="none" stroke="url(#${id}-hw)" stroke-width="11" stroke-linecap="round"/><path d="M${kx - 40} ${ky + 8} a40 40 0 0 0 80 0" fill="none" stroke="${hw.b}" stroke-width="1.2" opacity=".6"/>`);
   }
+  const nlen = String(c.number || '').length;
+  const fit = (base, width) => Math.min(base, width / Math.max(1, nlen * 0.56));
   if (c.number && !TH) {
     const ny = st === 'georgian' ? Y + 248 : st === 'half' ? Y + 512 : st === 'trio' ? Y + 270 : st === 'linear' ? Y + 110 : Y + 44;
     const nx = st === 'trio' ? X + 300 : st === 'linear' ? X + 130 : X + W / 2;
     const fill = `url(#${id}-hw)`;
-    if (st === 'cottage' || st === 'arch') parts.push(`<text x="${nx}" y="${Y + 46}" text-anchor="middle" font-family="Newsreader Variable, Georgia, serif" font-size="40" fill="${fill}" stroke="${hw.b}" stroke-width=".6" letter-spacing="2">${escapeXml(c.number)}</text>`);
-    else parts.push(`<text x="${nx}" y="${ny + 20}" text-anchor="middle" font-family="Newsreader Variable, Georgia, serif" font-size="${st === 'linear' || st === 'trio' ? 64 : 46}" fill="${fill}" stroke="${hw.b}" stroke-width=".6" letter-spacing="2">${escapeXml(c.number)}</text>`);
+    if (st === 'cottage' || st === 'arch') parts.push(`<text x="${nx}" y="${Y + 46}" text-anchor="middle" font-family="Newsreader Variable, Georgia, serif" font-size="${fit(40, 280).toFixed(0)}" fill="${fill}" stroke="${hw.b}" stroke-width=".6" letter-spacing="2">${escapeXml(c.number)}</text>`);
+    else parts.push(`<text x="${nx}" y="${ny + 20}" text-anchor="middle" font-family="Newsreader Variable, Georgia, serif" font-size="${(st === 'linear' ? fit(64, 200) : st === 'trio' ? fit(64, 150) : fit(46, 280)).toFixed(0)}" fill="${fill}" stroke="${hw.b}" stroke-width=".6" letter-spacing="2">${escapeXml(c.number)}</text>`);
   }
 
   // ── dusk: darken the world, keep the glass glowing, spill light

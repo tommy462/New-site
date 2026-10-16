@@ -8,7 +8,7 @@ import { renderDoor } from '../lib/door.js';
 import { BIZ } from '../lib/site.js';
 
 const types = [
-  { k: 'composite', name: 'Composite front door', text: 'Solidor composite doors combine "the elegance of wood with the resilience of synthetic materials" — engineered to withstand the British weather and resist fading, warping and cracking.', points: ['Multi-point locking, robust hinges', 'Anti-pick, anti-drill cylinders', 'A spectrum of colours and hardware styles'] },
+  { k: 'composite', name: 'Composite front door', text: 'Composite doors combine "the elegance of wood with the resilience of synthetic materials" — engineered to withstand the British weather and resist fading, warping and cracking.', points: ['Multi-point locking, robust hinges', 'Anti-pick, anti-drill cylinders', 'A spectrum of colours and hardware styles'] },
   { k: 'residential', name: 'Residential door', text: 'A cost-effective, maintenance-free entrance door — with Vista reinforced infill panels "manufactured at our Newton Abbot factory by our skilled craftsmen".', points: ['High-security locking mechanisms', 'Wide range of colours and glass designs', 'Bespoke half-glazed and fully glazed doors'] },
   { k: 'french', name: 'French doors', modes: ['Open outward', 'Open inward'], text: 'A classic pair that opens the whole width of the doorway — and French doors "can open inward or outward", so they suit your space.', points: ['Multipoint locks made from robust materials', 'Thermal breaks, weather seals and double-glazed panels', 'Styles from Victorian to modern minimalist'] },
   { k: 'bifold', name: 'Bifold doors', text: 'Panels that "fold back into a compact area", opening an entire wall to the garden. Our Stellar bifolds are fully configurable, with robust and reliable track systems.', points: ['Any finish, any colour — from signal white to chocolate brown', 'Weather-resistant seals and double glazing', 'Security built into every aspect of the design'] },
@@ -28,7 +28,7 @@ const doors = [
     <Fragment slot="art"><Elevations kind="door" /></Fragment>
   </PageHero>
 
-  <section class="section--tight front" aria-labelledby="front-h">
+  <section class="section--tight front" aria-label="Example front doors">
     <div class="wrap">
       <div class="front__row">
         {doors.map((d, i) => <div class="front__door" data-reveal style={`--d:${i * 0.08}s`} set:html={d}></div>)}
@@ -46,8 +46,8 @@ const doors = [
       <div class="fd__cols">
         <article data-reveal>
           <span class="idx">A</span>
-          <h3>Solidor composite</h3>
-          <p>Our composite doors are "a fusion of materials like uPVC, wood, insulating foam, and glass reinforced plastic", engineered to resist fading, warping and cracking. Coastal is an approved Solidor installer, and the showroom holds what we call "one of the largest selections of Solidor designs in the area".</p>
+          <h3>Composite doors · Solidor</h3>
+          <p>Our composite doors combine "the elegance of wood with the resilience of synthetic materials", engineered to resist fading, warping and cracking in the British weather. Coastal is an Approved Solidor Installer, and the showroom holds what we call "one of the largest selections of Solidor designs in the area".</p>
           <ul class="spec">
             <li>Multi-point locking systems, robust hinges, anti-pick and anti-drill cylinders</li>
             <li>A spectrum of colours, from classic neutrals to bold hues</li>
@@ -94,9 +94,9 @@ const doors = [
           { k: 'sliding', n: 'Sliding', t: 'One panel glides behind the other — no swing space needed, and more glass when it\'s closed.' },
         ].map((p, i) => (
           <figure class="plan__item" data-reveal style={`--d:${i * 0.08}s`}>
-            <svg viewBox="0 0 300 170" class={`plan__svg plan__svg--${p.k}`} aria-hidden="true">
+            <svg viewBox="0 -40 300 210" class={`plan__svg plan__svg--${p.k}`} aria-hidden="true">
               <rect x="0" y="70" width="40" height="22" class="pl-wall" /><rect x="260" y="70" width="40" height="22" class="pl-wall" />
-              <text x="150" y="16" text-anchor="middle" class="pl-t">GARDEN</text><text x="150" y="162" text-anchor="middle" class="pl-t">ROOM</text>
+              <text x="150" y="-26" text-anchor="middle" class="pl-t">GARDEN</text><text x="150" y="162" text-anchor="middle" class="pl-t">ROOM</text>
               {p.k === 'bifold' && [0, 1, 2, 3].map((j) => <line x1={40 + j * 55} y1="81" x2={40 + (j + 1) * 55} y2="81" class="pl-leaf" data-j={j} />)}
               {p.k === 'french' && <><line x1="40" y1="81" x2="150" y2="81" class="pl-leaf pl-fl" /><line x1="260" y1="81" x2="150" y2="81" class="pl-leaf pl-fr" /><path d="M150 81 A110 110 0 0 0 40 -29" class="pl-arc" /><path d="M150 81 A110 110 0 0 1 260 -29" class="pl-arc" /></>}
               {p.k === 'sliding' && <><line x1="40" y1="78" x2="152" y2="78" class="pl-leaf" /><line x1="148" y1="85" x2="260" y2="85" class="pl-leaf pl-sl" /></>}
@@ -134,7 +134,7 @@ const doors = [
 
   .plan { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .plan__item { margin: 0; background: var(--paper); border: 1px solid var(--line); padding: 22px; display: grid; gap: 14px; }
-  .plan__svg { width: 100%; height: auto; overflow: visible; }
+  .plan__svg { width: 100%; height: auto; overflow: hidden; }
   .plan__svg :global(.pl-wall) { fill: var(--ink); }
   .plan__svg :global(.pl-leaf) { stroke: var(--sea-deep); stroke-width: 5; stroke-linecap: round; }
   .plan__svg :global(.pl-arc) { fill: none; stroke: var(--sea-deep); stroke-dasharray: 2 4; opacity: .5; }
@@ -144,7 +144,7 @@ const doors = [
   .plan__item figcaption p { font-size: 14.5px; color: var(--ink-mute); margin: 8px 0 0; }
   .plan__ctrl { display: flex; align-items: center; gap: 16px; margin-top: 22px; max-width: 520px; }
   .plan__ctrl input { flex: 1; accent-color: var(--clay); }
-  @media (max-width: 900px) { .plan { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .plan { grid-template-columns: 1fr; } .plan__ctrl { position: sticky; bottom: 12px; z-index: 3; background: var(--paper); padding: 12px 14px; border: 1px solid var(--line); max-width: none; box-shadow: 0 10px 30px -12px rgba(0,0,0,.3); } }
 </style>
 
 <script>

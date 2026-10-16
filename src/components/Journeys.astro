@@ -9,7 +9,7 @@ import Arrow from './Arrow.astro';
         <h2 id="jy-h" data-reveal>A new front door.<br /><em>A whole new room.</em></h2>
       </div>
       <div data-reveal style="--d:.1s">
-        <p class="lede">They're very different decisions — so we treat them differently. Slide the door across to see how each one works.</p>
+        <p class="lede">They're very different decisions — so we treat them differently. <span class="jy__d">Slide the door across</span><span class="jy__m">Choose a journey</span> to see how each one works.</p>
         <div class="seg jy__seg" role="tablist" aria-label="Choose a journey">
           <button type="button" role="tab" aria-selected="true" data-side="0" id="jy-tab-0" aria-controls="jy-p0">Replacing windows or doors</button>
           <button type="button" role="tab" aria-selected="false" data-side="1" id="jy-tab-1" aria-controls="jy-p1">Building or transforming a room</button>
@@ -53,6 +53,8 @@ import Arrow from './Arrow.astro';
 
 <style>
   .jy h2 em { color: var(--sea-deep); }
+  .jy__m { display: none; }
+  @media (max-width: 860px) { .jy__d { display: none; } .jy__m { display: inline; } }
   .jy__seg { margin-top: 26px; }
   .jy__door {
     position: relative; display: grid; grid-template-columns: 1fr 1fr;
@@ -98,8 +100,10 @@ import Arrow from './Arrow.astro';
   const door = document.getElementById('jy');
   const glider = document.getElementById('jy-glider');
   const tabs = [...document.querySelectorAll('.jy__seg button')];
+  const mq = matchMedia('(min-width: 861px)');
   const set = (side) => {
     door.dataset.side = String(side);
+    door.querySelectorAll('.jy__pane').forEach((p, i) => { p.inert = mq.matches && i !== side; });
     glider.style.removeProperty('--gx');
     tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.side === String(side))));
   };
@@ -129,5 +133,6 @@ import Arrow from './Arrow.astro';
     start = null;
   };
   glider.addEventListener('pointerup', end);
+  set(0); mq.addEventListener('change', () => set(+door.dataset.side));
   glider.addEventListener('pointercancel', end);
 </script>

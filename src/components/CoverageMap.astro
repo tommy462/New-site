@@ -44,7 +44,7 @@ const { compact = false } = Astro.props;
       </g>
       {[25, 50, 100].map((m) => <text x={(+na[0] + mi(m) * 0.7071 + 3).toFixed(1)} y={(+na[1] - mi(m) * 0.7071 - 3).toFixed(1)} class="cmap__ring-t">{m} mi</text>)}
       {counties.map((c) => { const p = P(...c.at); return <text x={p[0]} y={p[1]} class="cmap__county" text-anchor="middle">{c.n}</text>; })}
-      {towns.filter((t) => labelTowns.includes(t[0])).map((t) => { const p = P(t[1], t[2]); return <g class="cmap__town"><circle cx={p[0]} cy={p[1]} r="1.8" /><text x={+p[0] + 4} y={+p[1] + 3}>{t[0]}</text></g>; })}
+      {towns.filter((t) => labelTowns.includes(t[0])).map((t) => { const p = P(t[1], t[2]); return <g class:list={['cmap__town', { 'cmap__town--key': ['Exeter', 'Plymouth', 'Truro'].includes(t[0]) }]}><circle cx={p[0]} cy={p[1]} r="1.8" /><text x={+p[0] + 4} y={+p[1] + 3}>{t[0]}</text></g>; })}
       <line id="cmap-line" x1={na[0]} y1={na[1]} x2={na[0]} y2={na[1]} stroke="var(--clay)" stroke-width="1.4" />
       <circle id="cmap-target" cx={na[0]} cy={na[1]} r="0" fill="var(--clay)" />
       <g class="cmap__home">
@@ -81,6 +81,7 @@ const { compact = false } = Astro.props;
   .cmap__out { font-family: var(--f-display); font-size: clamp(1.3rem, 2vw, 1.7rem); line-height: 1.25; margin: 0; max-width: 34ch; }
   .cmap__out b { font-weight: 400; font-style: italic; color: var(--clay); }
   .cmap__tool { display: grid; gap: 18px; max-width: 520px; }
+  @media (max-width: 640px) { .cmap__town text, .cmap__ring-t { font-size: 12px; } .cmap__county { font-size: 20px; } .cmap__home-t { font-size: 12px; } .cmap__town:not(.cmap__town--key) text { display: none; } }
 </style>
 
 <script>
@@ -98,7 +99,7 @@ const { compact = false } = Astro.props;
   const line = document.getElementById('cmap-line');
   const tgt = document.getElementById('cmap-target');
   sel?.addEventListener('change', () => {
-    if (!sel.value) return;
+    if (!sel.value) { line.setAttribute('x2', line.getAttribute('x1')); line.setAttribute('y2', line.getAttribute('y1')); tgt.setAttribute('r', '0'); out.textContent = 'Our installation teams cover Cornwall, Devon, Somerset and Dorset — and the areas in between.'; return; }
     const [lat, lon] = sel.value.split(',').map(Number);
     const [x, y] = P(lat, lon);
     line.setAttribute('x2', x.toFixed(1)); line.setAttribute('y2', y.toFixed(1));

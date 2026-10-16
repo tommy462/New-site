@@ -30,7 +30,7 @@ const fullTitle = title.includes('Coastal') ? title : `${title} — Coastal Wind
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org', '@type': 'HomeAndConstructionBusiness',
       name: 'Coastal Windows & Conservatories', telephone: '+441803299937',
-      address: { '@type': 'PostalAddress', streetAddress: 'Silverhills Buildings, Silverhills Road, Decoy Industrial Estate', addressLocality: 'Newton Abbot', addressRegion: 'Devon', postalCode: 'TQ12 5LZ', addressCountry: 'GB' },
+      address: { '@type': 'PostalAddress', streetAddress: 'Unit 12, Silverhills Units, Decoy Industrial Estate', addressLocality: 'Newton Abbot', addressRegion: 'Devon', postalCode: 'TQ12 5LZ', addressCountry: 'GB' },
       foundingDate: '1988', areaServed: ['Cornwall', 'Devon', 'Somerset', 'Dorset'],
     })} />
   </head>
@@ -115,4 +115,11 @@ const fullTitle = title.includes('Coastal') ? title : `${title} — Coastal Wind
   .concept-note p { margin: 0 0 10px; opacity: .85; }
   .concept-note a { color: var(--gold); font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; }
   .menu-open .concept-pill { opacity: 0; pointer-events: none; }
+  .concept-pill { transition: opacity .4s, transform .5s var(--ease); }
+  @media (max-width: 640px) {
+    .concept-pill { left: 10px; bottom: 10px; padding: 0; width: 40px; height: 40px; justify-content: center; font-size: 0; gap: 0; }
+    .concept-pill__dot { width: 9px; height: 9px; }
+    .hdr-hidden .concept-pill { opacity: 0; transform: translateY(10px); pointer-events: none; }
+    .concept-note { bottom: 58px; left: 10px; }
+  }
 </style>

@@ -37,14 +37,14 @@ const path = Astro.url.pathname;
       <button class="hdr__menu" id="menu-btn" aria-expanded="false" aria-controls="menu" type="button">
         <span class="sr-only">Menu</span>
         <span class="hdr__menu-lines" aria-hidden="true"><i></i><i></i></span>
-        <span class="hdr__menu-txt label" aria-hidden="true">Menu</span>
+        <span class="hdr__menu-txt label" aria-hidden="true" id="menu-txt">Menu</span>
       </button>
     </div>
   </div>
 </header>
 
 <!-- Menu: drops like a vertical sliding sash -->
-<div class="menu" id="menu" hidden>
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
   <div class="menu__sash">
     <div class="menu__inner wrap">
       <div class="menu__top">
@@ -73,7 +73,7 @@ const path = Astro.url.pathname;
         </div>
         <div class="menu__contact">
           <span class="label label--dim">Showroom</span>
-          <p>{BIZ.address.slice(0, 4).join(', ')}<br />{BIZ.address[5]}</p>
+          <p>{BIZ.showroom.join(', ')}</p>
           <p><a href={BIZ.phoneHref}>{BIZ.phone}</a> · <a href={BIZ.whatsapp} rel="noopener" target="_blank">WhatsApp</a></p>
         </div>
       </div>
@@ -128,16 +128,17 @@ const path = Astro.url.pathname;
   .hdr[data-theme='dark'] .hdr__cta { --b-bg: var(--paper); --b-fg: var(--ink); }
   .hdr[data-theme='dark'] .hdr__cta:hover { color: var(--bone); }
 
-  .hdr__menu { appearance: none; background: none; border: 0; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 10px 0 10px 6px; min-height: 44px; }
+  .hdr__menu { appearance: none; background: none; border: 0; cursor: pointer; display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 10px 0 10px 6px; min-height: 44px; min-width: 44px; }
   .hdr__menu-lines { width: 26px; height: 10px; position: relative; }
   .hdr__menu-lines i { position: absolute; left: 0; right: 0; height: 1.5px; background: currentColor; transition: transform .6s var(--ease), top .6s var(--ease); }
   .hdr__menu-lines i:first-child { top: 0; }
   .hdr__menu-lines i:last-child { top: 8.5px; }
-  .menu-open .hdr__menu-lines i:first-child { top: 4.25px; transform: rotate(45deg); }
-  .menu-open .hdr__menu-lines i:last-child { top: 4.25px; transform: rotate(-45deg); }
-  .menu-open .hdr { color: var(--paper); }
-  .menu-open .hdr .hdr__bar::before { opacity: 0; }
-  .menu-open .hdr .sunchip, .menu-open .hdr .hdr__nav, .menu-open .hdr .hdr__phone, .menu-open .hdr .hdr__cta { opacity: 0; pointer-events: none; }
+  :global(.menu-open) .hdr__menu-lines i:first-child { top: 4.25px; transform: rotate(45deg); }
+  :global(.menu-open) .hdr__menu-lines i:last-child { top: 4.25px; transform: rotate(-45deg); }
+  :global(.menu-open) .hdr { color: var(--paper); }
+  :global(.menu-open) .hdr .hdr__bar::before { opacity: 0; }
+  :global(.menu-open) .hdr .sunchip, :global(.menu-open) .hdr .hdr__nav, :global(.menu-open) .hdr .hdr__phone, :global(.menu-open) .hdr .hdr__cta { opacity: 0; pointer-events: none; visibility: hidden; }
+  :global(.menu-open) .hdr .hdr__bar { transform: none; }
   .sunchip, .hdr__nav, .hdr__phone, .hdr__cta { transition: opacity .4s; }
 
   @media (max-width: 1240px) { .hdr__nav { display: none; } .sunchip { margin-left: auto; } }

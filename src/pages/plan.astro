@@ -34,8 +34,8 @@ const labelOf = Object.fromEntries(projects);
         <form id="pl-form" novalidate>
           <fieldset class="pl__step" data-step="0">
             <legend class="h3">What are you planning?</legend>
-            <p class="pl__help">Choose everything that applies.</p>
-            <div class="pl__cards">
+            <p class="pl__help" role="status">Choose everything that applies.</p>
+            <div class="pl__cards" role="group" aria-label="What are you planning?">
               {projects.map(([k, n]) => <label class="pl__card"><input type="checkbox" name="project" value={k} /><span>{n}</span></label>)}
             </div>
           </fieldset>
@@ -43,10 +43,10 @@ const labelOf = Object.fromEntries(projects);
           <fieldset class="pl__step" data-step="1" hidden>
             <legend class="h3">Tell us about your home</legend>
             <div class="pl__q"><span class="field__label">Property type</span>
-              <div class="pl__chips">{['Detached', 'Semi-detached', 'Terraced', 'Bungalow', 'Cottage or period', 'Flat', 'Holiday let or business', 'Other'].map((o) => <label class="pl__chip"><input type="radio" name="property" value={o} /><span>{o}</span></label>)}</div>
+              <div class="pl__chips" role="group" aria-label="Property type">{['Detached', 'Semi-detached', 'Terraced', 'Bungalow', 'Cottage or period', 'Flat', 'Holiday let or business', 'Other'].map((o) => <label class="pl__chip"><input type="radio" name="property" value={o} /><span>{o}</span></label>)}</div>
             </div>
             <div class="pl__q"><span class="field__label">Listed building or conservation area?</span>
-              <div class="pl__chips">{['No', 'Yes', 'Not sure'].map((o) => <label class="pl__chip"><input type="radio" name="listed" value={o} /><span>{o}</span></label>)}</div>
+              <div class="pl__chips" role="group" aria-label="Listed building or conservation area?">{['No', 'Yes', 'Not sure'].map((o) => <label class="pl__chip"><input type="radio" name="listed" value={o} /><span>{o}</span></label>)}</div>
             </div>
             <label class="field pl__q"><span class="field__label">Town or village</span><input type="text" name="town" autocomplete="address-level2" placeholder="e.g. Teignmouth" /></label>
           </fieldset>
@@ -58,7 +58,7 @@ const labelOf = Object.fromEntries(projects);
                 <p class="label pl__dlabel">{labelOf[k]}</p>
                 {qs.map((q, qi) => (
                   <div class="pl__q"><span class="field__label">{q.name}</span>
-                    <div class="pl__chips">{q.opts.map((o) => <label class="pl__chip"><input type={q.multi ? 'checkbox' : 'radio'} name={`${k}-${qi}`} value={o} data-q={q.name} /><span>{o}</span></label>)}</div>
+                    <div class="pl__chips" role="group" aria-label={q.name}>{q.opts.map((o) => <label class="pl__chip"><input type={q.multi ? 'checkbox' : 'radio'} name={`${k}-${qi}`} value={o} data-q={q.name} /><span>{o}</span></label>)}</div>
                   </div>
                 ))}
                 {k === 'conservatory' && <div class="pl__sun" id="pl-sun" hidden></div>}
@@ -74,14 +74,14 @@ const labelOf = Object.fromEntries(projects);
           <fieldset class="pl__step" data-step="3" hidden>
             <legend class="h3">Timing and next step</legend>
             <div class="pl__q"><span class="field__label">When would you like it done?</span>
-              <div class="pl__chips">{['As soon as possible', 'In 1–3 months', 'In 3–6 months', 'Just researching'].map((o) => <label class="pl__chip"><input type="radio" name="when" value={o} /><span>{o}</span></label>)}</div>
+              <div class="pl__chips" role="group" aria-label="When would you like it done?">{['As soon as possible', 'In 1–3 months', 'In 3–6 months', 'Just researching'].map((o) => <label class="pl__chip"><input type="radio" name="when" value={o} /><span>{o}</span></label>)}</div>
             </div>
             <div class="pl__q"><span class="field__label">What would you like to happen next?</span>
-              <div class="pl__chips">{['Visit the showroom', 'Free home quote', 'A phone call', 'A brochure by email'].map((o) => <label class="pl__chip"><input type="radio" name="next" value={o} /><span>{o}</span></label>)}</div>
+              <div class="pl__chips" role="group" aria-label="What would you like to happen next?">{['Visit the showroom', 'Free home quote', 'A phone call', 'A brochure by email'].map((o) => <label class="pl__chip"><input type="radio" name="next" value={o} /><span>{o}</span></label>)}</div>
             </div>
             <div class="pl__q"><span class="field__label">Interested in spreading the cost?</span>
-              <div class="pl__chips">{['Yes, tell me about finance', 'No thanks'].map((o) => <label class="pl__chip"><input type="radio" name="finance" value={o} /><span>{o}</span></label>)}</div>
-              <p class="pl__fine">Finance available on purchases from £2,000 to £50,000. Credit is subject to status and affordability. Coastal is a credit broker, not a lender.</p>
+              <div class="pl__chips" role="group" aria-label="Interested in spreading the cost?">{['Yes, tell me about finance', 'No thanks'].map((o) => <label class="pl__chip"><input type="radio" name="finance" value={o} /><span>{o}</span></label>)}</div>
+              <p class="pl__fine">Finance available on purchases from £2,000 to £50,000. {BIZ.financeDisclosure}</p>
             </div>
             <p class="pl__offer">Coastal's current website offer: request <b>5% off</b> when you book a free, no-obligation quote.</p>
           </fieldset>
@@ -96,7 +96,7 @@ const labelOf = Object.fromEntries(projects);
               <label class="field"><span class="field__label">Postcode</span><input name="postcode" autocomplete="postal-code" /></label>
             </div>
             <div class="pl__q"><span class="field__label">Contact me by</span>
-              <div class="pl__chips">{['Telephone', 'Email'].map((o) => <label class="pl__chip"><input type="radio" name="contactby" value={o} /><span>{o}</span></label>)}</div>
+              <div class="pl__chips" role="group" aria-label="Contact me by">{['Telephone', 'Email'].map((o) => <label class="pl__chip"><input type="radio" name="contactby" value={o} /><span>{o}</span></label>)}</div>
             </div>
             <label class="field pl__q"><span class="field__label">How did you hear about us?</span>
               <select name="heard"><option value="">Please choose</option>{['Google', 'Facebook', 'Telephone call', 'Door leaflet', 'Newspaper', 'Recommendation', 'Seen company van', 'Other'].map((o) => <option>{o}</option>)}</select>
@@ -122,7 +122,7 @@ const labelOf = Object.fromEntries(projects);
         </form>
       </div>
 
-      <aside class="pl__brief" aria-label="Your project brief" id="pl-brief">
+      <section class="pl__brief" aria-label="Your project brief" id="pl-brief">
         <div class="brief">
           <div class="brief__head">
             <div>
@@ -147,7 +147,7 @@ const labelOf = Object.fromEntries(projects);
           </div>
           <p class="brief__foot">{BIZ.showroom.join(', ')} · {BIZ.phone}</p>
         </div>
-      </aside>
+      </section>
     </div>
   </section>
 </Base>
@@ -171,6 +171,8 @@ const labelOf = Object.fromEntries(projects);
   .pl__card input, .pl__chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
   .pl__card span { display: flex; align-items: flex-end; min-height: 84px; padding: 14px; border: 1px solid var(--line-strong); background: var(--bone); font-weight: 520; font-size: 15px; transition: background .3s, color .3s, border-color .3s; }
   .pl__card input:checked + span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .pl__card.is-suggested span { border-color: var(--clay); box-shadow: inset 0 -3px 0 var(--clay); }
+  [aria-invalid] { border-bottom-color: var(--clay) !important; }
   .pl__card input:focus-visible + span, .pl__chip input:focus-visible + span { outline: 2px solid var(--clay); outline-offset: 2px; }
   .pl__q { display: grid; gap: 10px; }
   .pl__chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -235,10 +237,17 @@ const labelOf = Object.fromEntries(projects);
   if (pre) form.querySelector(`input[name=project][value="${pre}"]`).checked = true;
   if (q.get('p') === 'hup') setTimeout(() => { const r = form.querySelector('input[name="conservatory-0"][value="hup! extension"]'); if (r) r.checked = true; render(); });
   if (q.get('face')) {
-    const f = +q.get('face'); const name = f >= 315 || f < 45 ? 'North' : f < 135 ? 'East' : f < 225 ? 'South' : 'West';
+    const f = (+q.get('face') % 360 + 360) % 360; const name = f > 315 || f < 45 ? 'North' : f < 135 ? 'East' : f <= 225 ? 'South' : 'West';
     setTimeout(() => { const r = form.querySelector(`input[name="conservatory-1"][value="${name}"]`); if (r) r.checked = true; render(); });
   }
   if (q.get('doors')) form.querySelector('[name=extra]').value = `Door Studio shortlist: ${q.get('doors')}`;
+  const type = q.get('type');
+  if (type && !pre) {
+    const keys = type === 'replace' ? ['windows', 'front-door', 'garden-doors', 'roofline'] : ['conservatory', 'roof', 'porch', 'kitchen'];
+    const help = steps[0].querySelector('.pl__help');
+    help.textContent = type === 'replace' ? 'Replacing something? Start with what you\'d like to change — choose everything that applies.' : 'Building or transforming a room? Choose everything that applies.';
+    form.querySelectorAll('input[name=project]').forEach((i) => { if (keys.includes(i.value)) i.closest('.pl__card').classList.add('is-suggested'); });
+  }
 
   const vals = (name) => [...form.querySelectorAll(`[name="${name}"]:checked`)].map((i) => i.value);
   const val = (name) => vals(name)[0];
@@ -292,8 +301,9 @@ const labelOf = Object.fromEntries(projects);
       else {
         sun.hidden = false;
         const s = sunHours(b, 5, 21), w = sunHours(b, 11, 21);
-        const tip = b === 180 || b === 270 ? 'Plenty of sun — your choice of roof will shape how warm it feels in summer.' : b === 0 ? 'Soft, even light all day — a glazed roof brings in the most daylight.' : 'Bright mornings, cooler afternoons — lovely for breakfast.';
-        sun.innerHTML = `In Newton Abbot, a ${face.toLowerCase()}-facing wall gets direct sun for about <b>${hm(s)}</b> at midsummer and <b>${hm(w)}</b> at midwinter. ${tip} <a href="/light-lab/">Explore it in the Light Lab →</a>`;
+        const tip = b === 180 || b === 270 ? 'Plenty of sun — your choice of roof will shape how warm it feels in summer.' : b === 0 ? 'Only early and late sun in summer, and none in winter — a glazed roof brings in the most daylight.' : 'Bright mornings, cooler afternoons — lovely for breakfast.';
+        const art = /^[aeiou]/i.test(face) ? 'an' : 'a';
+        sun.innerHTML = `In Newton Abbot, ${art} ${face.toLowerCase()}-facing wall gets direct sun for about <b>${hm(s)}</b> at midsummer and <b>${hm(w)}</b> at midwinter. ${tip} <a href="/light-lab/">Explore it in the Light Lab →</a>`;
       }
     }
 
@@ -319,7 +329,8 @@ const labelOf = Object.fromEntries(projects);
   function go(i) {
     cur = i;
     steps.forEach((s, j) => (s.hidden = j !== i));
-    crumbs.forEach((c, j) => { c.classList.toggle('is-on', j === i); c.classList.toggle('is-done', j < i); });
+    crumbs.forEach((c, j) => { c.classList.toggle('is-on', j === i); c.classList.toggle('is-done', j < i); c.toggleAttribute('aria-current', j === i); if (j === i) c.setAttribute('aria-current', 'step'); });
+    const lg = steps[i].querySelector('legend'); if (lg && i > 0) { lg.setAttribute('tabindex', '-1'); setTimeout(() => lg.focus({ preventScroll: true }), 50); }
     back.hidden = i === 0;
     next.firstChild.textContent = i === steps.length - 1 ? 'Create my brief ' : 'Continue ';
     err.textContent = '';
@@ -327,11 +338,12 @@ const labelOf = Object.fromEntries(projects);
     if (scrollY > top) (window.__lenis ? window.__lenis.scrollTo(top) : scrollTo({ top, behavior: 'smooth' }));
   }
   next.addEventListener('click', () => {
-    if (cur === 0 && !vals('project').length) { steps[0].querySelector('.pl__help').textContent = 'Choose at least one to continue.'; return; }
+    if (cur === 0 && !vals('project').length) { const h = steps[0].querySelector('.pl__help'); h.textContent = 'Choose at least one to continue.'; h.style.color = 'var(--clay)'; return; }
     if (cur === steps.length - 1) {
-      if (!form.name.value.trim() || !form.email.validity.valid || !form.email.value || !form.privacy.checked) {
-        err.textContent = 'Please add your name and a valid email, and agree to the privacy policy.'; return;
-      }
+      const checks = [[form.name, !form.name.value.trim(), 'Please add your name.'], [form.email, !form.email.value || !form.email.validity.valid, 'Please add a valid email address.'], [form.privacy, !form.privacy.checked, 'Please agree to the privacy policy to continue.']];
+      checks.forEach(([el, bad]) => el.toggleAttribute('aria-invalid', bad));
+      const bad = checks.find((c) => c[1]);
+      if (bad) { err.textContent = bad[2]; bad[0].focus(); return; }
       steps.forEach((s) => (s.hidden = true));
       document.getElementById('pl-nav').hidden = true;
       const done = document.getElementById('pl-done'); done.hidden = false; done.focus();
@@ -342,6 +354,7 @@ const labelOf = Object.fromEntries(projects);
   });
   back.addEventListener('click', () => go(Math.max(0, cur - 1)));
   form.addEventListener('input', render);
+  form.addEventListener('change', (e) => { if (e.target.name === 'project') { const h = steps[0].querySelector('.pl__help'); h.textContent = 'Choose everything that applies.'; h.style.color = ''; } });
   form.addEventListener('change', render);
   form.addEventListener('submit', (e) => e.preventDefault());
   document.getElementById('pl-print').addEventListener('click', () => print());

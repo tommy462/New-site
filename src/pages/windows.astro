@@ -13,20 +13,20 @@ const types = [
   { k: 'sash', name: 'Vertical sliding sash', modes: ['Slide', 'Tilt to clean'], text: 'The classic charm of a traditional sash with modern performance — "ideal for both restoration projects and new builds", with easy-clean options and advanced balance systems.', points: ['Sliding sashes with balance systems', 'Tilt-in feature for cleaning from the inside', 'Robust locking that keeps the classic look'] },
   { k: 'bay', name: 'Bay', text: 'Angled windows that step out from the wall, adding light and floor space — "creating a cosy nook indoors."', points: ['More light and a wider view', 'Decorative bars, stained glass and leaded lights', 'A wide spectrum of colours and finishes'] },
   { k: 'bow', name: 'Bow', text: 'A gentle curve of windows that makes "every view feel larger, brighter, and more connected to nature" — whether you overlook a garden, countryside or the coast.', points: ['A softer, curved projection', 'Panoramic outlook', 'Personalise everything from frame colour to glass'] },
-  { k: 'alu', name: 'Aluminium (Cortizo)', text: 'A sleek Cortizo aluminium casement system for side-hung and top-hung outward opening — slim frames that maximise the glass.', points: ['Uw from 1.0 W/m²K', 'British PAS 24 security certification', '70mm frame depth · 32mm thermal break zone'], note: 'Figures as stated for the Cortizo casement system on Coastal\'s current aluminium windows page.' },
+  { k: 'alu', name: 'Aluminium', text: 'Slim aluminium casements for side-hung and top-hung outward opening — frames that maximise the glass. Coastal\'s aluminium page details the Cortizo casement system.', points: ['Uw from 1.0 W/m²K', 'British PAS 24 security certification', '70mm frame depth · 32mm thermal break zone'], note: 'Figures as stated for the Cortizo casement system on Coastal\'s aluminium windows page — confirm the current aluminium range with the team.' },
 ];
 
 const needs = [
   { k: 'period', n: 'A period or character home', picks: [['Vertical sliding sash', 'sash', 'Ideal for restoration projects — the classic look, modern performance.'], ['Flush casement', 'flush', 'Flush sashes echo traditional timber joinery.']] },
   { k: 'clean', n: 'Easy cleaning upstairs', picks: [['Tilt & turn', 'tiltturn', 'Turn the sash inwards and clean the outside from indoors.'], ['Vertical sliding sash', 'sash', 'The tilt feature allows easy cleaning from the inside.']] },
   { k: 'light', n: 'More light and space', picks: [['Bay', 'bay', 'Steps out from the wall for a brighter room and a cosy nook.'], ['Bow', 'bow', 'A curved sweep of glass for a panoramic outlook.']] },
-  { k: 'slim', n: 'A slim, modern look', picks: [['Aluminium (Cortizo)', 'alu', '70mm frame depth — slim sightlines and more glass.'], ['Flush casement', 'flush', 'A clean, level finish inside and out.']] },
+  { k: 'slim', n: 'A slim, modern look', picks: [['Aluminium', 'alu', '70mm frame depth — slim sightlines and more glass.'], ['Flush casement', 'flush', 'A clean, level finish inside and out.']] },
   { k: 'vent', n: 'Fresh air, securely', picks: [['Tilt & turn', 'tiltturn', 'Tilt for ventilation without compromising on safety.'], ['Casement', 'casement', 'A top-hung opener above a fixed pane.']] },
   { k: 'any', n: 'Something that suits most homes', picks: [['Casement', 'casement', 'Suits most properties, traditional to modern.'], ['Flush casement', 'flush', 'A refined upgrade on the classic casement.']] },
 ];
 ---
 <Base title="Windows" description="Casement, flush casement, tilt & turn, vertical sliding sash, bow & bay and Cortizo aluminium windows — made to measure and installed across Devon.">
-  <PageHero n="01" kicker="Windows" meta={['uPVC & aluminium', 'Made to measure']} title="Windows that|<em>frame</em> the view." lede="Double-glazed windows, tailored to your home and fitted by our own teams across Newton Abbot, Devon and the South West — from contemporary uPVC to slim Cortizo aluminium.">
+  <PageHero n="01" kicker="Windows" meta={['uPVC & aluminium', 'Made to measure']} title="Windows that|<em>frame</em> the view." lede="Double-glazed windows, tailored to your home and fitted by our own teams across Newton Abbot, Devon and the South West — from contemporary uPVC to slim aluminium.">
     <Fragment slot="dim">Seven ways to open a wall</Fragment>
     <Fragment slot="actions"><a class="btn" href="#how-it-opens">See how each one opens <Arrow /></a><a class="btn btn--ghost" href="/plan/?type=replace&p=windows">Get a quote</a></Fragment>
     <Fragment slot="art"><Elevations kind="window" /></Fragment>
@@ -40,7 +40,7 @@ const needs = [
         ['Low maintenance', 'A simple wipe with a damp cloth is all it takes.'],
         ['Highly secure', 'Robust frames and advanced multi-point locking systems as standard.'],
       ].map(([h, t], i) => (
-        <div class="feat" data-reveal style={`--d:${i * 0.06}s`}><span class="idx">0{i + 1}</span><h4>{h}</h4><p>{t}</p></div>
+        <div class="feat" data-reveal style={`--d:${i * 0.06}s`}><span class="idx">0{i + 1}</span><h2 class="h4">{h}</h2><p>{t}</p></div>
       ))}
     </div>
   </section>
@@ -92,10 +92,10 @@ const needs = [
   <section class="section alu" aria-labelledby="alu-h">
     <div class="wrap alu__grid">
       <div>
-        <p class="label sec-head__kicker">Aluminium · Cortizo</p>
+        <p class="label sec-head__kicker">Aluminium · Cortizo casement system</p>
         <h2 id="alu-h" data-reveal>Slim frames.<br /><em>Hard numbers.</em></h2>
         <p class="lede" data-reveal style="--d:.1s">"A sleek and modern aluminium system, designed for both side-hung and top-hung outward opening configurations" — available in standard and flush profiles, with slimline or heavy-duty sashes.</p>
-        <p class="muted alu__src">Specifications as stated for the Cortizo casement window on Coastal's current aluminium windows page.</p>
+        <p class="muted alu__src">Specifications as stated for the Cortizo casement window on Coastal's aluminium windows page. Ask the team about the current aluminium range.</p>
       </div>
       <dl class="alu__specs">
         <div data-reveal><dt>Window transmittance</dt><dd>U<sub>w</sub> from 1.0 <small>W/m²K</small></dd></div>

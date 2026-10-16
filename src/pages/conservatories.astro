@@ -119,10 +119,10 @@ const styles = [
           <g id="ba-knob" transform="translate(300 380)">
             <circle r="18" fill="var(--ink)" /><path d="M-6 -5 L-11 0 L-6 5 M6 -5 L11 0 L6 5" stroke="var(--paper)" stroke-width="2" fill="none" />
           </g>
-          <text x="20" y="400" class="ba__t">BEFORE · POLYCARBONATE</text>
-          <text x="580" y="400" class="ba__t" text-anchor="end">AFTER · TILED</text>
+          <text x="20" y="24" class="ba__t">BEFORE · POLYCARBONATE</text>
+          <text x="580" y="24" class="ba__t" text-anchor="end">AFTER · TILED</text>
         </svg>
-        <input type="range" min="5" max="95" value="50" class="ba__range" aria-label="Compare old and new roof" id="ba-range" />
+        <input type="range" min="0" max="100" value="50" class="ba__range" aria-label="Compare old and new roof" id="ba-range" />
         <figcaption class="coords">Illustration only</figcaption>
       </figure>
     </div>
@@ -139,16 +139,16 @@ const styles = [
       </div>
       <div class="hup__grid">
         {[
-          ['Design flexibility', 'Choose from five different roofs, coupled with walls, windows and doors in almost any design.'],
-          ['Five times faster', 'hup!\'s rapid connection technology means a hup! can be built five times faster than with traditional building methods and materials.'],
+          ['Design flexibility', 'A choice of roof systems, coupled with walls, windows and doors in almost any design.'],
+          ['Faster to build', 'hup! says its rapid connection technology means a hup! can be built five times faster than with traditional building methods and materials.'],
           ['Energy efficiency', 'hup! states five times the energy efficiency of the average UK home, with zero-waste manufacturing.'],
           ['One supplier, one project', 'One team will handle the build, from start to finish.'],
-        ].map(([h, t], i) => <div class="hup__c" data-reveal style={`--d:${i * 0.06}s`}><span class="idx">0{i + 1}</span><h4>{h}</h4><p>{t}</p></div>)}
+        ].map(([h, t], i) => <div class="hup__c" data-reveal style={`--d:${i * 0.06}s`}><span class="idx">0{i + 1}</span><h3 class="h4">{h}</h3><p>{t}</p></div>)}
       </div>
       <div class="hup__types">
         {['Conservatory transformations', 'Extensions', 'hup! conservatories', 'Garden homes'].map((t) => <span class="chip">{t}</span>)}
       </div>
-      <p class="hup__note">Performance figures are hup!'s own claims, as presented on Coastal's hup! page. One customer story describes "walls up by lunchtime and watertight in two days".</p>
+      <p class="hup__note">Performance figures are hup!'s own claims, as presented on Coastal's hup! page. A hup! case study describes "walls up by lunchtime and watertight in two days".</p>
       <a class="btn btn--light" href="/plan/?type=transform&p=hup">Book a design appointment <Arrow /></a>
     </div>
   </section>
@@ -161,8 +161,8 @@ const styles = [
         <h2 id="po-h" data-reveal>A warmer welcome<br /><em>at the front.</em></h2>
         <p class="lede" data-reveal style="--d:.08s">"A well-designed porch adds both character and functionality to your home" — an extra layer of insulation, a second barrier to entry and real kerb appeal. A rear porch is ideal for keeping muddy boots out of the house.</p>
         <div class="pv__bases">
-          <div data-reveal><span class="idx">Base A</span><h4>Traditional brick base</h4><p>Classic brickwork to match your home.</p></div>
-          <div data-reveal style="--d:.06s"><span class="idx">Base B</span><h4>Steel modular system</h4><p>"For a quicker, cleaner installation" — fully compliant with building regulations, with minimal on-site disruption.</p></div>
+          <div data-reveal><span class="idx">Base A</span><h3 class="h4">Traditional brick base</h3><p>Classic brickwork to match your home.</p></div>
+          <div data-reveal style="--d:.06s"><span class="idx">Base B</span><h3 class="h4">Steel modular system</h3><p>"For a quicker, cleaner installation" — fully compliant with building regulations, with minimal on-site disruption.</p></div>
         </div>
         <ul class="spec">
           <li>All work carried out by our in-house teams</li>
@@ -234,6 +234,7 @@ const styles = [
   .ba__t { font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em; fill: var(--ink); }
   .ba__range { position: absolute; inset: 0; width: 100%; height: calc(100% - 22px); opacity: 0; cursor: ew-resize; margin: 0; }
   .ba figcaption { margin-top: 8px; }
+  .ba:has(.ba__range:focus-visible) { outline: 2px solid var(--clay); outline-offset: 4px; }
   @media (max-width: 900px) { .roofs__grid { grid-template-columns: 1fr; } }
 
   .hup__grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line-light); }
@@ -274,7 +275,7 @@ const styles = [
   // before / after roof
   const r = document.getElementById('ba-range');
   const upd = () => {
-    const x = (+r.value / 100) * 600;
+    const x = Math.max(24, Math.min(576, (+r.value / 100) * 600));
     document.getElementById('ba-cliprect').setAttribute('x', x); document.getElementById('ba-cliprect').setAttribute('width', 600 - x);
     const l = document.getElementById('ba-line'); l.setAttribute('x1', x); l.setAttribute('x2', x);
     document.getElementById('ba-knob').setAttribute('transform', `translate(${x} 380)`);
