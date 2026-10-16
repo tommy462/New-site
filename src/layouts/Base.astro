@@ -46,7 +46,7 @@ const fullTitle = title.includes('Coastal') ? title : `${title} — Coastal Wind
     <div class="fold" id="fold" aria-hidden="true">
       <div class="fold__track">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div class="fold__p" data-i={i}>
+          <div class="fold__p" data-i={i} style={`left:calc(${i} * 100% / 6)`}>
             <div class="fold__glass"></div>
             {i === 0 && <div class="fold__handle"></div>}
           </div>

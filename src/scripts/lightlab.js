@@ -258,16 +258,18 @@ export function createLightLab(canvas, ui) {
     }
     return h;
   }
-  let measureT = 0;
+  let measureT = 0, pendingFull = false;
   function measure(full = true) {
+    pendingFull = pendingFull || full;
     clearTimeout(measureT);
     measureT = setTimeout(() => {
+      const doFull = pendingFull; pendingFull = false;
       const { v } = sunDirLocal(dateFor());
       const now = litFraction(v, st.roof);
       const out = { now };
-      if (full) out.daily = { glass: dailyHours('glass'), poly: dailyHours('poly'), tile: dailyHours('tile') };
-      ui.onMeasure?.(out, full);
-    }, full ? 140 : 40);
+      if (doFull) out.daily = { glass: dailyHours('glass'), poly: dailyHours('poly'), tile: dailyHours('tile') };
+      ui.onMeasure?.(out, doFull);
+    }, pendingFull ? 140 : 40);
   }
 
   // ── resize + loop
