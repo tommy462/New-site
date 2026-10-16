@@ -1,0 +1,173 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import OpeningExplorer from '../components/OpeningExplorer.astro';
+import DualColour from '../components/DualColour.astro';
+import Elevations from '../components/Elevations.astro';
+import Arrow from '../components/Arrow.astro';
+
+const types = [
+  { k: 'casement', name: 'Casement', text: 'The most versatile window there is — it "can suit most properties from conventional and time-honoured homes to the more modern property." Casements can be fitted singly or in pairs, side-hung or top-hung.', points: ['Side-hung and top-hung opening lights', 'Robust locks and durable frames', 'Choice of glass, from clear to frosted for privacy'] },
+  { k: 'flush', name: 'Flush casement', text: 'The sashes sit level with the outer frame, "creating a smooth, clean finish both inside and out" — the look of traditional timber joinery without the upkeep.', points: ['Flush sashes — no overlapping lip', 'Smooth and woodgrain finishes', 'Designed to blend with any architectural style'] },
+  { k: 'tiltturn', name: 'Tilt & turn', modes: ['Tilt', 'Turn'], text: 'One handle, two ways to open. Tilt inwards from the bottom for ventilation "without compromising on safety", or turn the sash fully inwards on its side hinges to clean the outside from indoors.', points: ['Secure ventilation — ideal for families and ground floors', 'Clean from the inside, no ladders', 'Double or triple glazing options'] },
+  { k: 'sash', name: 'Vertical sliding sash', modes: ['Slide', 'Tilt to clean'], text: 'The classic charm of a traditional sash with modern performance — "ideal for both restoration projects and new builds", with easy-clean options and advanced balance systems.', points: ['Sliding sashes with balance systems', 'Tilt-in feature for cleaning from the inside', 'Robust locking that keeps the classic look'] },
+  { k: 'bay', name: 'Bay', text: 'Angled windows that step out from the wall, adding light and floor space — "creating a cosy nook indoors."', points: ['More light and a wider view', 'Decorative bars, stained glass and leaded lights', 'A wide spectrum of colours and finishes'] },
+  { k: 'bow', name: 'Bow', text: 'A gentle curve of windows that makes "every view feel larger, brighter, and more connected to nature" — whether you overlook a garden, countryside or the coast.', points: ['A softer, curved projection', 'Panoramic outlook', 'Personalise everything from frame colour to glass'] },
+  { k: 'alu', name: 'Aluminium (Cortizo)', text: 'A sleek Cortizo aluminium casement system for side-hung and top-hung outward opening — slim frames that maximise the glass.', points: ['Uw from 1.0 W/m²K', 'British PAS 24 security certification', '70mm frame depth · 32mm thermal break zone'], note: 'Figures as stated for the Cortizo casement system on Coastal\'s current aluminium windows page.' },
+];
+
+const needs = [
+  { k: 'period', n: 'A period or character home', picks: [['Vertical sliding sash', 'sash', 'Ideal for restoration projects — the classic look, modern performance.'], ['Flush casement', 'flush', 'Flush sashes echo traditional timber joinery.']] },
+  { k: 'clean', n: 'Easy cleaning upstairs', picks: [['Tilt & turn', 'tiltturn', 'Turn the sash inwards and clean the outside from indoors.'], ['Vertical sliding sash', 'sash', 'The tilt feature allows easy cleaning from the inside.']] },
+  { k: 'light', n: 'More light and space', picks: [['Bay', 'bay', 'Steps out from the wall for a brighter room and a cosy nook.'], ['Bow', 'bow', 'A curved sweep of glass for a panoramic outlook.']] },
+  { k: 'slim', n: 'A slim, modern look', picks: [['Aluminium (Cortizo)', 'alu', '70mm frame depth — slim sightlines and more glass.'], ['Flush casement', 'flush', 'A clean, level finish inside and out.']] },
+  { k: 'vent', n: 'Fresh air, securely', picks: [['Tilt & turn', 'tiltturn', 'Tilt for ventilation without compromising on safety.'], ['Casement', 'casement', 'A top-hung opener above a fixed pane.']] },
+  { k: 'any', n: 'Something that suits most homes', picks: [['Casement', 'casement', 'Suits most properties, traditional to modern.'], ['Flush casement', 'flush', 'A refined upgrade on the classic casement.']] },
+];
+---
+<Base title="Windows" description="Casement, flush casement, tilt & turn, vertical sliding sash, bow & bay and Cortizo aluminium windows — made to measure and installed across Devon.">
+  <PageHero n="01" kicker="Windows" meta={['uPVC & aluminium', 'Made to measure']} title="Windows that|<em>frame</em> the view." lede="Double-glazed windows, tailored to your home and fitted by our own teams across Newton Abbot, Devon and the South West — from contemporary uPVC to slim Cortizo aluminium.">
+    <Fragment slot="dim">Seven ways to open a wall</Fragment>
+    <Fragment slot="actions"><a class="btn" href="#how-it-opens">See how each one opens <Arrow /></a><a class="btn btn--ghost" href="/plan/?type=replace&p=windows">Get a quote</a></Fragment>
+    <Fragment slot="art"><Elevations kind="window" /></Fragment>
+  </PageHero>
+
+  <section class="section--tight">
+    <div class="wrap feats">
+      {[
+        ['Energy efficient', 'With advanced glazing and weatherproof seals, they keep draughts out and heat in.'],
+        ['Range of styles', 'From contemporary uPVC styles to bespoke designs — something for every property and budget.'],
+        ['Low maintenance', 'A simple wipe with a damp cloth is all it takes.'],
+        ['Highly secure', 'Robust frames and advanced multi-point locking systems as standard.'],
+      ].map(([h, t], i) => (
+        <div class="feat" data-reveal style={`--d:${i * 0.06}s`}><span class="idx">0{i + 1}</span><h4>{h}</h4><p>{t}</p></div>
+      ))}
+    </div>
+  </section>
+
+  <OpeningExplorer id="how-it-opens" items={types} title="Seven windows.<br/><em>Seven ways to open.</em>" />
+
+  <section class="section" aria-labelledby="need-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label sec-head__kicker">Window finder</p>
+          <h2 id="need-h" data-reveal>Start with what<br /><em>matters to you.</em></h2>
+        </div>
+        <p class="lede" data-reveal style="--d:.1s">Pick what you care about most and we'll show you where to start. Our surveyors will help you refine it from there.</p>
+      </div>
+      <div class="need" id="need">
+        <div class="need__chips" role="group" aria-label="What matters most">
+          {needs.map((n, i) => <button type="button" class="chip" aria-pressed={i === 0 ? 'true' : 'false'} data-k={n.k}>{n.n}</button>)}
+        </div>
+        {needs.map((n, i) => (
+          <div class="need__res" data-k={n.k} hidden={i !== 0}>
+            {n.picks.map(([name, k, why], j) => (
+              <article class="need__card">
+                <span class="idx">Suggestion {j + 1}</span>
+                <h3>{name}</h3>
+                <p>{why}</p>
+                <a class="link" href="#how-it-opens" data-open={k}>See it open <Arrow /></a>
+              </article>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bone" aria-labelledby="col-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label sec-head__kicker">Colours & finishes</p>
+          <h2 id="col-h" data-reveal>One colour for the street.<br /><em>Another for the room.</em></h2>
+        </div>
+        <p class="lede" data-reveal style="--d:.1s">Choose from timeless whites and creams, woodgrains, contemporary greys and statement colours — on one face or both.</p>
+      </div>
+      <DualColour />
+    </div>
+  </section>
+
+  <section class="section alu" aria-labelledby="alu-h">
+    <div class="wrap alu__grid">
+      <div>
+        <p class="label sec-head__kicker">Aluminium · Cortizo</p>
+        <h2 id="alu-h" data-reveal>Slim frames.<br /><em>Hard numbers.</em></h2>
+        <p class="lede" data-reveal style="--d:.1s">"A sleek and modern aluminium system, designed for both side-hung and top-hung outward opening configurations" — available in standard and flush profiles, with slimline or heavy-duty sashes.</p>
+        <p class="muted alu__src">Specifications as stated for the Cortizo casement window on Coastal's current aluminium windows page.</p>
+      </div>
+      <dl class="alu__specs">
+        <div data-reveal><dt>Window transmittance</dt><dd>U<sub>w</sub> from 1.0 <small>W/m²K</small></dd></div>
+        <div data-reveal style="--d:.06s"><dt>Thermal break zone</dt><dd>32<small>mm</small></dd></div>
+        <div data-reveal style="--d:.12s"><dt>Frame depth</dt><dd>70<small>mm</small></dd></div>
+        <div data-reveal style="--d:.18s"><dt>Security certification</dt><dd>PAS 24</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section--tight section--paper2">
+    <div class="wrap glaze">
+      <div>
+        <p class="label sec-head__kicker">Glass & detail</p>
+        <h3 data-reveal>Finish it your way.</h3>
+      </div>
+      <ul class="glaze__list">
+        {['Double glazing as standard; triple glazing options on tilt & turn', 'Frosted glass for privacy', 'Decorative bars and astragal bars', 'Stained glass and leaded lights', 'Smooth and woodgrain finishes', 'Hardware finishes to match'].map((t, i) => <li data-reveal style={`--d:${i * 0.04}s`}>{t}</li>)}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .feats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+  .feat { padding: 26px 24px 0 0; display: grid; gap: 10px; align-content: start; }
+  .feat + .feat { border-left: 1px solid var(--line); padding-left: 24px; }
+  .feat p { font-size: 15px; color: var(--ink-mute); margin: 0; }
+  @media (max-width: 900px) { .feats { grid-template-columns: 1fr 1fr; } .feat:nth-child(3) { border-left: 0; padding-left: 0; } .feat { padding-bottom: 24px; } }
+  @media (max-width: 520px) { .feats { grid-template-columns: 1fr; } .feat + .feat { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); } }
+
+  h2 em { color: var(--clay); }
+  .need__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .chip[aria-pressed='true'] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .need__res { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .need__card { border: 1px solid var(--line); background: var(--bone); padding: clamp(22px, 3vw, 36px); display: grid; gap: 12px; align-content: start; animation: rise .7s var(--ease) both; }
+  .need__card:nth-child(2) { animation-delay: .08s; }
+  .need__card p { color: var(--ink-mute); margin: 0; }
+  .need__card .link { justify-self: start; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+  @media (max-width: 700px) { .need__res { grid-template-columns: 1fr; } }
+
+  .alu__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+  .alu h2 { margin-bottom: 26px; }
+  .alu__src { font-size: 13px; margin-top: 18px; }
+  .alu__specs { margin: 0; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .alu__specs div { padding: clamp(18px, 3vw, 34px); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column-reverse; gap: 8px; }
+  .alu__specs dt { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; opacity: .6; }
+  .alu__specs dd { margin: 0; font-family: var(--f-display); font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1; letter-spacing: -0.02em; }
+  .alu__specs small { font-size: .4em; margin-left: 4px; font-family: var(--f-mono); letter-spacing: .04em; }
+  .alu__specs sub { font-size: .45em; }
+  @media (max-width: 900px) { .alu__grid { grid-template-columns: 1fr; } }
+
+  .glaze { display: grid; grid-template-columns: 1fr 2fr; gap: 32px; align-items: start; }
+  .glaze__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+  .glaze__list li { padding: 16px 12px 16px 0; border-bottom: 1px solid var(--line); font-size: 15.5px; }
+  @media (max-width: 800px) { .glaze, .glaze__list { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const need = document.getElementById('need');
+  need?.addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (chip) {
+      need.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      need.querySelectorAll('.need__res').forEach((r) => (r.hidden = r.dataset.k !== chip.dataset.k));
+    }
+    const link = e.target.closest('[data-open]');
+    if (link) {
+      const items = JSON.parse(document.querySelector('[data-ox]').dataset.ox);
+      const i = items.findIndex((x) => x.k === link.dataset.open);
+      setTimeout(() => document.querySelector(`.ox__tab[data-i="${i}"]`)?.click(), 700);
+    }
+  });
+</script>

@@ -1,0 +1,299 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import { BIZ } from '../lib/site.js';
+const interests = ['Windows', 'Doors', 'Kitchens', 'Conservatories', 'Porches', 'Fascias & gutters', 'Conservatory replacement roofs', 'Solidor'];
+---
+<Base title="Visit & contact" description="Visit the Coastal Windows & Conservatories showroom in Newton Abbot. Opening hours, directions, phone, WhatsApp, service requests, finance and payments." footerCta={false}>
+  <section class="vh section--ink" data-header-dark aria-labelledby="vh-h">
+    <div class="wrap vh__grid">
+      <div>
+        <p class="label sec-head__kicker">06 · Visit & contact</p>
+        <h1 id="vh-h" class="vh__h" data-reveal-lines><span class="split-line"><span style="--d:.08s">Come and see it</span></span><span class="split-line"><span style="--d:.18s"><em>in daylight.</em></span></span></h1>
+        <p class="lede" data-reveal style="--d:.3s">Open the doors, feel the handles, compare the colours in natural light. Our Newton Abbot showroom displays conservatories, tiled roofs, aluminium and PVCu windows — and one of the largest selections of Solidor doors in the area.</p>
+        <div class="vh__status" id="vh-status" data-reveal style="--d:.36s"><span class="vh__dot"></span><span id="vh-status-t">Checking opening hours…</span></div>
+      </div>
+      <div class="vh__card" data-reveal style="--d:.2s">
+        <p class="label label--dim">Showroom</p>
+        <address>{BIZ.showroom.map((l) => <>{l}<br /></>)}</address>
+        <ul class="vh__hours" id="vh-hours">{BIZ.hours.map(([d, h]) => <li><span>{d}</span><span>{h}</span></li>)}</ul>
+        <div class="vh__btns">
+          <a class="btn btn--light btn--sm" href={BIZ.mapsHref} target="_blank" rel="noopener">Directions <Arrow /></a>
+          <a class="btn btn--ghost-light btn--sm" href={BIZ.phoneHref}>{BIZ.phone}</a>
+          <a class="btn btn--ghost-light btn--sm" href={BIZ.whatsapp} target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="vp-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label sec-head__kicker">Visit planner <span class="demo-badge" style="margin-left:6px">Demonstration</span></p>
+          <h2 id="vp-h" data-reveal>Pick a day.<br /><em>We'll tell you the light.</em></h2>
+        </div>
+        <p class="lede" data-reveal style="--d:.1s">Colours and finishes are easiest to judge in daylight. Choose a day and time, and we'll show you when the sun sets in Newton Abbot that day.</p>
+      </div>
+      <div class="vp" id="vp">
+        <div class="vp__days" id="vp-days" role="radiogroup" aria-label="Choose a day"></div>
+        <div class="vp__times" id="vp-times" role="radiogroup" aria-label="Choose a time"></div>
+        <div class="vp__out">
+          <p class="vp__sum" id="vp-sum" aria-live="polite">Choose a day to begin.</p>
+          <label class="field"><span class="field__label">Your name</span><input id="vp-name" autocomplete="name" /></label>
+          <button type="button" class="btn" id="vp-book" disabled>Request this visit <Arrow /></button>
+          <p class="vp__note" id="vp-note">Demonstration only — no booking is made. To arrange a visit today, call {BIZ.phone}.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bone" id="contact" aria-labelledby="ct-h">
+    <div class="wrap ct">
+      <div>
+        <p class="label sec-head__kicker">Contact</p>
+        <h2 id="ct-h" data-reveal>Talk to<br /><em>a real person.</em></h2>
+        <dl class="ct__list">
+          <div><dt>Call</dt><dd><a href={BIZ.phoneHref}>{BIZ.phone}</a> · <a href={BIZ.phoneAltHref}>{BIZ.phoneAlt}</a></dd></div>
+          <div><dt>WhatsApp</dt><dd><a href={BIZ.whatsapp} target="_blank" rel="noopener">Message us on WhatsApp</a></dd></div>
+          {BIZ.emails.map(([l, e]) => <div><dt>{l}</dt><dd><a href={`mailto:${e}`}>{e}</a></dd></div>)}
+        </dl>
+      </div>
+      <form class="ct__form" id="ct-form" novalidate>
+        <div class="pl-demo"><strong>Demonstration form.</strong> Not connected to Coastal's systems — nothing is sent.</div>
+        <p class="ct__offer">Book a free, no-obligation quote — and request 5% off (Coastal's current website offer).</p>
+        <fieldset class="ct__int"><legend class="field__label">I'm interested in</legend>
+          {interests.map((i) => <label class="ct__chip"><input type="checkbox" name="interest" value={i} /><span>{i}</span></label>)}
+        </fieldset>
+        <div class="ct__fields">
+          <label class="field"><span class="field__label">Name</span><input name="name" autocomplete="name" required /></label>
+          <label class="field"><span class="field__label">Phone</span><input name="phone" type="tel" autocomplete="tel" /></label>
+          <label class="field"><span class="field__label">Email</span><input name="email" type="email" autocomplete="email" required /></label>
+          <label class="field"><span class="field__label">Postcode</span><input name="postcode" autocomplete="postal-code" /></label>
+        </div>
+        <label class="field"><span class="field__label">Message</span><textarea name="msg"></textarea></label>
+        <label class="ct__check"><input type="checkbox" name="privacy" required /><span>I agree to the <a href="https://www.coastal-windows.co.uk/wp-content/uploads/2024/11/Privacy-Notice-v01.pdf" target="_blank" rel="noopener">privacy policy</a>.</span></label>
+        <button class="btn" type="submit">Send enquiry <Arrow /></button>
+        <p class="ct__msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cs-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label sec-head__kicker">Existing customers</p>
+          <h2 id="cs-h" data-reveal>Service, finance<br /><em>and payments.</em></h2>
+        </div>
+      </div>
+      <div class="cards3">
+        <article class="c3" id="service">
+          <span class="idx">01</span>
+          <h3>Service call request</h3>
+          <p>For any enquiries about service work under guarantee. A member of the installation department will be in contact within 48 hours.</p>
+          <p class="c3__fine">Please note: we do not provide an emergency call-out service.</p>
+          <details class="c3__form">
+            <summary class="link">Open the service request form</summary>
+            <form class="sv" novalidate>
+              <div class="pl-demo"><strong>Demonstration form.</strong> Nothing is sent.</div>
+              <label class="field"><span class="field__label">I have an issue with</span><select name="issue">{['Windows', 'Doors', 'Kitchen', 'Conservatory', 'Porch', 'Roofline & cladding', 'Other'].map((o) => <option>{o}</option>)}</select></label>
+              <div class="sv__row">
+                <label class="field"><span class="field__label">Title</span><select name="prefix">{['Mr', 'Mrs', 'Miss', 'Ms', 'Mx'].map((o) => <option>{o}</option>)}</select></label>
+                <label class="field"><span class="field__label">Surname</span><input name="surname" required /></label>
+              </div>
+              <label class="field"><span class="field__label">Job number</span><input name="job" aria-describedby="job-h" /><small id="job-h" class="sv__help">You'll find this at the top of your guarantee or statements.</small></label>
+              <label class="field"><span class="field__label">Date of installation</span><input name="date" type="date" /></label>
+              <div class="sv__row">
+                <label class="field"><span class="field__label">Phone</span><input name="phone" type="tel" required /></label>
+                <label class="field"><span class="field__label">Postcode</span><input name="postcode" required /></label>
+              </div>
+              <label class="field"><span class="field__label">Email</span><input name="email" type="email" required /></label>
+              <label class="field"><span class="field__label">Describe the problem</span><textarea name="desc" required></textarea></label>
+              <button class="btn btn--sm" type="submit">Submit request</button>
+              <p class="ct__msg" role="status" aria-live="polite"></p>
+            </form>
+          </details>
+        </article>
+        <article class="c3" id="finance">
+          <span class="idx">02</span>
+          <h3>Spread the cost</h3>
+          <p>Buy now, pay later — finance is available on purchases from £2,000 to £50,000, through Novuna Personal Finance.</p>
+          <details class="c3__form">
+            <summary class="link">Representative example</summary>
+            <dl class="rep">
+              <div><dt>Total amount</dt><dd>£5,000.00</dd></div><div><dt>Deposit</dt><dd>£99.00</dd></div>
+              <div><dt>Total credit</dt><dd>£4,901.00</dd></div><div><dt>Duration</dt><dd>120 months</dd></div>
+              <div><dt>Interest rate (fixed p.a.)</dt><dd>16.9%</dd></div><div><dt>Representative APR</dt><dd>16.9%</dd></div>
+              <div><dt>Monthly payments</dt><dd>120 × £95.65</dd></div><div><dt>Total charged for credit</dt><dd>£6,577.00</dd></div>
+              <div><dt>Total amount payable</dt><dd>£11,478.00</dd></div>
+            </dl>
+            <p class="c3__fine">As published on Coastal's current finance calculator page. Calculators are for illustrative purposes only and do not constitute a credit quotation.</p>
+          </details>
+          <a class="link" href="https://www.coastal-windows.co.uk/finance-calculator/" target="_blank" rel="noopener">Use the finance calculator ↗</a>
+          <p class="c3__fine">{BIZ.financeDisclosure}</p>
+        </article>
+        <article class="c3" id="payment">
+          <span class="idx">03</span>
+          <h3>Make a payment</h3>
+          <p>Pay your deposit or balance online through Coastal's secure payment page — quick, secure, available 24/7, with an email receipt.</p>
+          <p class="c3__fine">We accept VISA, MasterCard credit and debit, and Maestro. Have your job number ready.</p>
+          <a class="btn btn--sm" href="https://www.coastal-windows.co.uk/make-a-payment/" target="_blank" rel="noopener">Go to the secure payment page ↗</a>
+        </article>
+      </div>
+      <div class="docs">
+        <span class="label label--dim">Documents</span>
+        <a href="https://www.coastal-windows.co.uk/wp-content/uploads/2018/01/GGF-code-of-good-practice-web-1.pdf" target="_blank" rel="noopener">GGF Code of Good Practice ↗</a>
+        <a href="https://www.coastal-windows.co.uk/wp-content/uploads/2024/07/Website-Complaints-Procedure.pdf" target="_blank" rel="noopener">Complaints procedure ↗</a>
+        <a href="https://www.coastal-windows.co.uk/wp-content/uploads/2024/11/Privacy-Notice-v01.pdf" target="_blank" rel="noopener">Privacy notice ↗</a>
+        <a href="https://www.coastal-windows.co.uk/wp-content/uploads/2024/10/CWC002-Cookie-Policy-V1.0-LD-18.10.pdf" target="_blank" rel="noopener">Cookie policy ↗</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h2 em { color: var(--clay); }
+  .vh { padding: calc(var(--header-h) + clamp(48px, 8vw, 110px)) 0 clamp(56px, 8vw, 110px); }
+  .vh__grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(28px, 5vw, 80px); align-items: end; }
+  .vh__h { font-size: clamp(3rem, 8vw, 8rem); margin: 16px 0 30px; }
+  .vh__h em { color: var(--gold); }
+  .vh__status { display: inline-flex; gap: 10px; align-items: center; margin-top: 26px; font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--line-light); padding: 10px 14px; border-radius: 999px; }
+  .vh__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dotc, #9a9a9a); box-shadow: 0 0 0 4px color-mix(in srgb, var(--dotc, #9a9a9a) 25%, transparent); }
+  .vh__card { border: 1px solid var(--line-light); padding: clamp(22px, 3vw, 34px); display: grid; gap: 16px; }
+  .vh__card address { font-style: normal; font-size: 1.15rem; line-height: 1.5; font-family: var(--f-display); }
+  .vh__hours { list-style: none; padding: 0; margin: 0; }
+  .vh__hours li { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--line-light); font-size: 14.5px; }
+  .vh__hours li.is-today { color: var(--gold); }
+  .vh__btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  @media (max-width: 900px) { .vh__grid { grid-template-columns: 1fr; } }
+
+  .vp { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: clamp(16px, 2.4vw, 32px); align-items: start; }
+  .vp__days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .vp__days button, .vp__times button { appearance: none; border: 1px solid var(--line-strong); background: var(--bone); padding: 10px 6px; cursor: pointer; display: grid; gap: 2px; text-align: center; transition: background .3s, color .3s; }
+  .vp__days button small { font-family: var(--f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; opacity: .6; }
+  .vp__days button b { font-family: var(--f-display); font-weight: 400; font-size: 1.5rem; line-height: 1; }
+  .vp__days button[aria-checked='true'], .vp__times button[aria-checked='true'] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .vp__times { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .vp__times button { font-family: var(--f-mono); font-size: 12.5px; }
+  .vp__times button .sunmark { display: block; height: 3px; margin-top: 4px; border-radius: 2px; background: var(--light, #ccc); }
+  .vp__out { display: grid; gap: 18px; }
+  .vp__sum { font-family: var(--f-display); font-size: 1.4rem; line-height: 1.3; margin: 0; }
+  .vp__sum b { font-weight: 400; font-style: italic; color: var(--clay); }
+  .vp__out .btn { justify-self: start; }
+  .vp__out .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .vp__note { font-size: 13px; color: var(--ink-mute); margin: 0; }
+  @media (max-width: 1000px) { .vp { grid-template-columns: 1fr; } .vp__days { grid-template-columns: repeat(5, 1fr); } .vp__times { grid-template-columns: repeat(4, 1fr); } }
+
+  .ct { display: grid; grid-template-columns: 1fr 1.3fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
+  .ct h2 { margin-bottom: 30px; }
+  .ct__list { margin: 0; border-top: 1px solid var(--line); }
+  .ct__list div { padding: 12px 0; border-bottom: 1px solid var(--line); display: grid; gap: 2px; }
+  .ct__list dt { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; opacity: .6; }
+  .ct__list a { text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .ct__form { display: grid; gap: 20px; background: var(--paper); border: 1px solid var(--line); padding: clamp(20px, 3vw, 36px); }
+  .pl-demo { padding: 10px 12px; border: 1px dashed var(--clay); font-size: 13.5px; background: color-mix(in srgb, var(--clay) 6%, transparent); }
+  .ct__offer { margin: 0; font-family: var(--f-display); font-size: 1.25rem; }
+  .ct__int { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .ct__int legend { margin-bottom: 10px; }
+  .ct__chip { position: relative; cursor: pointer; }
+  .ct__chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .ct__chip span { display: inline-flex; align-items: center; min-height: 38px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: 13.5px; }
+  .ct__chip input:checked + span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .ct__chip input:focus-visible + span { outline: 2px solid var(--clay); outline-offset: 2px; }
+  .ct__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 22px; }
+  .ct__check { display: flex; gap: 10px; font-size: 14px; align-items: flex-start; }
+  .ct__check input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--ink); }
+  .ct__form .btn { justify-self: start; }
+  .ct__msg { margin: 0; font-size: 14px; color: var(--sea-deep); min-height: 1.2em; }
+  @media (max-width: 900px) { .ct { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) { .ct__fields { grid-template-columns: 1fr; } }
+
+  .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+  .c3 { border: 1px solid var(--line); padding: clamp(22px, 3vw, 34px); display: grid; gap: 14px; align-content: start; background: var(--bone); scroll-margin-top: 100px; }
+  .c3 p { margin: 0; color: var(--ink-soft); font-size: 15px; }
+  .c3 .c3__fine { font-size: 12.5px; color: var(--ink-mute); }
+  .c3 .btn, .c3 > .link { justify-self: start; }
+  .c3__form summary { cursor: pointer; list-style: none; display: inline-flex; }
+  .c3__form summary::-webkit-details-marker { display: none; }
+  .sv { display: grid; gap: 14px; margin-top: 16px; }
+  .sv__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .sv__help { font-size: 12px; color: var(--ink-mute); }
+  .rep { margin: 14px 0 10px; display: grid; }
+  .rep div { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .rep dd { margin: 0; font-weight: 560; }
+  .docs { display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: baseline; margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 14.5px; }
+  .docs a { text-underline-offset: 3px; }
+  @media (max-width: 1000px) { .cards3 { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  import { sunTimes, fmtTime, londonDate, sunPosition } from '../lib/sun.js';
+  import { BIZ } from '../lib/site.js';
+  const tz = 'Europe/London';
+  const partsOf = (d) => { const p = new Intl.DateTimeFormat('en-GB', { timeZone: tz, year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: false }).formatToParts(d); const g = (t) => p.find((x) => x.type === t).value; return { y: +g('year'), m: +g('month') - 1, d: +g('day'), wd: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(g('weekday')), h: (+g('hour') % 24) + +g('minute') / 60 }; };
+  const now = partsOf(new Date());
+  // status
+  const slot = BIZ.hoursData[now.wd];
+  const st = document.getElementById('vh-status'), stt = document.getElementById('vh-status-t');
+  const fmtH = (h) => (h === 18.5 ? '6.30pm' : h === 16 ? '4pm' : h === 10 ? '10am' : `${h}`);
+  if (slot && now.h >= slot[0] && now.h < slot[1]) { stt.textContent = `Open now · until ${fmtH(slot[1])}`; st.style.setProperty('--dotc', '#6fcf86'); }
+  else {
+    let k = 1; while (k < 8 && !BIZ.hoursData[(now.wd + k) % 7]) k++;
+    const opensToday = slot && now.h < slot[0];
+    stt.textContent = opensToday ? 'Closed now · opens today at 10am' : `Closed now · opens ${k === 1 ? 'tomorrow' : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][(now.wd + k) % 7]} at 10am`;
+    st.style.setProperty('--dotc', '#d98a68');
+  }
+  document.querySelectorAll('#vh-hours li')[now.wd >= 1 && now.wd <= 4 ? 0 : now.wd === 5 ? 1 : 2]?.classList.add('is-today');
+
+  // visit planner
+  const daysEl = document.getElementById('vp-days'), timesEl = document.getElementById('vp-times');
+  const sum = document.getElementById('vp-sum'), book = document.getElementById('vp-book');
+  const days = [];
+  for (let i = 0; days.length < 10 && i < 21; i++) {
+    const d = londonDate(now.y, now.m, now.d + i, 12, 0); const p = partsOf(d);
+    if (BIZ.hoursData[p.wd] && !(i === 0 && now.h > BIZ.hoursData[p.wd][1] - 1)) days.push({ ...p, date: d });
+  }
+  daysEl.innerHTML = days.map((d, i) => `<button type="button" role="radio" aria-checked="false" data-i="${i}"><small>${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.wd]}</small><b>${d.d}</b><small>${new Intl.DateTimeFormat('en-GB', { month: 'short' }).format(d.date)}</small></button>`).join('');
+  let sel = null, selT = null;
+  const light = (alt) => (alt > 20 ? '#e8be7e' : alt > 8 ? '#f0c88f' : alt > 0 ? '#d98a68' : '#4a5a5c');
+  function pickDay(i) {
+    sel = days[i]; selT = null; book.disabled = true;
+    daysEl.querySelectorAll('button').forEach((b) => b.setAttribute('aria-checked', String(+b.dataset.i === i)));
+    const [o, c] = BIZ.hoursData[sel.wd];
+    const slots = []; for (let h = o; h < c; h += 1) slots.push(h);
+    timesEl.innerHTML = slots.map((h) => { const a = sunPosition(londonDate(sel.y, sel.m, sel.d, Math.floor(h), (h % 1) * 60)).altitudeDeg; return `<button type="button" role="radio" aria-checked="false" data-h="${h}" style="--light:${light(a)}">${String(Math.floor(h)).padStart(2, '0')}:${h % 1 ? '30' : '00'}<span class="sunmark"></span></button>`; }).join('');
+    const t = sunTimes(sel.date);
+    sum.innerHTML = `On ${new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }).format(sel.date)}, the sun sets in Newton Abbot at <b>${fmtTime(t.sunset)}</b>. Choose a time.`;
+  }
+  daysEl.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) pickDay(+b.dataset.i); });
+  timesEl.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b || !sel) return;
+    selT = +b.dataset.h;
+    timesEl.querySelectorAll('button').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+    const t = sunTimes(sel.date);
+    const at = londonDate(sel.y, sel.m, sel.d, Math.floor(selT), (selT % 1) * 60);
+    const left = (t.sunset - at) / 3600e3;
+    const dayName = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }).format(sel.date);
+    sum.innerHTML = left > 1.5
+      ? `${dayName} at ${b.textContent.trim()} — about <b>${Math.floor(left)} hours of daylight</b> left, plenty of time to see colours outside.`
+      : left > 0 ? `${dayName} at ${b.textContent.trim()} — the light is fading by then (<b>sunset ${fmtTime(t.sunset)}</b>). Come earlier if you'd like to compare colours outdoors.`
+      : `${dayName} at ${b.textContent.trim()} — it'll be dark outside by then (<b>sunset ${fmtTime(t.sunset)}</b>). Fine for browsing, though colours are best judged in daylight.`;
+    book.disabled = false;
+  });
+  if (days.length) pickDay(0);
+  book.addEventListener('click', () => {
+    const n = document.getElementById('vp-name').value.trim();
+    document.getElementById('vp-note').textContent = `Thanks${n ? `, ${n}` : ''} — in the live site this would send a visit request to the showroom team. This is a demonstration, so nothing has been sent. Call ${BIZ.phone} to book.`;
+  });
+
+  // demo forms
+  document.querySelectorAll('#ct-form, .sv').forEach((f) => f.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = f.querySelector('.ct__msg');
+    const req = [...f.querySelectorAll('[required]')];
+    const bad = req.find((i) => (i.type === 'checkbox' ? !i.checked : !i.value.trim() || !i.checkValidity()));
+    if (bad) { msg.style.color = 'var(--clay)'; msg.textContent = 'Please complete the required fields.'; bad.focus(); return; }
+    msg.style.color = ''; msg.textContent = 'Demonstration complete — in the live site this would reach the Coastal team. Nothing has been sent.';
+  }));
+</script>

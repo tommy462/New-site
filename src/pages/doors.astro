@@ -1,0 +1,188 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import OpeningExplorer from '../components/OpeningExplorer.astro';
+import Elevations from '../components/Elevations.astro';
+import Arrow from '../components/Arrow.astro';
+import { renderDoor } from '../lib/door.js';
+import { BIZ } from '../lib/site.js';
+
+const types = [
+  { k: 'composite', name: 'Composite front door', text: 'Solidor composite doors combine "the elegance of wood with the resilience of synthetic materials" — engineered to withstand the British weather and resist fading, warping and cracking.', points: ['Multi-point locking, robust hinges', 'Anti-pick, anti-drill cylinders', 'A spectrum of colours and hardware styles'] },
+  { k: 'residential', name: 'Residential door', text: 'A cost-effective, maintenance-free entrance door — with Vista reinforced infill panels "manufactured at our Newton Abbot factory by our skilled craftsmen".', points: ['High-security locking mechanisms', 'Wide range of colours and glass designs', 'Bespoke half-glazed and fully glazed doors'] },
+  { k: 'french', name: 'French doors', modes: ['Open outward', 'Open inward'], text: 'A classic pair that opens the whole width of the doorway — and French doors "can open inward or outward", so they suit your space.', points: ['Multipoint locks made from robust materials', 'Thermal breaks, weather seals and double-glazed panels', 'Styles from Victorian to modern minimalist'] },
+  { k: 'bifold', name: 'Bifold doors', text: 'Panels that "fold back into a compact area", opening an entire wall to the garden. Our Stellar bifolds are fully configurable, with robust and reliable track systems.', points: ['Any finish, any colour — from signal white to chocolate brown', 'Weather-resistant seals and double glazing', 'Security built into every aspect of the design'] },
+  { k: 'sliding', name: 'Sliding patio doors', text: 'Smooth-gliding operation and expansive glass panels — with colours and woodgrain finishes to match your windows, or contrast with them.', points: ['No swing space needed inside or out', 'Double glazing and tight sealing', 'Various colours, finishes and fittings'] },
+  { k: 'alupatio', name: 'Aluminium patio doors', text: 'A slim profile that "maximises the glass area, allowing natural light to flood your space" — aluminium is naturally strong, stable and resistant to corrosion.', points: ['Slim sightlines, large glass', 'High-performance weather seals', 'Advanced locking systems'] },
+];
+const doors = [
+  renderDoor({ style: 'georgian', colour: 'racing-green', hardware: 'gold', number: '7', knocker: true, wall: 'render' }, { tight: true }),
+  renderDoor({ style: 'linear', colour: 'slate-grey', hardware: 'chrome', number: '24', sides: 'one', wall: 'white', glass: 'satin' }, { tight: true }),
+  renderDoor({ style: 'arch', colour: 'irish-oak', hardware: 'black', number: '3', wall: 'brick', glass: 'leaded' }, { tight: true }),
+];
+---
+<Base title="Doors" description="Solidor composite doors, residential doors with Vista panels made in Newton Abbot, French, bifold, sliding and aluminium patio doors.">
+  <PageHero n="02" kicker="Doors" meta={['Front & garden doors', 'Solidor approved']} title="Doors worth|<em>coming home</em> to." lede="From the front door your visitors see first to the bifolds that open your kitchen to the garden — chosen for how they look, how they lock and how they feel to close.">
+    <Fragment slot="dim">Front · garden · patio</Fragment>
+    <Fragment slot="actions"><a class="btn" href="/door-studio/">Design a front door <Arrow /></a><a class="btn btn--ghost" href="#garden">Garden doors</a></Fragment>
+    <Fragment slot="art"><Elevations kind="door" /></Fragment>
+  </PageHero>
+
+  <section class="section--tight front" aria-labelledby="front-h">
+    <div class="wrap">
+      <div class="front__row">
+        {doors.map((d, i) => <div class="front__door" data-reveal style={`--d:${i * 0.08}s`} set:html={d}></div>)}
+      </div>
+      <p class="coords front__cap">Illustrative renders from the Door Studio · Georgian in Racing Green · Linear in Slate Grey with sidelight · Arch-top in Irish Oak</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="front-h">
+    <div class="wrap fd">
+      <div>
+        <p class="label sec-head__kicker">Front doors</p>
+        <h2 id="front-h" data-reveal>The first thing<br /><em>people see.</em></h2>
+      </div>
+      <div class="fd__cols">
+        <article data-reveal>
+          <span class="idx">A</span>
+          <h3>Solidor composite</h3>
+          <p>Our composite doors are "a fusion of materials like uPVC, wood, insulating foam, and glass reinforced plastic", engineered to resist fading, warping and cracking. Coastal is an approved Solidor installer, and the showroom holds what we call "one of the largest selections of Solidor designs in the area".</p>
+          <ul class="spec">
+            <li>Multi-point locking systems, robust hinges, anti-pick and anti-drill cylinders</li>
+            <li>A spectrum of colours, from classic neutrals to bold hues</li>
+            <li>Ask about smart sensors such as Kubu, for real-time lock notifications</li>
+          </ul>
+          <div class="fd__links">
+            <a class="link" href="/door-studio/">Door Studio <Arrow /></a>
+            <a class="link" href={BIZ.solidorDesigner} target="_blank" rel="noopener">Solidor online designer ↗</a>
+            <a class="link" href="https://www.coastal-windows.co.uk/wp-content/uploads/2024/03/Solidor-Composite-Door-Brochure-2-4-1.pdf" target="_blank" rel="noopener">Solidor brochure (PDF) ↗</a>
+          </div>
+        </article>
+        <article data-reveal style="--d:.08s">
+          <span class="idx">B</span>
+          <h3>Residential & Vista panel doors</h3>
+          <p>"A cost-effective solution without compromising on quality." Our Vista panels are reinforced infill panels that sit inside the sashes of our doors — manufactured at our Newton Abbot factory by our skilled craftsmen.</p>
+          <ul class="spec">
+            <li>A wide range of colours and glass designs</li>
+            <li>Bespoke half-glazed and fully glazed doors</li>
+            <li>Tough, maintenance-free and high-security</li>
+          </ul>
+          <div class="fd__links">
+            <a class="link" href="https://www.coastal-windows.co.uk/wp-content/uploads/2024/04/Vista-Panel-Brochure-2021.pdf" target="_blank" rel="noopener">Vista panel brochure (PDF) ↗</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <OpeningExplorer id="garden" kicker="Doors in motion" items={types} title="Six doors.<br/><em>Watch them move.</em>" />
+
+  <section class="section section--bone" aria-labelledby="choose-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label sec-head__kicker">Garden doors, side by side</p>
+          <h2 id="choose-h" data-reveal>How much wall<br /><em>do you want to open?</em></h2>
+        </div>
+        <p class="lede" data-reveal style="--d:.1s">The right garden door depends on how you use the space. Here's the honest difference between them, seen from above.</p>
+      </div>
+      <div class="plan" id="plan">
+        {[
+          { k: 'bifold', n: 'Bifold', t: 'Panels fold and stack to one side — the widest clear opening, with the stack sitting at the edge.' },
+          { k: 'french', n: 'French', t: 'Two leaves swing open — a full-width opening for a classic doorway, with room needed for the swing.' },
+          { k: 'sliding', n: 'Sliding', t: 'One panel glides behind the other — no swing space needed, and more glass when it\'s closed.' },
+        ].map((p, i) => (
+          <figure class="plan__item" data-reveal style={`--d:${i * 0.08}s`}>
+            <svg viewBox="0 0 300 170" class={`plan__svg plan__svg--${p.k}`} aria-hidden="true">
+              <rect x="0" y="70" width="40" height="22" class="pl-wall" /><rect x="260" y="70" width="40" height="22" class="pl-wall" />
+              <text x="150" y="16" text-anchor="middle" class="pl-t">GARDEN</text><text x="150" y="162" text-anchor="middle" class="pl-t">ROOM</text>
+              {p.k === 'bifold' && [0, 1, 2, 3].map((j) => <line x1={40 + j * 55} y1="81" x2={40 + (j + 1) * 55} y2="81" class="pl-leaf" data-j={j} />)}
+              {p.k === 'french' && <><line x1="40" y1="81" x2="150" y2="81" class="pl-leaf pl-fl" /><line x1="260" y1="81" x2="150" y2="81" class="pl-leaf pl-fr" /><path d="M150 81 A110 110 0 0 0 40 -29" class="pl-arc" /><path d="M150 81 A110 110 0 0 1 260 -29" class="pl-arc" /></>}
+              {p.k === 'sliding' && <><line x1="40" y1="78" x2="152" y2="78" class="pl-leaf" /><line x1="148" y1="85" x2="260" y2="85" class="pl-leaf pl-sl" /></>}
+              <line x1="40" y1="120" x2="260" y2="120" class="pl-dim" /><line x1="40" y1="114" x2="40" y2="126" class="pl-dim" /><line x1="260" y1="114" x2="260" y2="126" class="pl-dim" />
+              <text x="150" y="138" text-anchor="middle" class="pl-t pl-clear" data-clear>CLEAR OPENING</text>
+            </svg>
+            <figcaption><h3>{p.n}</h3><p>{p.t}</p></figcaption>
+          </figure>
+        ))}
+      </div>
+      <div class="plan__ctrl">
+        <label class="label" for="plan-r">Open them</label>
+        <input id="plan-r" type="range" min="0" max="100" value="0" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h2 em { color: var(--clay); }
+  .front__row { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 2vw, 24px); }
+  .front__door { background: var(--paper-2); }
+  .front__door :global(svg) { width: 100%; height: auto; display: block; }
+  .front__cap { margin-top: 14px; }
+  @media (max-width: 700px) { .front__row { grid-template-columns: 1fr 1fr; } .front__door:last-child { display: none; } }
+
+  .fd { display: grid; grid-template-columns: 4fr 8fr; gap: clamp(28px, 5vw, 80px); }
+  .fd__cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 3vw, 40px); }
+  .fd__cols article { display: grid; gap: 14px; align-content: start; }
+  .fd__cols p { color: var(--ink-soft); font-size: 15.5px; margin: 0; }
+  .fd__cols .spec { font-size: 14.5px; }
+  .fd__links { display: flex; flex-direction: column; gap: 10px; align-items: start; margin-top: 8px; }
+  @media (max-width: 1000px) { .fd { grid-template-columns: 1fr; } }
+  @media (max-width: 700px) { .fd__cols { grid-template-columns: 1fr; } }
+
+  .plan { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .plan__item { margin: 0; background: var(--paper); border: 1px solid var(--line); padding: 22px; display: grid; gap: 14px; }
+  .plan__svg { width: 100%; height: auto; overflow: visible; }
+  .plan__svg :global(.pl-wall) { fill: var(--ink); }
+  .plan__svg :global(.pl-leaf) { stroke: var(--sea-deep); stroke-width: 5; stroke-linecap: round; }
+  .plan__svg :global(.pl-arc) { fill: none; stroke: var(--sea-deep); stroke-dasharray: 2 4; opacity: .5; }
+  .plan__svg :global(.pl-dim) { stroke: var(--clay); }
+  .plan__svg :global(.pl-t) { font-family: var(--f-mono); font-size: 9px; letter-spacing: .12em; fill: var(--ink-mute); }
+  .plan__svg :global(.pl-clear) { fill: var(--clay); }
+  .plan__item figcaption p { font-size: 14.5px; color: var(--ink-mute); margin: 8px 0 0; }
+  .plan__ctrl { display: flex; align-items: center; gap: 16px; margin-top: 22px; max-width: 520px; }
+  .plan__ctrl input { flex: 1; accent-color: var(--clay); }
+  @media (max-width: 900px) { .plan { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const r = document.getElementById('plan-r');
+  const plan = document.getElementById('plan');
+  const upd = () => {
+    const o = +r.value / 100;
+    // bifold: 4 leaves of 55 folding to the left jamb
+    const a = o * 84 * Math.PI / 180;
+    plan.querySelectorAll('.plan__svg--bifold .pl-leaf').forEach((l, j) => {
+      const x0 = 40 + j * 55 * Math.cos(a);
+      const y0 = 81 + (j % 2 ? -55 * Math.sin(a) : 0);
+      const x1 = 40 + (j + 1) * 55 * Math.cos(a);
+      const y1 = 81 + (j % 2 ? 0 : -55 * Math.sin(a));
+      l.setAttribute('x1', x0.toFixed(1)); l.setAttribute('y1', y0.toFixed(1)); l.setAttribute('x2', x1.toFixed(1)); l.setAttribute('y2', y1.toFixed(1));
+    });
+    const f = o * 90 * Math.PI / 180;
+    const fl = plan.querySelector('.pl-fl'), fr = plan.querySelector('.pl-fr');
+    fl?.setAttribute('x2', (40 + 110 * Math.cos(f)).toFixed(1)); fl?.setAttribute('y2', (81 - 110 * Math.sin(f)).toFixed(1));
+    fr?.setAttribute('x2', (260 - 110 * Math.cos(f)).toFixed(1)); fr?.setAttribute('y2', (81 - 110 * Math.sin(f)).toFixed(1));
+    const sl = plan.querySelector('.pl-sl');
+    sl?.setAttribute('x1', (148 - o * 104).toFixed(1)); sl?.setAttribute('x2', (260 - o * 104).toFixed(1));
+    // clear-opening dimension lines
+    const bif = plan.querySelector('.plan__svg--bifold'), fr2 = plan.querySelector('.plan__svg--french'), sd = plan.querySelector('.plan__svg--sliding');
+    const setDim = (svg, x0, x1) => { const d = svg.querySelectorAll('.pl-dim'); d[0].setAttribute('x1', x0); d[0].setAttribute('x2', x1); d[1].setAttribute('x1', x0); d[1].setAttribute('x2', x0); d[2].setAttribute('x1', x1); d[2].setAttribute('x2', x1); };
+    setDim(bif, (40 + 220 * Math.cos(a)).toFixed(1), 260);
+    setDim(fr2, (40 + 110 * Math.cos(f)).toFixed(1), (260 - 110 * Math.cos(f)).toFixed(1));
+    setDim(sd, (260 - o * 104).toFixed(1), 260);
+    plan.querySelectorAll('[data-clear]').forEach((t) => (t.style.opacity = o > 0.05 ? '1' : '0'));
+  };
+  r?.addEventListener('input', upd);
+  if (r) {
+    upd();
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return; io.disconnect();
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { r.value = '100'; upd(); return; }
+      let v = 0; const t = setInterval(() => { v += 2; r.value = String(v); upd(); if (v >= 100) clearInterval(t); }, 24);
+    }, { threshold: 0.4 });
+    io.observe(plan);
+  }
+</script>

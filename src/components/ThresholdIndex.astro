@@ -1,0 +1,99 @@
+---
+import Elevations from './Elevations.astro';
+import Arrow from './Arrow.astro';
+const items = [
+  { n: '01', kind: 'window', title: 'Windows', href: '/windows/', text: 'Casement, flush casement, tilt & turn, vertical sliding sash, bow & bay — and slim Cortizo aluminium.', tags: ['Casement', 'Flush', 'Tilt & turn', 'Sash', 'Bow & bay', 'Aluminium'] },
+  { n: '02', kind: 'door', title: 'Front doors', href: '/doors/', text: 'Solidor composite doors and residential doors with Vista panels made at our own Newton Abbot factory.', tags: ['Composite', 'Residential', 'Door Studio'] },
+  { n: '03', kind: 'bifold', title: 'Garden doors', href: '/doors/#garden', text: 'Bifold, French, sliding and aluminium patio doors — for rooms that open straight onto the garden.', tags: ['Bifold', 'French', 'Sliding', 'Aluminium patio'] },
+  { n: '04', kind: 'conservatory', title: 'Conservatories', href: '/conservatories/', text: 'Lean-to, Victorian, Edwardian, P-shaped and gable-end designs, hup! extensions and replacement roofs.', tags: ['Styles', 'hup!', 'New roofs', 'Light Lab'] },
+  { n: '05', kind: 'porch', title: 'Porches & verandas', href: '/conservatories/#porches', text: 'Porches on brick or steel modular bases, finished inside by our own team — plus Deponti aluminium verandas.', tags: ['Porches', 'Verandas'] },
+  { n: '06', kind: 'roofline', title: 'Home & roofline', href: '/home-improvements/', text: 'Kitchens, fascias, soffits and guttering, shiplap and Coastline cladding, and flat roofing.', tags: ['Kitchens', 'Roofline', 'Cladding', 'Flat roofs'] },
+];
+---
+<section class="ti section--ink" data-header-dark aria-labelledby="ti-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="label sec-head__kicker">The Threshold Index</p>
+        <h2 id="ti-h" data-reveal>Six ways into<br /><em>a better home.</em></h2>
+      </div>
+      <p class="lede" data-reveal style="--d:.1s">Every product we fit is an opening — between rooms, between seasons, between inside and out. Choose where you'd like to begin.</p>
+    </div>
+  </div>
+  <div class="ti__list wrap" id="ti-list">
+    {items.map((it, i) => (
+      <a class:list={['ti__item', { 'is-open': i === 0 }]} href={it.href} data-reveal style={`--d:${(i * 0.07).toFixed(2)}s`} data-fold-label={it.title}>
+        <div class="ti__top">
+          <span class="idx">{it.n}</span>
+          <span class="ti__arrow"><Arrow /></span>
+        </div>
+        <div class="ti__ap">
+          <div class="ti__glow"></div>
+          <Elevations kind={it.kind} cls="ti__svg" />
+        </div>
+        <div class="ti__body">
+          <h3 class="ti__title">{it.title}</h3>
+          <div class="ti__more">
+            <p>{it.text}</p>
+            <ul>{it.tags.map((t) => <li>{t}</li>)}</ul>
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .ti { padding: clamp(90px, 12vw, 170px) 0; overflow: hidden; }
+  .ti h2 em { color: var(--gold); }
+  .ti__list { display: flex; gap: 10px; height: min(78vh, 720px); min-height: 560px; }
+  .ti__item {
+    position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column;
+    border: 1px solid var(--line-light); padding: 18px; text-decoration: none; color: var(--paper);
+    transition: flex-grow .9s var(--ease), background .6s, border-color .6s;
+    overflow: hidden; isolation: isolate;
+  }
+  .ti__item.is-open { flex-grow: 2.7; background: rgba(243,239,231,.035); border-color: rgba(243,239,231,.3); }
+  .ti__top { display: flex; justify-content: space-between; align-items: center; }
+  .ti__arrow { opacity: 0; transform: translateX(-8px); transition: .5s var(--ease); }
+  .ti__item.is-open .ti__arrow { opacity: 1; transform: none; }
+  .ti__ap { position: relative; flex: 1; display: grid; place-items: center; min-height: 0; padding: 14px 0; }
+  .ti__svg { width: auto; height: 100%; max-height: 300px; max-width: 100%; color: rgba(243,239,231,.6); transition: color .6s, transform 1s var(--ease); }
+  .ti__item.is-open .ti__svg { color: var(--paper); transform: scale(1.04); }
+  .ti__glow { position: absolute; left: 50%; top: 50%; width: 70%; aspect-ratio: 2/3; transform: translate(-50%, -50%); border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--sun) 55%, transparent), transparent); filter: blur(26px); opacity: 0; transition: opacity .9s; z-index: -1; }
+  .ti__item.is-open .ti__glow { opacity: .5; }
+  .ti__body { min-height: 76px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .ti__title { font-size: clamp(1.15rem, 1.5vw, 1.5rem); line-height: 1.08; transition: font-size .6s var(--ease); }
+  .ti__item.is-open .ti__title { font-size: clamp(1.5rem, 2.2vw, 2.2rem); }
+  .ti__more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .8s var(--ease), opacity .6s; opacity: 0; }
+  .ti__more > * { overflow: hidden; }
+  .ti__item.is-open .ti__more { grid-template-rows: 1fr; opacity: 1; transition-delay: .15s; }
+  .ti__more p { margin: 12px 0 14px; font-size: 15px; opacity: .8; max-width: 40ch; }
+  .ti__more ul { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; }
+  .ti__more li { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--line-light); padding: 5px 9px; border-radius: 999px; }
+  @media (max-width: 900px) {
+    .ti__list { flex-direction: column; height: auto; min-height: 0; }
+    .ti__item { flex: none; display: grid; grid-template-columns: 64px 1fr; grid-template-rows: auto auto; gap: 4px 16px; padding: 16px; }
+    .ti__item.is-open { flex-grow: 0; }
+    .ti__top { grid-column: 1 / -1; }
+    .ti__ap { grid-row: 2; padding: 0; height: 90px; }
+    .ti__svg { max-height: 90px; }
+    .ti__body { grid-row: 2; align-self: center; }
+    .ti__more { grid-template-rows: 1fr; opacity: 1; }
+    .ti__more p { margin: 6px 0 10px; font-size: 14px; }
+    .ti__arrow { opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  const list = document.getElementById('ti-list');
+  if (list && matchMedia('(min-width: 901px)').matches) {
+    const items = [...list.querySelectorAll('.ti__item')];
+    const open = (el) => items.forEach((i) => i.classList.toggle('is-open', i === el));
+    items.forEach((el) => {
+      el.addEventListener('pointerenter', () => open(el));
+      el.addEventListener('focus', () => open(el));
+    });
+  }
+</script>

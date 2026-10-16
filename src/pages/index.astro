@@ -1,0 +1,261 @@
+---
+import Base from '../layouts/Base.astro';
+import LiveWindow from '../components/LiveWindow.astro';
+import ThresholdIndex from '../components/ThresholdIndex.astro';
+import Journeys from '../components/Journeys.astro';
+import DaylightChart from '../components/DaylightChart.astro';
+import CoverageMap from '../components/CoverageMap.astro';
+import Elevations from '../components/Elevations.astro';
+import Arrow from '../components/Arrow.astro';
+import { renderDoor, COLOURS } from '../lib/door.js';
+import { BIZ } from '../lib/site.js';
+const teaser = ['chartwell-green', 'racing-green', 'slate-grey', 'ruby-red', 'irish-oak', 'steel-blue', 'clotted-cream', 'midnight-black'].map((k) => COLOURS.find((c) => c.k === k));
+const doorSvg = renderDoor({ colour: 'chartwell-green', style: 'cottage', number: '12', wall: 'brick' }, { tight: true });
+const years = new Date().getFullYear() - BIZ.founded;
+---
+<Base title="Coastal Windows & Conservatories — Windows, doors & conservatories in Newton Abbot, Devon">
+  <LiveWindow />
+
+  <!-- Intro: sunlight crossing the words -->
+  <section class="intro section" aria-labelledby="intro-h">
+    <div class="wrap">
+      <p class="label sec-head__kicker" data-reveal>Since {BIZ.founded} · Newton Abbot</p>
+      <h2 class="intro__h sweep" id="intro-h" data-sweep>
+        For {years} years we've been fitting the openings that change how South Devon homes feel — the front door you come home to, the window you wake up beside, the room where the garden begins.
+      </h2>
+      <div class="intro__facts">
+        <div class="fact" data-reveal><span class="fact__n">{BIZ.founded}</span><span class="fact__l">Started as a small private trading company, installing windows, doors and conservatories.</span></div>
+        <div class="fact" data-reveal style="--d:.08s"><span class="fact__n" data-count={BIZ.installTeams}>{BIZ.installTeams}</span><span class="fact__l">Installation teams working from Cornwall to Dorset.</span></div>
+        <div class="fact" data-reveal style="--d:.16s"><span class="fact__n" data-count={BIZ.buildTeams}>{BIZ.buildTeams}</span><span class="fact__l">Building teams for conservatories, extensions and porches.</span></div>
+        <div class="fact" data-reveal style="--d:.24s"><span class="fact__n ital">Made to measure</span><span class="fact__l">"Direct factory prices, direct to the customer" — with residential door panels made at our own Newton Abbot factory.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <ThresholdIndex />
+  <Journeys />
+  <DaylightChart />
+
+  <!-- Door teaser -->
+  <section class="dt section" aria-labelledby="dt-h">
+    <div class="wrap dt__grid">
+      <div class="dt__stage" data-reveal>
+        <div class="dt__door" id="dt-door" set:html={doorSvg}></div>
+        <p class="dt__cap coords" id="dt-cap">Cottage · Chartwell Green · Illustrative render</p>
+      </div>
+      <div class="dt__copy">
+        <p class="label sec-head__kicker">Door Studio</p>
+        <h2 id="dt-h" data-reveal>Your front door,<br /><em>in your colour.</em></h2>
+        <p class="lede" data-reveal style="--d:.08s">Try a colour from the range. Then build the whole thing — style, glass, hardware, sidelights, even your house number — in the Door Studio.</p>
+        <div class="dt__sw" id="dt-sw" role="radiogroup" aria-label="Door colour" data-reveal style="--d:.14s">
+          {teaser.map((c, i) => (
+            <button type="button" role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-k={c.k} data-n={c.n} style={`--c:${c.hex}`} class:list={['swatch', { 'swatch--grain': c.grain }]}>
+              <span class="sr-only">{c.n}</span>
+            </button>
+          ))}
+        </div>
+        <p class="dt__name" id="dt-name" aria-live="polite">Chartwell Green</p>
+        <div class="dt__ctas" data-reveal style="--d:.2s">
+          <a class="btn" href="/door-studio/">Open the Door Studio <Arrow /></a>
+          <a class="link" href="/doors/">All doors</a>
+        </div>
+        <p class="dt__note">Our showroom holds what Coastal describes as "one of the largest selections of Solidor designs in the area" — on-screen colours are approximate, so come and see the real samples.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proof -->
+  <section class="proof section section--paper2" aria-labelledby="proof-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label sec-head__kicker">From the project journal</p>
+          <h2 id="proof-h" data-reveal>Real projects,<br /><em>real numbers.</em></h2>
+        </div>
+        <p class="lede" data-reveal style="--d:.1s">Two recent jobs from Coastal's own case studies — one commercial, one a family home.</p>
+      </div>
+      <div class="cases">
+        <article class="case" data-reveal>
+          <div class="case__art"><Elevations kind="window" /></div>
+          <div class="case__body">
+            <p class="label label--dim">Case study · Near Starcross</p>
+            <h3>Cofton Holiday Park</h3>
+            <p>Old timber windows replaced across holiday cottages, the pub, offices and reception — including round, arched and gable shapes.</p>
+            <dl class="case__nums">
+              <div><dt>A-rated casement windows</dt><dd data-count="52">52</dd></div>
+              <div><dt>Solidor doors</dt><dd data-count="11">11</dd></div>
+              <div><dt>Sets of French doors</dt><dd data-count="2">2</dd></div>
+              <div><dt>Residential doors</dt><dd data-count="3">3</dd></div>
+            </dl>
+            <p class="case__detail">Rosewood-on-white windows with astragal bars; Flint 1 Solidors with cottage handles and bullseye glass; dual anthracite grey with satin glass at reception.</p>
+          </div>
+        </article>
+        <article class="case" data-reveal style="--d:.1s">
+          <div class="case__art"><Elevations kind="conservatory" /></div>
+          <div class="case__body">
+            <p class="label label--dim">Case study · Ivybridge</p>
+            <h3>Gable-end Ultraroof extension</h3>
+            <p>A new extension with a gable-end Ultraroof, plus new windows throughout — anthracite grey outside, white inside.</p>
+            <dl class="case__nums">
+              <div><dt>Vertical sliding windows</dt><dd data-count="8">8</dd></div>
+              <div><dt>Flush casement windows</dt><dd data-count="12">12</dd></div>
+              <div><dt>Electric Velux roof lights</dt><dd data-count="2">2</dd></div>
+            </dl>
+            <p class="case__detail">Sliding sash and flush casement windows finished in classic white, with cavity trays fitted as part of the build.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="trust">
+        <figure class="quote" data-reveal>
+          <blockquote>"We are absolutely thrilled with our new kitchen. The quality of the finish is excellent, and the whole process exceeded our expectations."</blockquote>
+          <figcaption><span>Sabrina Connolly</span> · Google review, as featured on Coastal's website</figcaption>
+        </figure>
+        <div class="accr" data-reveal style="--d:.1s">
+          <p class="label label--dim">Schemes, memberships &amp; manufacturer partners</p>
+          <ul>
+            <li>FENSA</li><li>TrustMark</li><li>GGF</li><li>BFRC</li><li>Secured by Design</li><li>Install Sure</li><li>Solidor</li><li>Ultraframe</li><li>hup!</li>
+          </ul>
+          <a class="link" href="/about/#standards">What these mean <Arrow /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coverage -->
+  <section class="cov section" aria-labelledby="cov-h">
+    <div class="wrap cov__grid">
+      <div>
+        <p class="label sec-head__kicker">Where we work</p>
+        <h2 id="cov-h" data-reveal>Cornwall to Dorset,<br /><em>from Newton Abbot.</em></h2>
+        <div class="cov__card" data-reveal style="--d:.1s">
+          <p class="label">Showroom opening hours</p>
+          <ul class="hours" id="hours">
+            {BIZ.hours.map(([d, h]) => <li><span>{d}</span><span>{h}</span></li>)}
+          </ul>
+          <p class="cov__open" id="open-now" aria-live="polite"></p>
+          <address>{BIZ.showroom.join(', ')}</address>
+        </div>
+      </div>
+      <div data-reveal style="--d:.15s"><CoverageMap /></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro__h { font-size: clamp(2rem, 4.4vw, 4.4rem); line-height: 1.08; letter-spacing: -0.028em; max-width: 24ch; }
+  .sweep {
+    --p: 0%;
+    background: linear-gradient(100deg, var(--ink) 0%, var(--ink) calc(var(--p) - 6%), var(--clay) calc(var(--p) - 1%), var(--gold) var(--p), #c9c0b0 calc(var(--p) + 7%), #c9c0b0 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .no-js .sweep { color: var(--ink); background: none; }
+  .intro__facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: clamp(56px, 8vw, 110px); border-top: 1px solid var(--line); }
+  .fact { padding: 26px 26px 0 0; display: grid; gap: 14px; align-content: start; }
+  .fact + .fact { border-left: 1px solid var(--line); padding-left: 26px; }
+  .fact__n { font-family: var(--f-display); font-size: clamp(2.6rem, 5vw, 4.6rem); line-height: 1; letter-spacing: -0.03em; }
+  .fact__n.ital { font-size: clamp(1.9rem, 3vw, 2.8rem); }
+  .fact__l { font-size: 15px; color: var(--ink-mute); max-width: 30ch; }
+  @media (max-width: 900px) { .intro__facts { grid-template-columns: 1fr 1fr; } .fact:nth-child(3) { border-left: 0; padding-left: 0; } .fact { padding-bottom: 26px; } }
+  @media (max-width: 520px) { .intro__facts { grid-template-columns: 1fr; } .fact + .fact { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); } }
+
+  .dt__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 100px); align-items: center; }
+  .dt__stage { position: relative; background: var(--paper-2); padding: clamp(16px, 3vw, 40px); }
+  .dt__door :global(svg) { width: 100%; height: auto; max-height: 76vh; }
+  .dt__cap { margin: 12px 0 0; }
+  .dt h2 em { color: var(--clay); }
+  .dt__copy .lede { margin: 26px 0 30px; }
+  .dt__sw { display: flex; flex-wrap: wrap; gap: 10px; }
+  .dt__name { font-family: var(--f-display); font-style: italic; font-size: 1.6rem; margin: 16px 0 28px; }
+  .dt__ctas { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .dt__note { margin-top: 30px; font-size: 13.5px; color: var(--ink-mute); max-width: 52ch; }
+  @media (max-width: 900px) { .dt__grid { grid-template-columns: 1fr; } .dt__stage { order: 2; } }
+
+  .cases { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 28px); }
+  .case { background: var(--bone); display: grid; grid-template-columns: 150px 1fr; gap: 24px; padding: clamp(20px, 3vw, 40px); border: 1px solid var(--line); }
+  .case__art { color: var(--sea-deep); align-self: start; }
+  .case h3 { margin: 10px 0 14px; }
+  .case p { font-size: 15.5px; color: var(--ink-soft); }
+  .case__nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); margin: 22px 0; border-top: 1px solid var(--line); }
+  .case__nums div { padding: 14px 10px 0 0; }
+  .case__nums dt { font-size: 12px; color: var(--ink-mute); order: 2; }
+  .case__nums dd { margin: 0 0 4px; font-family: var(--f-display); font-size: 2.6rem; line-height: 1; }
+  .case__nums div { display: flex; flex-direction: column; }
+  .case__nums dd { order: -1; }
+  .case__detail { font-size: 13.5px !important; color: var(--ink-mute) !important; margin: 0; }
+  @media (max-width: 1100px) { .cases { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .case { grid-template-columns: 1fr; } .case__art { width: 110px; } }
+
+  .trust { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(16px, 2vw, 28px); margin-top: clamp(16px, 2vw, 28px); }
+  .quote { margin: 0; background: var(--ink); color: var(--paper); padding: clamp(28px, 4vw, 56px); display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
+  .quote blockquote { margin: 0; font-family: var(--f-display); font-size: clamp(1.5rem, 2.6vw, 2.4rem); line-height: 1.15; letter-spacing: -0.015em; }
+  .quote figcaption { font-size: 13px; opacity: .65; }
+  .quote figcaption span { font-weight: 600; opacity: 1; }
+  .accr { border: 1px solid var(--line); padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; gap: 20px; background: var(--bone); }
+  .accr ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .accr li { padding: 18px 10px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); font-family: var(--f-display); font-size: 1.15rem; text-align: center; }
+  .accr .link { align-self: start; }
+  @media (max-width: 900px) { .trust { grid-template-columns: 1fr; } }
+
+  .cov__grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
+  .cov h2 { margin-bottom: 40px; }
+  .cov h2 em { color: var(--sea-deep); }
+  .cov__card { border: 1px solid var(--line); padding: 26px; background: var(--bone); display: grid; gap: 14px; }
+  .hours { list-style: none; padding: 0; margin: 0; }
+  .hours li { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+  .hours li.is-today { font-weight: 600; }
+  .cov__open { margin: 0; font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .cov__open::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--dotc, #9a9a9a); }
+  .cov__card address { font-style: normal; font-size: 14px; color: var(--ink-mute); }
+  @media (max-width: 900px) { .cov__grid { grid-template-columns: 1fr; } }
+</style>
+
+
+
+<script>
+  import { renderDoor } from '../lib/door.js';
+  import { BIZ } from '../lib/site.js';
+
+  // sunlight sweep across the intro heading
+  const sweep = document.querySelector('[data-sweep]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (sweep) {
+    const upd = () => {
+      const r = sweep.getBoundingClientRect();
+      const p = reduce ? 1 : Math.min(1, Math.max(0, (innerHeight * 0.92 - r.top) / (r.height + innerHeight * 0.45)));
+      sweep.style.setProperty('--p', `${(p * 125 - 8).toFixed(1)}%`);
+    };
+    addEventListener('scroll', upd, { passive: true }); upd();
+  }
+
+  // door teaser
+  const box = document.getElementById('dt-door');
+  const nm = document.getElementById('dt-name');
+  const cap = document.getElementById('dt-cap');
+  document.getElementById('dt-sw')?.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    document.querySelectorAll('#dt-sw button').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+    box.style.opacity = '0.25';
+    setTimeout(() => {
+      box.innerHTML = renderDoor({ colour: b.dataset.k, style: 'cottage', number: '12', wall: 'brick' }, { tight: true });
+      box.style.opacity = '1';
+    }, 160);
+    nm.textContent = b.dataset.n;
+    cap.textContent = `Cottage · ${b.dataset.n} · Illustrative render`;
+  });
+  if (box) box.style.transition = 'opacity .25s';
+
+  // open now?
+  const out = document.getElementById('open-now');
+  if (out) {
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: false }).formatToParts(now);
+    const wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(parts.find((p) => p.type === 'weekday').value);
+    const h = +parts.find((p) => p.type === 'hour').value + +parts.find((p) => p.type === 'minute').value / 60;
+    const slot = BIZ.hoursData[wd];
+    const items = document.querySelectorAll('#hours li');
+    items[wd >= 1 && wd <= 4 ? 0 : wd === 5 ? 1 : 2]?.classList.add('is-today');
+    if (slot && h >= slot[0] && h < slot[1]) { out.textContent = `Open now · until ${slot[1] === 18.5 ? '6.30pm' : '4pm'}`; out.style.setProperty('--dotc', '#4caf6a'); }
+    else { out.textContent = 'Closed now · message us on WhatsApp or call when we reopen'; out.style.setProperty('--dotc', '#b0502c'); }
+  }
+</script>

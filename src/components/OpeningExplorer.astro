@@ -1,0 +1,144 @@
+---
+// items: [{ k, name, text, points: [], modes?: [labelA, labelB], note? }]
+const { items = [], id = 'ox', title = 'How it opens', kicker = 'Operating styles' } = Astro.props;
+---
+<section class="ox section section--ink" data-header-dark id={id} aria-labelledby={`${id}-h`}>
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="label sec-head__kicker">{kicker}</p>
+        <h2 id={`${id}-h`} data-reveal set:html={title}></h2>
+      </div>
+      <p class="lede" data-reveal style="--d:.1s">Every sash below is hinged exactly where the real one is. Open it, drag to walk around it, and see which way it moves before you choose.</p>
+    </div>
+    <div class="ox__grid" data-ox={JSON.stringify(items.map((i) => ({ k: i.k, modes: i.modes || null })))}>
+      <div class="ox__side">
+        <div class="ox__tabs" role="tablist" aria-label="Choose a type">
+          {items.map((it, i) => (
+            <button type="button" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-i={i} class="ox__tab">
+              <span class="idx">{String(i + 1).padStart(2, '0')}</span><span>{it.name}</span>
+            </button>
+          ))}
+        </div>
+        {items.map((it, i) => (
+          <div class="ox__info" data-i={i} hidden={i !== 0}>
+            <h3>{it.name}</h3>
+            <p>{it.text}</p>
+            {it.points && <ul class="spec">{it.points.map((p) => <li set:html={p} />)}</ul>}
+            {it.note && <p class="ox__note">{it.note}</p>}
+          </div>
+        ))}
+      </div>
+      <div class="ox__main">
+        <div class="ox__stage" aria-label="Interactive 3D model — drag to rotate">
+          <span class="ox__hint label">Drag to look around</span>
+        </div>
+        <div class="ox__ctrl">
+          <button type="button" class="btn btn--light btn--sm ox__op" aria-pressed="false">Open</button>
+          <label class="ox__range"><span class="sr-only">Open amount</span><input type="range" min="0" max="100" value="0" class="ox__slider" /></label>
+          <div class="seg ox__modes" hidden>
+            <button type="button" aria-pressed="true" data-m="a"></button>
+            <button type="button" aria-pressed="false" data-m="b"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ox h2 :global(em) { color: var(--gold); }
+  .ox__grid { display: grid; grid-template-columns: 4fr 8fr; gap: clamp(24px, 4vw, 64px); align-items: start; }
+  .ox__tabs { display: grid; border-top: 1px solid var(--line-light); margin-bottom: 32px; }
+  .ox__tab { appearance: none; background: none; border: 0; border-bottom: 1px solid var(--line-light); color: var(--paper); text-align: left; padding: 14px 4px; display: flex; gap: 16px; align-items: baseline; cursor: pointer; font-family: var(--f-display); font-size: 1.35rem; transition: color .3s, padding .5s var(--ease); }
+  .ox__tab:hover { color: var(--gold); }
+  .ox__tab[aria-selected='true'] { color: var(--gold); padding-left: 14px; font-style: italic; }
+  .ox__info h3 { margin-bottom: 14px; }
+  .ox__info p { color: rgba(243,239,231,.78); font-size: 15.5px; }
+  .ox__info .spec { margin-top: 18px; font-size: 14.5px; }
+  .ox__note { font-size: 13px !important; opacity: .7; border-left: 2px solid var(--clay); padding-left: 12px; margin-top: 18px; }
+  .ox__stage { position: relative; height: min(68vh, 620px); min-height: 380px; perspective: 1700px; perspective-origin: 50% 40%; overflow: hidden; cursor: grab; touch-action: pan-y;
+    background: radial-gradient(120% 90% at 50% 10%, #2d3b3e 0%, #142022 60%, #0c1618 100%); border: 1px solid var(--line-light); user-select: none; }
+  .ox__stage.is-drag { cursor: grabbing; }
+  .ox__hint { position: absolute; left: 16px; top: 14px; opacity: .55; z-index: 2; pointer-events: none; }
+  .ox__ctrl { display: flex; align-items: center; gap: 18px; margin-top: 16px; flex-wrap: wrap; }
+  .ox__range { flex: 1; min-width: 160px; display: flex; }
+  .ox__slider { width: 100%; accent-color: var(--gold); }
+  @media (max-width: 960px) { .ox__grid { grid-template-columns: 1fr; } .ox__tabs { grid-template-columns: repeat(2, 1fr); } .ox__main { order: -1; } .ox__stage { height: 56vh; } }
+
+  /* 3D scene */
+  .ox__stage :global(.ox__world) { position: absolute; left: 50%; top: 52%; transform-style: preserve-3d; }
+  .ox__stage :global(.ox__model) { position: relative; transform-style: preserve-3d; transition: transform .2s; transform-origin: 50% 50%; }
+  .ox__stage :global(.ox__unit), .ox__stage :global(.ox__unitwrap) { position: absolute; left: 0; top: 0; transform-style: preserve-3d; }
+  .ox__stage :global(.ox__frame) { position: absolute; border-style: solid; }
+  .ox__stage :global(.ox__frame--upvc) { border-color: #f4f4f1; box-shadow: inset 0 0 0 1px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.12); }
+  .ox__stage :global(.ox__frame--alu) { border-color: #383d40; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+  .ox__stage :global(.ox__sash) { position: absolute; border-style: solid; transform-style: preserve-3d; box-shadow: inset 0 0 0 1px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.08); }
+  .ox__stage :global(.ox__sash--upvc) { border-color: #fbfbf8; }
+  .ox__stage :global(.ox__sash--alu) { border-color: #42484b; }
+  .ox__stage :global(.ox__unit.is-flush .ox__sash) { box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .ox__stage :global(.ox__glass--fill) { position: absolute; inset: 0; }
+  .ox__stage :global(.ox__glass) { background: linear-gradient(158deg, rgba(214,230,235,.62) 0%, rgba(150,180,190,.38) 44%, rgba(255,255,255,.2) 45%, rgba(120,150,160,.32) 70%, rgba(200,220,225,.42) 100%); }
+  .ox__stage :global(.ox__leaf--composite), .ox__stage :global(.ox__leaf--vista) { background: #a6bfa7; border-color: #a6bfa7 !important; }
+  .ox__stage :global(.ox__leaf--vista) { background: #3d4549; border-color: #3d4549 !important; }
+  .ox__stage :global(.ox__panel) { position: absolute; box-shadow: inset 2px 2px 0 rgba(255,255,255,.25), inset -2px -2px 0 rgba(0,0,0,.25); }
+  .ox__stage :global(.ox__bar) { position: absolute; background: #fbfbf8; box-shadow: 0 0 0 1px rgba(0,0,0,.08); }
+  .ox__stage :global(.ox__handle) { position: absolute; width: 5px; height: 26px; border-radius: 3px; background: linear-gradient(90deg, #8f989b, #e7eaeb, #7c8588); box-shadow: 0 1px 2px rgba(0,0,0,.4); transform: translateZ(3px); }
+  .ox__stage :global(.ox__handle--h) { width: 26px; height: 5px; }
+  .ox__stage :global(.ox__handle--v) { height: 60px; }
+  .ox__stage :global(.ox__rev) { position: absolute; background: #cfc7b8; }
+  .ox__stage :global(.ox__rev--l) { transform-origin: 0 50%; transform: rotateY(-90deg); background: linear-gradient(90deg, #bfb6a5, #d9d2c4); }
+  .ox__stage :global(.ox__rev--r) { transform-origin: 0 50%; transform: rotateY(-90deg); background: linear-gradient(90deg, #a99f8d, #c7bfb0); }
+  .ox__stage :global(.ox__rev--t) { transform-origin: 50% 0; transform: rotateX(90deg); background: linear-gradient(#b3aa98, #cbc3b4); }
+  .ox__stage :global(.ox__rev--b) { transform-origin: 50% 0; transform: rotateX(90deg); background: linear-gradient(#f2f0ea, #e3dfd6); }
+  .ox__stage :global(.ox__rev--step) { background: linear-gradient(#c9c4ba, #b8b2a7); }
+  .ox__stage :global(.ox__wall) { position: absolute; background: #e8e2d6; }
+  .ox__stage::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(90% 80% at 40% 30%, rgba(255,240,215,.18), rgba(0,0,0,0) 50%, rgba(12,22,24,.45) 100%); }
+  .ox__stage :global(.ox__room) { position: absolute; background: radial-gradient(60% 55% at 50% 40%, #6b4a2c 0%, #3a2a1f 45%, #191412 100%); }
+  .ox__stage :global(.ox__floor) { position: absolute; transform-origin: 50% 0; transform: translateZ(-240px) rotateX(90deg); background: linear-gradient(#3b2a1d, #5c4330); }
+  .ox__stage :global(.ox__wallback) { position: absolute; background: #e8e2d6; }
+</style>
+
+<script>
+  import { createExplorer } from '../scripts/opening.js';
+  document.querySelectorAll('[data-ox]').forEach((grid) => {
+    const items = JSON.parse(grid.dataset.ox);
+    const stage = grid.querySelector('.ox__stage');
+    const slider = grid.querySelector('.ox__slider');
+    const op = grid.querySelector('.ox__op');
+    const modes = grid.querySelector('.ox__modes');
+    const ex = createExplorer(stage, {
+      onChange: ({ o }) => { slider.value = String(Math.round(o * 100)); op.textContent = o > 0.5 ? 'Close' : 'Open'; op.setAttribute('aria-pressed', String(o > 0.5)); },
+    });
+    let cur = 0;
+    const select = (i) => {
+      cur = i;
+      grid.querySelectorAll('.ox__tab').forEach((t) => t.setAttribute('aria-selected', String(+t.dataset.i === i)));
+      grid.querySelectorAll('.ox__info').forEach((p) => (p.hidden = +p.dataset.i !== i));
+      const it = items[i];
+      ex.build(it.k);
+      ex.setMode('a');
+      modes.hidden = !it.modes;
+      if (it.modes) {
+        const [a, b] = modes.querySelectorAll('button');
+        a.textContent = it.modes[0]; b.textContent = it.modes[1];
+        a.setAttribute('aria-pressed', 'true'); b.setAttribute('aria-pressed', 'false');
+      }
+      ex.set(0);
+      setTimeout(() => ex.animateTo(0.72, 1500), 250);
+    };
+    grid.querySelectorAll('.ox__tab').forEach((t) => t.addEventListener('click', () => select(+t.dataset.i)));
+    slider.addEventListener('input', () => ex.set(+slider.value / 100));
+    op.addEventListener('click', () => ex.animateTo(ex.open > 0.5 ? 0 : 1));
+    modes.addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      modes.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      const o = ex.open;
+      ex.animateTo(0, 500);
+      setTimeout(() => { ex.setMode(b.dataset.m); ex.animateTo(Math.max(o, 0.7), 1200); }, 520);
+    });
+    // build lazily when in view
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { select(0); io.disconnect(); } }, { rootMargin: '200px' });
+    io.observe(stage);
+  });
+</script>

@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+---
+<Base title="Page not found" footerCta={false}>
+  <section class="nf section--ink" data-header-dark>
+    <div class="wrap nf__in">
+      <p class="label">404 · Nothing behind this door</p>
+      <h1>This one doesn't<br /><em>open.</em></h1>
+      <p class="lede">The page you're after has moved or never existed. Try one of these instead.</p>
+      <div class="nf__btns">
+        <a class="btn btn--light" href="/">Back to the homepage <Arrow /></a>
+        <a class="btn btn--ghost-light" href="/visit/">Visit the showroom</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { min-height: 92vh; display: grid; align-items: center; padding: calc(var(--header-h) + 40px) 0 80px; }
+  .nf h1 { margin: 20px 0 26px; }
+  .nf h1 em { color: var(--gold); }
+  .nf__btns { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+</style>

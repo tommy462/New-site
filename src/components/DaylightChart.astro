@@ -1,0 +1,135 @@
+---
+import Arrow from './Arrow.astro';
+---
+<section class="dl section section--ink" data-header-dark aria-labelledby="dl-h">
+  <div class="wrap dl__grid">
+    <div class="dl__copy">
+      <p class="label sec-head__kicker">The Light Lab</p>
+      <h2 id="dl-h" data-reveal>Know your light<br /><em>before you build.</em></h2>
+      <p class="lede" data-reveal style="--d:.1s">The sun over Newton Abbot climbs to roughly 63° at midsummer and barely 16° in December. Which way your conservatory faces, and the roof you choose, decide how that light lands.</p>
+      <p class="muted" data-reveal style="--d:.15s">This chart is calculated live in your browser from the sun's real path over the showroom. The Light Lab lets you place a conservatory, turn it, and watch the shadows move through any day of the year.</p>
+      <a class="btn btn--light" href="/light-lab/" data-reveal style="--d:.2s">Open the Light Lab <Arrow /></a>
+    </div>
+    <figure class="dl__fig" data-reveal style="--d:.1s">
+      <div class="dl__bar">
+        <div class="seg" id="dl-seg" role="group" aria-label="Choose a day">
+          <button type="button" aria-pressed="true" data-day="today">Today</button>
+          <button type="button" aria-pressed="false" data-day="summer">21 June</button>
+          <button type="button" aria-pressed="false" data-day="winter">21 December</button>
+        </div>
+        <span class="coords">Sun altitude · Newton Abbot</span>
+      </div>
+      <svg class="dl__svg" id="dl-svg" viewBox="0 0 800 340" role="img" aria-labelledby="dl-desc">
+        <desc id="dl-desc">Chart of the sun's altitude above the horizon through the day in Newton Abbot.</desc>
+      </svg>
+      <dl class="dl__stats" id="dl-stats">
+        <div><dt>Sunrise</dt><dd data-k="rise">—</dd></div>
+        <div><dt>Sunset</dt><dd data-k="set">—</dd></div>
+        <div><dt>Daylight</dt><dd data-k="len">—</dd></div>
+        <div><dt>Highest sun</dt><dd data-k="max">—</dd></div>
+      </dl>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .dl__grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+  .dl h2 { margin-bottom: 28px; font-size: clamp(2.4rem, 4.4vw, 4.6rem); }
+  .dl h2 em { color: var(--gold); }
+  .dl__copy .lede { margin-bottom: 18px; }
+  .dl__copy .muted { max-width: 46ch; font-size: 15px; margin-bottom: 30px; }
+  .dl__fig { margin: 0; border: 1px solid var(--line-light); padding: clamp(16px, 2.4vw, 28px); background: linear-gradient(180deg, rgba(243,239,231,.03), transparent); }
+  .dl__bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .dl__svg { width: 100%; height: auto; overflow: visible; }
+  .dl__stats { display: grid; grid-template-columns: repeat(4, 1fr); margin: 18px 0 0; border-top: 1px solid var(--line-light); }
+  .dl__stats div { padding: 14px 0 0; }
+  .dl__stats dt { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
+  .dl__stats dd { margin: 4px 0 0; font-family: var(--f-display); font-size: clamp(1.4rem, 2.4vw, 2.1rem); }
+  @media (max-width: 900px) { .dl__grid { grid-template-columns: 1fr; } .dl__stats { grid-template-columns: repeat(2, 1fr); } }
+</style>
+
+<script>
+  import { sunPosition, sunTimes, fmtTime, londonDate } from '../lib/sun.js';
+  const svg = document.getElementById('dl-svg');
+  const stats = document.getElementById('dl-stats');
+  const W = 800, H = 340, pad = { l: 40, r: 10, t: 16, b: 34 };
+  const yMin = -20, yMax = 70;
+  const X = (h) => pad.l + (h / 24) * (W - pad.l - pad.r);
+  const Y = (a) => pad.t + (1 - (a - yMin) / (yMax - yMin)) * (H - pad.t - pad.b);
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (n, a = {}, p = svg) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+
+  function dayOf(key) {
+    const now = new Date();
+    const y = +new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric' }).format(now);
+    if (key === 'summer') return londonDate(y, 5, 21, 0, 0);
+    if (key === 'winter') return londonDate(y, 11, 21, 0, 0);
+    const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(now);
+    const g = (t) => +p.find((x) => x.type === t).value;
+    return londonDate(g('year'), g('month') - 1, g('day'), 0, 0);
+  }
+  function curve(midnight) {
+    const pts = [];
+    for (let m = 0; m <= 24 * 60; m += 10) {
+      const t = new Date(midnight.valueOf() + m * 60000);
+      pts.push([m / 60, sunPosition(t).altitudeDeg]);
+    }
+    return pts;
+  }
+  const path = (pts) => pts.map((p, i) => `${i ? 'L' : 'M'}${X(p[0]).toFixed(1)} ${Y(p[1]).toFixed(1)}`).join(' ');
+
+  // static scaffolding
+  const defs = el('defs');
+  defs.innerHTML = `<linearGradient id="dl-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8be7e" stop-opacity=".55"/><stop offset="1" stop-color="#e8be7e" stop-opacity="0"/></linearGradient>
+  <clipPath id="dl-above"><rect x="0" y="0" width="${W}" height="${Y(0)}"/></clipPath>`;
+  for (let a = -20; a <= 70; a += 10) {
+    el('line', { x1: pad.l, x2: W - pad.r, y1: Y(a), y2: Y(a), stroke: 'currentColor', 'stroke-opacity': a === 0 ? 0.55 : 0.1, 'stroke-dasharray': a === 0 ? '' : '2 4' });
+    if (a % 20 === 0 || a === 0) el('text', { x: pad.l - 8, y: Y(a) + 4, 'text-anchor': 'end', 'font-size': 10, fill: 'currentColor', opacity: 0.5, 'font-family': 'var(--f-mono)' }).textContent = `${a}°`;
+  }
+  for (let h = 0; h <= 24; h += 3) el('text', { x: X(h), y: H - 10, 'text-anchor': 'middle', 'font-size': 10, fill: 'currentColor', opacity: 0.5, 'font-family': 'var(--f-mono)' }).textContent = `${String(h).padStart(2, '0')}:00`;
+  el('text', { x: W - pad.r, y: Y(0) - 6, 'text-anchor': 'end', 'font-size': 10, fill: 'currentColor', opacity: 0.6, 'font-family': 'var(--f-mono)' }).textContent = 'HORIZON';
+
+  const ghostS = el('path', { fill: 'none', stroke: 'currentColor', 'stroke-opacity': 0.25, 'stroke-dasharray': '4 4' });
+  const ghostW = el('path', { fill: 'none', stroke: 'currentColor', 'stroke-opacity': 0.25, 'stroke-dasharray': '1 4' });
+  const area = el('path', { fill: 'url(#dl-fill)', 'clip-path': 'url(#dl-above)' });
+  const line = el('path', { fill: 'none', stroke: '#e8be7e', 'stroke-width': 2 });
+  const nowG = el('g');
+  const nowLine = el('line', { y1: pad.t, y2: H - pad.b, stroke: 'currentColor', 'stroke-opacity': 0.35 }, nowG);
+  const nowDot = el('circle', { r: 7, fill: '#f6d9a3', stroke: '#0c1618', 'stroke-width': 2 }, nowG);
+  const nowTxt = el('text', { 'font-size': 11, fill: 'currentColor', 'font-family': 'var(--f-mono)' }, nowG);
+
+  ghostS.setAttribute('d', path(curve(dayOf('summer'))));
+  ghostW.setAttribute('d', path(curve(dayOf('winter'))));
+
+  function show(key) {
+    const mid = dayOf(key);
+    const pts = curve(mid);
+    const d = path(pts);
+    line.setAttribute('d', d);
+    area.setAttribute('d', `${d} L${X(24)} ${Y(yMin)} L${X(0)} ${Y(yMin)} Z`);
+    const t = sunTimes(new Date(mid.valueOf() + 12 * 3600e3));
+    const max = Math.max(...pts.map((p) => p[1]));
+    const len = (t.sunset - t.sunrise) / 3600e3;
+    stats.querySelector('[data-k=rise]').textContent = fmtTime(t.sunrise);
+    stats.querySelector('[data-k=set]').textContent = fmtTime(t.sunset);
+    stats.querySelector('[data-k=len]').textContent = `${Math.floor(len)}h ${String(Math.round((len % 1) * 60)).padStart(2, '0')}m`;
+    stats.querySelector('[data-k=max]').textContent = `${max.toFixed(1)}°`;
+    nowG.style.display = key === 'today' ? '' : 'none';
+    if (key === 'today') {
+      const now = new Date();
+      const h = (now - mid) / 3600e3;
+      const a = sunPosition(now).altitudeDeg;
+      nowLine.setAttribute('x1', X(h)); nowLine.setAttribute('x2', X(h));
+      nowDot.setAttribute('cx', X(h)); nowDot.setAttribute('cy', Y(a));
+      nowTxt.setAttribute('x', X(h) + (h > 18 ? -12 : 12)); nowTxt.setAttribute('y', Y(a) - 12);
+      nowTxt.setAttribute('text-anchor', h > 18 ? 'end' : 'start');
+      nowTxt.textContent = `NOW ${fmtTime(now)} · ${a.toFixed(1)}°`;
+    }
+  }
+  show('today');
+  document.getElementById('dl-seg').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    document.querySelectorAll('#dl-seg button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    show(b.dataset.day);
+  });
+</script>

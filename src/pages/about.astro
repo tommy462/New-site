@@ -1,0 +1,146 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CoverageMap from '../components/CoverageMap.astro';
+import Arrow from '../components/Arrow.astro';
+import { BIZ } from '../lib/site.js';
+const years = new Date().getFullYear() - BIZ.founded;
+const timeline = [
+  { y: '1988', h: 'A small private trading company', t: 'The business begins, mainly installing windows, doors and conservatories.' },
+  { y: '1989', h: 'Coastal Windows & Conservatories', t: 'The name that South Devon homeowners have known ever since.' },
+  { y: '2000', h: 'A limited company', t: 'Coastal Windows & Conservatories (UK) Limited is incorporated in April 2000.' },
+  { y: '2025', h: 'A new Newton Abbot showroom', t: 'Opened in March at the Decoy Industrial Estate — conservatories, tiled roofs, aluminium and PVCu windows, and Solidor doors.' },
+  { y: 'Today', h: 'Cornwall to Dorset', t: `Nine installation teams and three building teams — and, in our own words, "one of the biggest home improvement companies in the South West".` },
+];
+const standards = [
+  { n: 'FENSA', t: 'The government-authorised scheme for replacement windows and doors in England. Coastal\'s site notes FENSA accreditation, ensuring installations comply with current building regulations aimed at improving thermal performance.' },
+  { n: 'TrustMark', t: 'The government-endorsed quality scheme for work in and around the home. Coastal describes itself as a TrustMark registered business — high standards in customer care and technical competency.' },
+  { n: 'GGF', t: 'The Glass and Glazing Federation, the trade body for the glazing industry. Coastal publishes the GGF Code of Good Practice for customers.', link: ['GGF Code of Good Practice (PDF)', 'https://www.coastal-windows.co.uk/wp-content/uploads/2018/01/GGF-code-of-good-practice-web-1.pdf'] },
+  { n: 'BFRC', t: 'The British Fenestration Rating Council, which provides energy ratings for windows and doors.' },
+  { n: 'Secured by Design', t: 'The official UK police initiative for designing out crime, with security standards for products such as doors and windows.' },
+  { n: 'Install Sure', t: 'A provider of insurance-backed guarantees for glazing and home-improvement installations, part of the GGF group.' },
+  { n: 'Solidor', t: 'Composite door manufacturer. Coastal is listed as an Approved Solidor Installer, with a wide selection of Solidor designs in the showroom.' },
+  { n: 'Ultraframe & hup!', t: 'Conservatory roof and extension systems — including the hup! insulated panel system for extensions and conservatory transformations.' },
+];
+---
+<Base title="Our story" description={`Coastal Windows & Conservatories has been improving homes across the South West since ${BIZ.founded}, from our base in Newton Abbot, Devon.`}>
+  <PageHero n="05" kicker="Our story" meta={[`Est. ${BIZ.founded}`, 'Newton Abbot, Devon']} title={`${years} years,|<em>one town.</em>`} lede="We began as a small trading company installing windows, doors and conservatories. Today our teams work across Cornwall, Devon, Somerset and Dorset — still from Newton Abbot.">
+    <Fragment slot="dim">1988 → today</Fragment>
+    <Fragment slot="art">
+      <svg viewBox="0 0 300 300" class="draw" fill="none" stroke="currentColor" aria-hidden="true">
+        <circle cx="150" cy="150" r="130" /><circle cx="150" cy="150" r="96" stroke-dasharray="2 4" />
+        <line x1="150" y1="10" x2="150" y2="40" /><line x1="150" y1="260" x2="150" y2="290" /><line x1="10" y1="150" x2="40" y2="150" /><line x1="260" y1="150" x2="290" y2="150" />
+        <text x="150" y="150" text-anchor="middle" font-family="var(--f-display)" font-size="54" fill="currentColor" stroke="none">{BIZ.founded}</text>
+        <text x="150" y="182" text-anchor="middle" font-family="var(--f-mono)" font-size="10" letter-spacing="3" fill="currentColor" stroke="none">NEWTON ABBOT</text>
+      </svg>
+    </Fragment>
+  </PageHero>
+
+  <section class="section section--ink tl" data-header-dark aria-labelledby="tl-h">
+    <div class="wrap">
+      <p class="label sec-head__kicker">Timeline</p>
+      <h2 id="tl-h" data-reveal>From a trading company<br /><em>to a South West name.</em></h2>
+      <ol class="tl__list">
+        {timeline.map((e, i) => (
+          <li data-reveal style={`--d:${i * 0.07}s`}>
+            <span class="tl__y">{e.y}</span>
+            <span class="tl__dot" aria-hidden="true"></span>
+            <h3>{e.h}</h3>
+            <p>{e.t}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="teams-h">
+    <div class="wrap teams">
+      <div>
+        <p class="label sec-head__kicker">The people who fit it</p>
+        <h2 id="teams-h" data-reveal>Our own teams,<br /><em>start to finish.</em></h2>
+        <p class="lede" data-reveal style="--d:.08s">Every Coastal product is tailored specifically for every customer and made to measure. Then it's fitted by our own installation teams, with our building teams handling conservatories, extensions and porches.</p>
+      </div>
+      <dl class="teams__n">
+        <div data-reveal><dt>Installation teams</dt><dd data-count={BIZ.installTeams}>{BIZ.installTeams}</dd></div>
+        <div data-reveal style="--d:.06s"><dt>Building teams</dt><dd data-count={BIZ.buildTeams}>{BIZ.buildTeams}</dd></div>
+        <div data-reveal style="--d:.12s"><dt>In-house plasterer</dt><dd>✓</dd></div>
+        <div data-reveal style="--d:.18s"><dt>Door panels made in Newton Abbot</dt><dd>✓</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section--bone" id="standards" aria-labelledby="std-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label sec-head__kicker">Standards & partners</p>
+          <h2 id="std-h" data-reveal>What the logos<br /><em>actually mean.</em></h2>
+        </div>
+        <p class="lede" data-reveal style="--d:.1s">Badges are easy to ignore. Here's a plain-English guide to the schemes, memberships and manufacturer partners Coastal shows.</p>
+      </div>
+      <div class="std">
+        {standards.map((s, i) => (
+          <details class="std__item" data-reveal style={`--d:${(i % 4) * 0.05}s`} open={i < 2}>
+            <summary><span class="idx">0{i + 1}</span><span class="std__n">{s.n}</span><span class="std__plus" aria-hidden="true"></span></summary>
+            <p>{s.t}</p>
+            {s.link && <a class="link" href={s.link[1]} target="_blank" rel="noopener">{s.link[0]} ↗</a>}
+          </details>
+        ))}
+      </div>
+      <p class="std__docs">Also available: <a href="https://www.coastal-windows.co.uk/wp-content/uploads/2024/07/Website-Complaints-Procedure.pdf" target="_blank" rel="noopener">Complaints procedure (PDF) ↗</a></p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="map-h">
+    <div class="wrap mapw">
+      <div>
+        <p class="label sec-head__kicker">Coverage</p>
+        <h2 id="map-h" data-reveal>Cornwall, Devon,<br /><em>Somerset & Dorset.</em></h2>
+        <p class="lede" data-reveal style="--d:.08s">And the areas in between. Recent projects include holiday cottages at Cofton near Starcross and a full extension in Ivybridge.</p>
+        <a class="btn" href="/visit/" data-reveal style="--d:.14s">Visit the showroom <Arrow /></a>
+      </div>
+      <div data-reveal style="--d:.1s"><CoverageMap /></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h2 em { color: var(--clay); }
+  .tl h2 em { color: var(--gold); }
+  .tl h2 { margin-bottom: clamp(48px, 7vw, 90px); }
+  .tl__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); position: relative; }
+  .tl__list::before { content: ''; position: absolute; left: 0; right: 0; top: 74px; height: 1px; background: var(--line-light); }
+  .tl__list li { position: relative; padding-right: 24px; display: grid; gap: 10px; align-content: start; }
+  .tl__y { font-family: var(--f-display); font-size: clamp(2.6rem, 4.4vw, 4.2rem); line-height: 1; letter-spacing: -0.03em; color: var(--gold); height: 60px; }
+  .tl__dot { width: 11px; height: 11px; border-radius: 50%; background: var(--paper); margin: 8px 0 14px -5px; box-shadow: 0 0 0 5px var(--ink); }
+  .tl__list h3 { font-size: 1.3rem; }
+  .tl__list p { font-size: 14.5px; opacity: .72; margin: 0; }
+  @media (max-width: 1000px) { .tl__list { grid-template-columns: 1fr; gap: 28px; } .tl__list::before { left: 5px; right: auto; top: 0; bottom: 0; width: 1px; height: auto; } .tl__list li { padding-left: 34px; } .tl__dot { position: absolute; left: 5px; top: 14px; margin: 0; } .tl__y { height: auto; } }
+
+  .teams { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 6vw, 100px); align-items: center; }
+  .teams h2 { margin-bottom: 24px; }
+  .teams__n { margin: 0; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .teams__n div { padding: clamp(18px, 3vw, 32px); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column-reverse; gap: 6px; }
+  .teams__n dt { font-size: 13.5px; color: var(--ink-mute); }
+  .teams__n dd { margin: 0; font-family: var(--f-display); font-size: clamp(2.6rem, 5vw, 4.6rem); line-height: 1; }
+  @media (max-width: 900px) { .teams { grid-template-columns: 1fr; } }
+
+  .std { display: grid; grid-template-columns: 1fr 1fr; gap: 0 clamp(20px, 3vw, 48px); border-top: 1px solid var(--line); }
+  .std__item { border-bottom: 1px solid var(--line); }
+  .std__item summary { list-style: none; display: flex; align-items: baseline; gap: 16px; padding: 20px 0; cursor: pointer; }
+  .std__item summary::-webkit-details-marker { display: none; }
+  .std__n { font-family: var(--f-display); font-size: 1.6rem; flex: 1; }
+  .std__plus { width: 14px; height: 14px; position: relative; flex: none; }
+  .std__plus::before, .std__plus::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; background: currentColor; transition: transform .4s var(--ease); }
+  .std__plus::after { transform: rotate(90deg); }
+  .std__item[open] .std__plus::after { transform: rotate(0); }
+  .std__item p { margin: 0 0 14px 40px; color: var(--ink-soft); font-size: 15px; max-width: 56ch; }
+  .std__item .link { margin: 0 0 20px 40px; font-size: 14px; }
+  .std__docs { margin-top: 26px; font-size: 14px; color: var(--ink-mute); }
+  @media (max-width: 800px) { .std { grid-template-columns: 1fr; } }
+
+  .mapw { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
+  .mapw h2 { margin-bottom: 24px; }
+  .mapw .lede { margin-bottom: 30px; }
+  @media (max-width: 900px) { .mapw { grid-template-columns: 1fr; } }
+</style>

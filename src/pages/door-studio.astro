@@ -1,0 +1,271 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import { renderDoor, COLOURS, STYLES, GLASS, HARDWARE, DEFAULT } from '../lib/door.js';
+import { BIZ } from '../lib/site.js';
+const groups = ['Timeless', 'Traditional', 'Contemporary', 'Statement'];
+const initial = renderDoor(DEFAULT);
+---
+<Base title="Door Studio" description="Compose a front door: style, colour, glass, hardware, sidelights and your house number. A visual planning tool to bring to the Coastal showroom." footerCta={false}>
+  <section class="ds" aria-labelledby="ds-h">
+    <div class="ds__stage">
+      <div class="ds__door" id="ds-door" set:html={initial}></div>
+      <div class="ds__stagebar">
+        <div class="seg" role="group" aria-label="Lighting">
+          <button type="button" aria-pressed="true" data-dusk="0">Daylight</button>
+          <button type="button" aria-pressed="false" data-dusk="1">Dusk</button>
+        </div>
+        <div class="seg" role="group" aria-label="Wall">
+          <button type="button" aria-pressed="true" data-wall="brick">Brick</button>
+          <button type="button" aria-pressed="false" data-wall="render">Render</button>
+          <button type="button" aria-pressed="false" data-wall="white">Painted</button>
+        </div>
+      </div>
+      <p class="ds__disc">Illustrative visualiser — a concept planning tool, not a Solidor product render. Colours on screen are approximate.</p>
+    </div>
+
+    <div class="ds__panel">
+      <div class="ds__head">
+        <p class="label sec-head__kicker">Door Studio <span class="demo-badge" style="margin-left:6px">Concept tool</span></p>
+        <h1 id="ds-h" class="ds__h">Compose your <em>front door.</em></h1>
+        <p class="ds__summary" id="ds-summary" aria-live="polite"></p>
+      </div>
+
+      <div class="ds__tabs" role="tablist" aria-label="Door options">
+        {['Style', 'Colour', 'Glass', 'Hardware', 'Details'].map((t, i) => (
+          <button type="button" role="tab" id={`dst-${i}`} aria-controls={`dsp-${i}`} aria-selected={i === 0 ? 'true' : 'false'} data-tab={i}><span class="idx">0{i + 1}</span>{t}</button>
+        ))}
+      </div>
+
+      <div class="ds__panes">
+        <div class="ds__pane" id="dsp-0" role="tabpanel" aria-labelledby="dst-0">
+          <div class="ds__styles">
+            {STYLES.map((s) => (
+              <button type="button" class="ds__style" data-k="style" data-v={s.k} aria-pressed={s.k === DEFAULT.style ? 'true' : 'false'}>
+                <span class="ds__thumb" data-thumb={s.k}></span>
+                <b>{s.n}</b><small>{s.d}</small>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div class="ds__pane" id="dsp-1" role="tabpanel" aria-labelledby="dst-1" hidden>
+          {groups.map((g) => (
+            <div class="ds__group">
+              <span class="label label--dim">{g}</span>
+              <div class="ds__sw">
+                {COLOURS.filter((c) => c.g === g).map((c) => (
+                  <button type="button" class:list={['swatch', { 'swatch--grain': c.grain }]} style={`--c:${c.hex}`} data-k="colour" data-v={c.k} aria-pressed={c.k === DEFAULT.colour ? 'true' : 'false'} title={c.n}><span class="sr-only">{c.n}</span></button>
+                ))}
+              </div>
+            </div>
+          ))}
+          <div class="ds__group">
+            <span class="label label--dim">Frame</span>
+            <div class="seg">
+              <button type="button" data-k="frame" data-v="white" aria-pressed="true">White frame</button>
+              <button type="button" data-k="frame" data-v="match" aria-pressed="false">Match the door</button>
+            </div>
+          </div>
+        </div>
+        <div class="ds__pane" id="dsp-2" role="tabpanel" aria-labelledby="dst-2" hidden>
+          <div class="seg seg--stack">
+            {GLASS.map((g) => <button type="button" data-k="glass" data-v={g.k} aria-pressed={g.k === DEFAULT.glass ? 'true' : 'false'}>{g.n}</button>)}
+          </div>
+          <p class="ds__hint">Obscure, satin and patterned glass add privacy to a hallway while still letting the light through. Bullseye and leaded designs suit cottages and period homes.</p>
+        </div>
+        <div class="ds__pane" id="dsp-3" role="tabpanel" aria-labelledby="dst-3" hidden>
+          <div class="ds__group">
+            <span class="label label--dim">Finish</span>
+            <div class="seg">
+              {HARDWARE.map((h) => <button type="button" data-k="hardware" data-v={h.k} aria-pressed={h.k === DEFAULT.hardware ? 'true' : 'false'}>{h.n}</button>)}
+            </div>
+          </div>
+          <div class="ds__group">
+            <span class="label label--dim">Furniture</span>
+            <div class="seg">
+              <button type="button" data-k="knocker" data-toggle aria-pressed="true">Door knocker</button>
+              <button type="button" data-k="letterplate" data-toggle aria-pressed="true">Letterplate</button>
+            </div>
+          </div>
+        </div>
+        <div class="ds__pane" id="dsp-4" role="tabpanel" aria-labelledby="dst-4" hidden>
+          <div class="ds__group">
+            <span class="label label--dim">Sidelights</span>
+            <div class="seg">
+              <button type="button" data-k="sides" data-v="none" aria-pressed="true">None</button>
+              <button type="button" data-k="sides" data-v="one" aria-pressed="false">One side</button>
+              <button type="button" data-k="sides" data-v="both" aria-pressed="false">Both sides</button>
+            </div>
+          </div>
+          <div class="ds__group">
+            <span class="label label--dim">Toplight</span>
+            <div class="seg">
+              <button type="button" data-k="toplight" data-toggle aria-pressed="false">Add a toplight</button>
+            </div>
+          </div>
+          <label class="field ds__num">
+            <span class="field__label">House number or name</span>
+            <input type="text" id="ds-number" maxlength="12" value={DEFAULT.number} autocomplete="off" />
+          </label>
+        </div>
+      </div>
+
+      <div class="ds__actions">
+        <button type="button" class="btn" id="ds-pin">Add to my shortlist <Arrow /></button>
+        <button type="button" class="btn btn--ghost" id="ds-share">Copy design link</button>
+        <a class="link" href={BIZ.solidorDesigner} target="_blank" rel="noopener">Continue in the Solidor designer ↗</a>
+      </div>
+      <p class="ds__toast" id="ds-toast" role="status" aria-live="polite"></p>
+
+      <div class="ds__short" id="ds-short" hidden>
+        <div class="ds__short-h"><span class="label">My shortlist</span><button type="button" class="ds__clear label" id="ds-clear">Clear</button></div>
+        <div class="ds__short-list" id="ds-short-list"></div>
+        <a class="btn btn--sm" href="/plan/?type=replace&p=front-door" id="ds-bring">Bring this shortlist to the showroom <Arrow /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ds { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(380px, 1fr); min-height: 100vh; padding-top: var(--header-h); }
+  .ds__stage { position: sticky; top: var(--header-h); height: calc(100vh - var(--header-h)); background: var(--paper-2); display: grid; grid-template-rows: 1fr auto auto; padding: clamp(16px, 2.4vw, 32px); gap: 12px; }
+  .ds__door { display: grid; place-items: center; min-height: 0; }
+  .ds__door :global(svg) { width: 100%; height: 100%; max-height: 100%; transition: opacity .25s; }
+  .ds__stagebar { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .ds__disc { font-size: 12px; color: var(--ink-mute); margin: 0; }
+  .ds__panel { padding: clamp(28px, 4vw, 56px) clamp(20px, 3.4vw, 56px) 80px; display: flex; flex-direction: column; gap: 26px; }
+  .ds__h { font-size: clamp(2.4rem, 4.4vw, 4.4rem); margin-top: 12px; }
+  .ds__h em { color: var(--clay); }
+  .ds__summary { font-family: var(--f-display); font-style: italic; font-size: 1.25rem; color: var(--ink-soft); margin: 18px 0 0; min-height: 2.6em; }
+  .ds__tabs { display: flex; border-bottom: 1px solid var(--line); gap: 2px; overflow-x: auto; scrollbar-width: none; }
+  .ds__tabs button { appearance: none; background: none; border: 0; padding: 14px 14px 12px; cursor: pointer; display: flex; gap: 8px; align-items: baseline; font-size: 15px; font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+  .ds__tabs button[aria-selected='true'] { border-bottom-color: var(--clay); }
+  .ds__pane { animation: rise .5s var(--ease) both; display: grid; gap: 20px; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+  .ds__styles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .ds__style { appearance: none; background: var(--bone); border: 1px solid var(--line); padding: 10px 10px 14px; cursor: pointer; text-align: left; display: grid; gap: 4px; transition: border-color .3s, transform .4s var(--ease); }
+  .ds__style:hover { transform: translateY(-2px); }
+  .ds__style[aria-pressed='true'] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+  .ds__style b { font-weight: 560; font-size: 14.5px; }
+  .ds__style small { font-size: 12px; color: var(--ink-mute); line-height: 1.35; }
+  .ds__thumb { display: block; aspect-ratio: 3 / 4; margin-bottom: 8px; background: var(--paper-2); }
+  .ds__thumb :global(svg) { width: 100%; height: 100%; }
+  .ds__group { display: grid; gap: 10px; }
+  .ds__sw { display: flex; flex-wrap: wrap; gap: 9px; }
+  .swatch[aria-pressed='true']::after { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 1.5px solid var(--ink); }
+  .seg--stack { display: flex; flex-wrap: wrap; }
+  .ds__hint { font-size: 14px; color: var(--ink-mute); margin: 0; max-width: 52ch; }
+  .ds__num input { font-family: var(--f-display); font-size: 1.6rem; }
+  .ds__actions { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; padding-top: 10px; border-top: 1px solid var(--line); }
+  .ds__toast { min-height: 1.2em; margin: -10px 0 0; font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .06em; color: var(--sea-deep); }
+  .ds__short { border: 1px solid var(--line); background: var(--bone); padding: 18px; display: grid; gap: 14px; }
+  .ds__short-h { display: flex; justify-content: space-between; align-items: center; }
+  .ds__clear { appearance: none; background: none; border: 0; cursor: pointer; text-decoration: underline; }
+  .ds__short-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .ds__short-list button { appearance: none; border: 1px solid var(--line); background: var(--paper-2); padding: 0; cursor: pointer; display: grid; text-align: left; }
+  .ds__short-list button :global(svg) { width: 100%; height: auto; display: block; }
+  .ds__short-list small { display: block; font-size: 10.5px; padding: 6px; line-height: 1.3; }
+  .ds__short .btn { justify-self: start; }
+  @media (max-width: 960px) {
+    .ds { grid-template-columns: 1fr; }
+    .ds__stage { position: sticky; top: var(--header-h); height: 46vh; z-index: 2; grid-template-rows: 1fr auto; padding: 10px 12px; }
+    .ds__disc { display: none; }
+    .ds__stagebar .seg button { min-height: 32px; padding: 0 10px; }
+    .ds__styles { grid-template-columns: repeat(2, 1fr); }
+    .ds__panel { padding-top: 28px; }
+  }
+</style>
+
+<script>
+  import { renderDoor, describe, DEFAULT, STYLES } from '../lib/door.js';
+  const box = document.getElementById('ds-door');
+  const sum = document.getElementById('ds-summary');
+  const toast = document.getElementById('ds-toast');
+  const KEYS = { style: 's', colour: 'c', frame: 'f', glass: 'g', hardware: 'h', knocker: 'k', letterplate: 'l', number: 'n', sides: 'sd', toplight: 't', dusk: 'd', wall: 'w' };
+  const cfg = { ...DEFAULT };
+  // restore from URL
+  const q = new URLSearchParams(location.search);
+  for (const [k, p] of Object.entries(KEYS)) {
+    if (!q.has(p)) continue;
+    const v = q.get(p);
+    cfg[k] = typeof DEFAULT[k] === 'boolean' ? v === '1' : v;
+  }
+  const toURL = (c) => { const u = new URLSearchParams(); for (const [k, p] of Object.entries(KEYS)) u.set(p, typeof c[k] === 'boolean' ? (c[k] ? '1' : '0') : c[k]); return `${location.origin}/door-studio/?${u}`; };
+
+  let raf = 0;
+  function render() {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      box.innerHTML = renderDoor(cfg);
+      sum.textContent = describe(cfg) + (cfg.number ? `, number ${cfg.number}` : '') + '.';
+      document.querySelectorAll('[data-k]').forEach((b) => {
+        const k = b.dataset.k;
+        if (b.hasAttribute('data-toggle')) b.setAttribute('aria-pressed', String(!!cfg[k]));
+        else if (b.dataset.v != null) b.setAttribute('aria-pressed', String(cfg[k] === b.dataset.v));
+      });
+      document.querySelectorAll('[data-dusk]').forEach((b) => b.setAttribute('aria-pressed', String(cfg.dusk === (b.dataset.dusk === '1'))));
+      document.querySelectorAll('[data-wall]').forEach((b) => b.setAttribute('aria-pressed', String(cfg.wall === b.dataset.wall)));
+      history.replaceState(null, '', toURL(cfg).replace(location.origin, ''));
+      paintThumbs();
+    });
+  }
+  function paintThumbs() {
+    document.querySelectorAll('[data-thumb]').forEach((t) => {
+      const key = `${t.dataset.thumb}|${cfg.colour}|${cfg.glass}|${cfg.hardware}`;
+      if (t.dataset.key === key) return;
+      t.dataset.key = key;
+      t.innerHTML = renderDoor({ ...cfg, style: t.dataset.thumb, sides: 'none', toplight: false, dusk: false, number: '', knocker: false }, { tight: true });
+    });
+  }
+  document.querySelector('.ds__panel').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-k]'); if (!b) return;
+    const k = b.dataset.k;
+    if (b.hasAttribute('data-toggle')) cfg[k] = !cfg[k]; else cfg[k] = b.dataset.v;
+    render();
+  });
+  document.querySelector('.ds__stagebar').addEventListener('click', (e) => {
+    const d = e.target.closest('[data-dusk]'); if (d) { cfg.dusk = d.dataset.dusk === '1'; render(); }
+    const w = e.target.closest('[data-wall]'); if (w) { cfg.wall = w.dataset.wall; render(); }
+  });
+  const num = document.getElementById('ds-number');
+  num.value = cfg.number;
+  num.addEventListener('input', () => { cfg.number = num.value.slice(0, 12); render(); });
+
+  // tabs
+  const tabs = [...document.querySelectorAll('.ds__tabs [role=tab]')];
+  tabs.forEach((t) => t.addEventListener('click', () => {
+    tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+    document.querySelectorAll('.ds__pane').forEach((p) => (p.hidden = p.id !== `dsp-${t.dataset.tab}`));
+  }));
+
+  // share
+  const say = (m) => { toast.textContent = m; clearTimeout(say.t); say.t = setTimeout(() => (toast.textContent = ''), 3200); };
+  document.getElementById('ds-share').addEventListener('click', async () => {
+    const url = toURL(cfg);
+    try { await navigator.clipboard.writeText(url); say('Link copied — open it on any device to see this exact door.'); }
+    catch { say(url); }
+  });
+
+  // shortlist (stored in this browser only)
+  const LS = 'cw-door-shortlist';
+  const load = () => { try { return JSON.parse(localStorage.getItem(LS) || '[]'); } catch { return []; } };
+  const save = (l) => { try { localStorage.setItem(LS, JSON.stringify(l)); } catch {} };
+  function drawShort() {
+    const list = load();
+    const wrap = document.getElementById('ds-short');
+    wrap.hidden = !list.length;
+    document.getElementById('ds-short-list').innerHTML = list.map((c, i) => `<button type="button" data-i="${i}" aria-label="Load ${describe(c)}">${renderDoor({ ...c, dusk: false }, { tight: true })}<small>${STYLES.find((s) => s.k === c.style)?.n} · ${describe(c).split(' in ')[1]?.split(',')[0] || ''}</small></button>`).join('');
+    const names = list.map((c) => `${STYLES.find((s) => s.k === c.style)?.n} (${describe(c).split(' in ')[1]?.split(',')[0]})`).join('; ');
+    document.getElementById('ds-bring').href = `/plan/?type=replace&p=front-door&doors=${encodeURIComponent(names)}`;
+  }
+  document.getElementById('ds-pin').addEventListener('click', () => {
+    const l = load(); if (l.length >= 4) l.shift(); l.push({ ...cfg }); save(l); drawShort(); say('Added to your shortlist — saved in this browser.');
+  });
+  document.getElementById('ds-short-list').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-i]'); if (!b) return;
+    Object.assign(cfg, load()[+b.dataset.i]); num.value = cfg.number; render();
+  });
+  document.getElementById('ds-clear').addEventListener('click', () => { save([]); drawShort(); });
+  drawShort();
+  render();
+</script>

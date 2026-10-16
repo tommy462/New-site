@@ -1,0 +1,248 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+const faces = [['N', 0], ['NE', 45], ['E', 90], ['SE', 135], ['S', 180], ['SW', 225], ['W', 270], ['NW', 315]];
+---
+<Base title="Light Lab" description="See how the real sun over Newton Abbot moves through a conservatory on any day of the year — choose which way it faces and compare glass, polycarbonate and tiled roofs." footerCta={true}>
+  <section class="ll" aria-labelledby="ll-h" data-header-dark>
+    <div class="ll__viewport">
+      <canvas id="ll-canvas" class="ll__canvas" aria-label="3D model of a conservatory lit by the sun. Drag to orbit."></canvas>
+      <div class="ll__overlay">
+        <div class="ll__title">
+          <p class="label">The Light Lab <span class="demo-badge" style="margin-left:8px">Illustrative simulation</span></p>
+          <h1 id="ll-h">Follow the sun<br /><em>through your conservatory.</em></h1>
+        </div>
+        <div class="ll__readout" aria-live="polite">
+          <div><span class="label">Newton Abbot</span><b id="ro-date">—</b></div>
+          <div><span class="label">Time</span><b id="ro-time">—</b></div>
+          <div><span class="label">Sun height</span><b id="ro-alt">—</b></div>
+          <div><span class="label">Sun bearing</span><b id="ro-bear">—</b></div>
+        </div>
+        <div class="ll__views seg" role="group" aria-label="Camera">
+          <button type="button" aria-pressed="true" data-view="garden">Garden</button>
+          <button type="button" aria-pressed="false" data-view="inside">Inside</button>
+          <button type="button" aria-pressed="false" data-view="above">From above</button>
+        </div>
+      </div>
+      <div class="ll__nogl" id="ll-nogl" hidden>Your browser couldn't start 3D graphics. Try another browser to use the Light Lab.</div>
+    </div>
+
+    <div class="ll__panel wrap">
+      <div class="ll__ctl">
+        <div class="ll__block">
+          <span class="label label--dim">01 · Your conservatory faces</span>
+          <div class="ll__compass" role="radiogroup" aria-label="Direction the conservatory faces">
+            {faces.map(([n, d]) => <button type="button" role="radio" aria-checked={d === 180 ? 'true' : 'false'} data-face={d} style={`--a:${d}deg`}>{n}</button>)}
+            <span class="ll__compass-c" aria-hidden="true"><span id="ll-needle"></span></span>
+          </div>
+        </div>
+        <div class="ll__block">
+          <span class="label label--dim">02 · Roof</span>
+          <div class="ll__roofs" role="radiogroup" aria-label="Roof type">
+            <button type="button" role="radio" aria-checked="true" data-roof="glass"><b>Glazed</b><small>Clear glass roof</small></button>
+            <button type="button" role="radio" aria-checked="false" data-roof="poly"><b>Polycarbonate</b><small>Diffuses the light</small></button>
+            <button type="button" role="radio" aria-checked="false" data-roof="tile"><b>Tiled</b><small>Solid, traditional</small></button>
+          </div>
+        </div>
+        <div class="ll__block ll__block--wide">
+          <span class="label label--dim">03 · Day of the year</span>
+          <div class="seg ll__days">
+            <button type="button" data-preset="today">Today</button>
+            <button type="button" data-preset="0320">Spring equinox</button>
+            <button type="button" data-preset="0621">Midsummer</button>
+            <button type="button" data-preset="0922">Autumn equinox</button>
+            <button type="button" data-preset="1221">Midwinter</button>
+          </div>
+          <input type="range" id="ll-day" min="1" max="365" value="172" aria-label="Day of the year" />
+          <span class="label label--dim">04 · Time of day</span>
+          <div class="ll__timebar">
+            <button type="button" class="btn btn--sm" id="ll-play" aria-pressed="false">Play the day</button>
+            <input type="range" id="ll-time" min="240" max="1320" step="5" value="780" aria-label="Time of day" />
+            <button type="button" class="chip" id="ll-now">Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ll__results">
+        <div class="ll__now">
+          <span class="label label--dim">Floor in direct sun right now</span>
+          <b id="m-now">—</b>
+          <div class="ll__bar"><span id="m-now-bar"></span></div>
+        </div>
+        <div class="ll__daily">
+          <span class="label label--dim">Average hours of direct sun on the floor · this day</span>
+          {[['glass', 'Glazed roof'], ['poly', 'Polycarbonate'], ['tile', 'Tiled roof']].map(([k, n]) => (
+            <div class="ll__row" data-k={k}><span>{n}</span><div class="ll__bar"><span></span></div><b>—</b></div>
+          ))}
+          <p class="ll__explain" id="m-explain"></p>
+        </div>
+        <p class="ll__note">An illustrative geometric model using the sun's calculated position over Newton Abbot. It shows where direct sunlight falls — it does not model heat, glazing performance or the specific products in Coastal's range. Polycarbonate and tiled roofs stop direct sun through the roof; polycarbonate still lets diffused daylight through.</p>
+        <div class="ll__cta">
+          <a class="btn" href="/plan/?type=transform&p=conservatory" id="ll-brief">Use this in my project brief <Arrow /></a>
+          <a class="link" href="/conservatories/#roofs">Replacement roofs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ll { background: var(--ink); color: var(--paper); padding-top: var(--header-h); }
+  .ll__viewport { position: relative; height: min(76vh, 820px); min-height: 460px; }
+  .ll__canvas { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
+  .ll__canvas:active { cursor: grabbing; }
+  .ll__overlay { position: absolute; inset: 0; pointer-events: none; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto; padding: clamp(16px, 2.6vw, 36px) var(--gutter); color: var(--ink); }
+  .ll__overlay > * { pointer-events: auto; }
+  .ll__title h1 { font-size: clamp(2.2rem, 4.6vw, 4.6rem); margin-top: 12px; }
+  .ll__title h1 em { color: var(--clay); }
+  .ll__title .demo-badge { color: var(--ink); }
+  .ll__readout { display: grid; grid-template-columns: repeat(2, auto); gap: 10px 22px; align-self: start; background: color-mix(in srgb, var(--paper) 78%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 14px 18px; border: 1px solid var(--line); }
+  .ll__readout div { display: grid; gap: 2px; }
+  .ll__readout b { font-family: var(--f-display); font-weight: 400; font-size: 1.3rem; }
+  .ll__views { grid-column: 1 / -1; grid-row: 3; justify-self: start; }
+  .ll__views button { background: color-mix(in srgb, var(--paper) 80%, transparent); }
+  .ll__views button[aria-pressed='true'] { background: var(--ink); color: var(--paper); }
+  .ll__nogl { position: absolute; inset: 0; display: grid; place-items: center; color: var(--paper); padding: 24px; text-align: center; }
+
+  .ll__panel { display: grid; grid-template-columns: 1.25fr 1fr; gap: clamp(24px, 4vw, 64px); padding-top: clamp(28px, 4vw, 56px); padding-bottom: clamp(48px, 6vw, 96px); }
+  .ll__ctl { display: grid; grid-template-columns: auto 1fr; gap: 28px 36px; align-content: start; }
+  .ll__block { display: grid; gap: 12px; align-content: start; }
+  .ll__block--wide { grid-column: 1 / -1; }
+  .ll__compass { position: relative; width: 190px; height: 190px; border-radius: 50%; border: 1px solid var(--line-light); }
+  .ll__compass button { position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; border: 1px solid var(--line-light); background: var(--ink); color: var(--paper); font-family: var(--f-mono); font-size: 11px; cursor: pointer; transform: rotate(var(--a)) translateY(-74px) rotate(calc(-1 * var(--a))); transition: background .3s, color .3s; }
+  .ll__compass button[aria-checked='true'] { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .ll__compass-c { position: absolute; left: 50%; top: 50%; width: 52px; height: 52px; margin: -26px; border-radius: 6px; background: rgba(243,239,231,.08); border: 1px solid var(--line-light); }
+  .ll__compass-c span { position: absolute; left: 50%; top: 50%; width: 2px; height: 34px; margin: -34px 0 0 -1px; background: var(--gold); transform-origin: 50% 100%; transition: transform .6s var(--ease); }
+  .ll__compass-c span::after { content: ''; position: absolute; left: -4px; top: -4px; border: 5px solid transparent; border-bottom-color: var(--gold); border-top: 0; }
+  .ll__roofs { display: grid; gap: 8px; }
+  .ll__roofs button { appearance: none; text-align: left; background: transparent; color: var(--paper); border: 1px solid var(--line-light); padding: 12px 14px; cursor: pointer; display: grid; gap: 2px; transition: border-color .3s, background .3s; }
+  .ll__roofs button[aria-checked='true'] { border-color: var(--gold); background: rgba(232,190,126,.08); }
+  .ll__roofs small { opacity: .6; font-size: 12.5px; }
+  .ll input[type=range] { width: 100%; accent-color: var(--gold); }
+  .ll__days { margin-bottom: 4px; }
+  .ll__timebar { display: flex; gap: 12px; align-items: center; }
+  .ll__timebar .chip { color: var(--paper); border-color: rgba(243,239,231,.3); }
+  .ll__results { display: grid; gap: 26px; align-content: start; }
+  .ll__now { display: grid; gap: 8px; }
+  .ll__now b { font-family: var(--f-display); font-weight: 400; font-size: clamp(2.6rem, 5vw, 4.2rem); line-height: 1; }
+  .ll__bar { height: 6px; background: rgba(243,239,231,.1); position: relative; overflow: hidden; }
+  .ll__bar span { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--gold); transition: width .6s var(--ease); }
+  .ll__daily { display: grid; gap: 10px; }
+  .ll__row { display: grid; grid-template-columns: 120px 1fr 64px; gap: 12px; align-items: center; font-size: 14px; }
+  .ll__row b { font-family: var(--f-display); font-weight: 400; font-size: 1.25rem; text-align: right; }
+  .ll__row[data-active] span:first-child { color: var(--gold); }
+  .ll__explain { font-size: 14px; opacity: .8; margin: 6px 0 0; }
+  .ll__note { font-size: 12.5px; opacity: .55; margin: 0; }
+  .ll__cta { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .ll__cta .btn { --b-bg: var(--paper); --b-fg: var(--ink); }
+  .ll__cta .btn:hover { color: var(--bone); }
+  @media (max-width: 1000px) { .ll__panel { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) {
+    .ll__viewport { height: 62vh; min-height: 400px; }
+    .ll__overlay { grid-template-columns: 1fr; }
+    .ll__readout { grid-row: 3; justify-self: stretch; grid-template-columns: repeat(4, auto); padding: 8px 10px; gap: 4px 12px; }
+    .ll__readout b { font-size: 1rem; }
+    .ll__views { display: none; }
+    .ll__title h1 { font-size: 1.9rem; }
+    .ll__ctl { grid-template-columns: 1fr; }
+    .ll__compass { margin: 0 auto; }
+  }
+</style>
+
+<script>
+  import { createLightLab } from '../scripts/lightlab.js';
+  import { fmtTime, sunTimes, londonDate } from '../lib/sun.js';
+
+  const $ = (s) => document.querySelector(s);
+  const canvas = $('#ll-canvas');
+  const dayIn = $('#ll-day'), timeIn = $('#ll-time');
+  const doy = (y, m, d) => Math.round((Date.UTC(y, m, d) - Date.UTC(y, 0, 1)) / 864e5) + 1;
+  const nowParts = () => {
+    const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false }).formatToParts(new Date());
+    const g = (t) => +p.find((x) => x.type === t).value;
+    return { y: g('year'), m: g('month') - 1, d: g('day'), min: (g('hour') % 24) * 60 + g('minute') };
+  };
+  const compassName = (b) => ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'][Math.round(b / 22.5) % 16];
+  let last = null;
+
+  let lab;
+  try {
+    lab = createLightLab(canvas, {
+      onSun: ({ date, alt, bearing }) => {
+        $('#ro-date').textContent = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', day: 'numeric', month: 'short' }).format(date);
+        $('#ro-time').textContent = fmtTime(date);
+        $('#ro-alt').textContent = alt > 0 ? `${alt.toFixed(1)}°` : 'Below horizon';
+        $('#ro-bear').textContent = `${Math.round(bearing)}° ${compassName(bearing)}`;
+      },
+      onTime: (m) => { timeIn.value = String(Math.round(m)); },
+      onMeasure: (r, full) => {
+        $('#m-now').textContent = `${Math.round(r.now * 100)}%`;
+        $('#m-now-bar').style.width = `${r.now * 100}%`;
+        if (!full) return;
+        last = r.daily;
+        const max = Math.max(1, ...Object.values(r.daily));
+        document.querySelectorAll('.ll__row').forEach((row) => {
+          const h = r.daily[row.dataset.k];
+          row.querySelector('.ll__bar span').style.width = `${(h / max) * 100}%`;
+          row.querySelector('b').textContent = `${Math.floor(h)}h ${String(Math.round((h % 1) * 60)).padStart(2, '0')}`;
+          row.toggleAttribute('data-active', row.dataset.k === lab.get('roof'));
+        });
+        const face = lab.get('face');
+        const dir = { 0: 'north', 45: 'north-east', 90: 'east', 135: 'south-east', 180: 'south', 225: 'south-west', 270: 'west', 315: 'north-west' }[face] || `${face}°`;
+        const g = r.daily.glass, t = r.daily.tile;
+        $('#m-explain').textContent = g < 0.5
+          ? `Facing ${dir} on this day, very little direct sun reaches the floor — soft, even light all day.`
+          : `Facing ${dir}, a glazed roof lets direct sun reach the floor for around ${g.toFixed(1)} hours on average today; a solid tiled roof cuts that to about ${t.toFixed(1)} hours.`;
+        const brief = $('#ll-brief');
+        brief.href = `/plan/?type=transform&p=conservatory&face=${face}`;
+      },
+    });
+  } catch (e) {
+    console.warn(e);
+    $('#ll-nogl').hidden = false;
+  }
+
+  if (lab) {
+    const n = nowParts();
+    lab.set('year', n.y);
+    const startDay = doy(n.y, n.m, n.d);
+    dayIn.value = String(startDay); lab.set('day', startDay);
+    const t = sunTimes(londonDate(n.y, n.m, n.d, 12));
+    const riseM = (t.sunrise - londonDate(n.y, n.m, n.d, 0)) / 60000, setM = (t.sunset - londonDate(n.y, n.m, n.d, 0)) / 60000;
+    const startMin = n.min > riseM + 30 && n.min < setM - 20 ? n.min : 13 * 60;
+    timeIn.value = String(startMin); lab.set('minutes', startMin);
+
+    document.querySelectorAll('[data-face]').forEach((b) => b.addEventListener('click', () => {
+      document.querySelectorAll('[data-face]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+      $('#ll-needle').style.transform = `rotate(${b.dataset.face}deg)`;
+      lab.set('face', +b.dataset.face);
+    }));
+    $('#ll-needle').style.transform = 'rotate(180deg)';
+    document.querySelectorAll('[data-roof]').forEach((b) => b.addEventListener('click', () => {
+      document.querySelectorAll('[data-roof]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+      lab.set('roof', b.dataset.roof);
+    }));
+    let dayT = 0;
+    dayIn.addEventListener('input', () => { clearTimeout(dayT); dayT = setTimeout(() => lab.set('day', +dayIn.value), 60); });
+    timeIn.addEventListener('input', () => lab.set('minutes', +timeIn.value));
+    document.querySelectorAll('[data-preset]').forEach((b) => b.addEventListener('click', () => {
+      const p = b.dataset.preset; const y = lab.get('year');
+      const d = p === 'today' ? doy(y, nowParts().m, nowParts().d) : doy(y, +p.slice(0, 2) - 1, +p.slice(2));
+      dayIn.value = String(d); lab.set('day', d);
+    }));
+    const play = $('#ll-play');
+    play.addEventListener('click', () => {
+      const on = play.getAttribute('aria-pressed') !== 'true';
+      play.setAttribute('aria-pressed', String(on)); play.textContent = on ? 'Pause' : 'Play the day';
+      lab.play(on);
+    });
+    $('#ll-now').addEventListener('click', () => {
+      const n2 = nowParts(); const d = doy(n2.y, n2.m, n2.d);
+      dayIn.value = String(d); lab.set('day', d); timeIn.value = String(n2.min); lab.set('minutes', n2.min);
+    });
+    document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => {
+      document.querySelectorAll('[data-view]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      lab.view(b.dataset.view);
+    }));
+  }
+</script>

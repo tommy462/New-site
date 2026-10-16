@@ -1,0 +1,349 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import { BIZ } from '../lib/site.js';
+const projects = [
+  ['windows', 'Replace windows'], ['front-door', 'A new front door'], ['garden-doors', 'Garden doors'], ['conservatory', 'Conservatory or extension'],
+  ['roof', 'New conservatory roof'], ['porch', 'Porch or veranda'], ['kitchen', 'A new kitchen'], ['roofline', 'Roofline, cladding or flat roof'], ['unsure', 'Not sure yet'],
+];
+const Q = (name, opts, multi = false) => ({ name, opts, multi });
+const details = {
+  windows: [Q('How many windows?', ['1–2', '3–5', '6–10', 'Whole house']), Q('Styles you like', ['Casement', 'Flush casement', 'Tilt & turn', 'Sliding sash', 'Bow or bay', 'Aluminium', 'Not sure'], true)],
+  'front-door': [Q('Style direction', ['Traditional', 'Contemporary', 'Not sure']), Q('Extras', ['Sidelights', 'Toplight', 'Smart lock sensors'], true)],
+  'garden-doors': [Q('Door type', ['Bifold', 'French', 'Sliding patio', 'Aluminium patio', 'Not sure']), Q('Rough opening width', ['Under 2m', '2–4m', 'Over 4m', 'Not sure'])],
+  conservatory: [Q('Style', ['Lean-to', 'Victorian', 'Edwardian', 'P-shaped', 'Gable end', 'hup! extension', 'Not sure']), Q('Which way does the garden face?', ['North', 'East', 'South', 'West', 'Not sure'])],
+  roof: [Q('Current roof', ['Polycarbonate', 'Glass', 'Not sure']), Q('Interested in', ['Tiled roof', 'Glazed roof', 'Not sure'])],
+  porch: [Q('Where?', ['Front porch', 'Rear porch', 'Veranda']), Q('Base', ['Brick base', 'Steel modular', 'Not sure'])],
+  kitchen: [Q('Style', ['Ultra-modern', 'Contemporary', 'Classic shaker', 'Rustic traditional', 'Not sure'])],
+  roofline: [Q('What needs attention?', ['Fascias & soffits', 'Guttering', 'Cladding', 'Flat roof'], true)],
+};
+const labelOf = Object.fromEntries(projects);
+---
+<Base title="Plan your project" description="Answer a few questions and get a tailored project brief to bring to the Coastal showroom in Newton Abbot." footerCta={false}>
+  <section class="pl" aria-labelledby="pl-h">
+    <div class="wrap pl__grid">
+      <div class="pl__form">
+        <p class="label sec-head__kicker">Project Pathfinder <span class="demo-badge" style="margin-left:6px">Demonstration</span></p>
+        <h1 id="pl-h" class="pl__h">Plan your project<br /><em>in two minutes.</em></h1>
+        <p class="lede">A few questions, and you'll have a clear brief — what you're after, what to bring to the showroom, and the best next step.</p>
+
+        <ol class="pl__steps" aria-label="Progress">
+          {['Project', 'Your home', 'Details', 'Timing', 'Contact'].map((s, i) => <li data-step={i} class:list={{ 'is-on': i === 0 }}><span class="idx">0{i + 1}</span>{s}</li>)}
+        </ol>
+
+        <form id="pl-form" novalidate>
+          <fieldset class="pl__step" data-step="0">
+            <legend class="h3">What are you planning?</legend>
+            <p class="pl__help">Choose everything that applies.</p>
+            <div class="pl__cards">
+              {projects.map(([k, n]) => <label class="pl__card"><input type="checkbox" name="project" value={k} /><span>{n}</span></label>)}
+            </div>
+          </fieldset>
+
+          <fieldset class="pl__step" data-step="1" hidden>
+            <legend class="h3">Tell us about your home</legend>
+            <div class="pl__q"><span class="field__label">Property type</span>
+              <div class="pl__chips">{['Detached', 'Semi-detached', 'Terraced', 'Bungalow', 'Cottage or period', 'Flat', 'Holiday let or business', 'Other'].map((o) => <label class="pl__chip"><input type="radio" name="property" value={o} /><span>{o}</span></label>)}</div>
+            </div>
+            <div class="pl__q"><span class="field__label">Listed building or conservation area?</span>
+              <div class="pl__chips">{['No', 'Yes', 'Not sure'].map((o) => <label class="pl__chip"><input type="radio" name="listed" value={o} /><span>{o}</span></label>)}</div>
+            </div>
+            <label class="field pl__q"><span class="field__label">Town or village</span><input type="text" name="town" autocomplete="address-level2" placeholder="e.g. Teignmouth" /></label>
+          </fieldset>
+
+          <fieldset class="pl__step" data-step="2" hidden>
+            <legend class="h3">A little more detail</legend>
+            {Object.entries(details).map(([k, qs]) => (
+              <div class="pl__detail" data-for={k} hidden>
+                <p class="label pl__dlabel">{labelOf[k]}</p>
+                {qs.map((q, qi) => (
+                  <div class="pl__q"><span class="field__label">{q.name}</span>
+                    <div class="pl__chips">{q.opts.map((o) => <label class="pl__chip"><input type={q.multi ? 'checkbox' : 'radio'} name={`${k}-${qi}`} value={o} data-q={q.name} /><span>{o}</span></label>)}</div>
+                  </div>
+                ))}
+                {k === 'conservatory' && <div class="pl__sun" id="pl-sun" hidden></div>}
+                {k === 'front-door' && <p class="pl__hint">Got a design in mind? <a href="/door-studio/">Compose it in the Door Studio</a> and add it to your shortlist.</p>}
+              </div>
+            ))}
+            <div class="pl__detail" data-for="unsure" hidden>
+              <label class="field pl__q"><span class="field__label">What are you thinking about?</span><textarea name="notes" placeholder="e.g. Our kitchen is dark and we'd love to open it to the garden"></textarea></label>
+            </div>
+            <label class="field pl__q"><span class="field__label">Anything else we should know? (optional)</span><textarea name="extra"></textarea></label>
+          </fieldset>
+
+          <fieldset class="pl__step" data-step="3" hidden>
+            <legend class="h3">Timing and next step</legend>
+            <div class="pl__q"><span class="field__label">When would you like it done?</span>
+              <div class="pl__chips">{['As soon as possible', 'In 1–3 months', 'In 3–6 months', 'Just researching'].map((o) => <label class="pl__chip"><input type="radio" name="when" value={o} /><span>{o}</span></label>)}</div>
+            </div>
+            <div class="pl__q"><span class="field__label">What would you like to happen next?</span>
+              <div class="pl__chips">{['Visit the showroom', 'Free home quote', 'A phone call', 'A brochure by email'].map((o) => <label class="pl__chip"><input type="radio" name="next" value={o} /><span>{o}</span></label>)}</div>
+            </div>
+            <div class="pl__q"><span class="field__label">Interested in spreading the cost?</span>
+              <div class="pl__chips">{['Yes, tell me about finance', 'No thanks'].map((o) => <label class="pl__chip"><input type="radio" name="finance" value={o} /><span>{o}</span></label>)}</div>
+              <p class="pl__fine">Finance available on purchases from £2,000 to £50,000. Credit is subject to status and affordability. Coastal is a credit broker, not a lender.</p>
+            </div>
+            <p class="pl__offer">Coastal's current website offer: request <b>5% off</b> when you book a free, no-obligation quote.</p>
+          </fieldset>
+
+          <fieldset class="pl__step" data-step="4" hidden>
+            <legend class="h3">Where should we send your brief?</legend>
+            <div class="pl__demo" role="note"><strong>Demonstration form.</strong> This concept isn't connected to Coastal's systems — nothing you enter here is sent or stored.</div>
+            <div class="pl__fields">
+              <label class="field"><span class="field__label">Name</span><input name="name" autocomplete="name" required /></label>
+              <label class="field"><span class="field__label">Phone</span><input name="phone" type="tel" autocomplete="tel" /></label>
+              <label class="field"><span class="field__label">Email</span><input name="email" type="email" autocomplete="email" required /></label>
+              <label class="field"><span class="field__label">Postcode</span><input name="postcode" autocomplete="postal-code" /></label>
+            </div>
+            <div class="pl__q"><span class="field__label">Contact me by</span>
+              <div class="pl__chips">{['Telephone', 'Email'].map((o) => <label class="pl__chip"><input type="radio" name="contactby" value={o} /><span>{o}</span></label>)}</div>
+            </div>
+            <label class="field pl__q"><span class="field__label">How did you hear about us?</span>
+              <select name="heard"><option value="">Please choose</option>{['Google', 'Facebook', 'Telephone call', 'Door leaflet', 'Newspaper', 'Recommendation', 'Seen company van', 'Other'].map((o) => <option>{o}</option>)}</select>
+            </label>
+            <label class="pl__check"><input type="checkbox" name="privacy" required /><span>I agree to the <a href="https://www.coastal-windows.co.uk/wp-content/uploads/2024/11/Privacy-Notice-v01.pdf" target="_blank" rel="noopener">privacy policy</a>.</span></label>
+            <label class="pl__check"><input type="checkbox" name="marketing" /><span>I'm happy to receive personalised marketing communications from Coastal Windows &amp; Conservatories (UK) Limited.</span></label>
+            <p class="pl__err" id="pl-err" role="alert"></p>
+          </fieldset>
+
+          <div class="pl__done" id="pl-done" hidden tabindex="-1">
+            <h2 class="h3">Your brief is ready.</h2>
+            <p>In the live website, this brief would go straight to the Coastal team, who would be in touch to arrange your next step. In this demonstration, nothing has been sent.</p>
+            <div class="pl__done-btns">
+              <button type="button" class="btn" id="pl-print">Print or save as PDF <Arrow /></button>
+              <a class="btn btn--ghost" href="/visit/">Plan a showroom visit</a>
+            </div>
+          </div>
+
+          <div class="pl__nav" id="pl-nav">
+            <button type="button" class="btn btn--ghost" id="pl-back" hidden>Back</button>
+            <button type="button" class="btn" id="pl-next">Continue <Arrow /></button>
+          </div>
+        </form>
+      </div>
+
+      <aside class="pl__brief" aria-label="Your project brief" id="pl-brief">
+        <div class="brief">
+          <div class="brief__head">
+            <div>
+              <p class="label">Project brief</p>
+              <p class="brief__ref" id="br-ref">CW-····</p>
+            </div>
+            <svg viewBox="0 0 32 32" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.25" y="1.25" width="29.5" height="29.5" /><path d="M16 1.5v29M1.5 13h29" /><path d="M19.4 13a3.6 3.6 0 0 1 7.2 0" /></svg>
+          </div>
+          <dl class="brief__list" id="br-list">
+            <div data-k="project"><dt>Project</dt><dd class="is-empty">Choose what you're planning</dd></div>
+            <div data-k="home"><dt>Home</dt><dd class="is-empty">—</dd></div>
+            <div data-k="details"><dt>Details</dt><dd class="is-empty">—</dd></div>
+            <div data-k="timing"><dt>Timing</dt><dd class="is-empty">—</dd></div>
+          </dl>
+          <div class="brief__next" id="br-next" hidden>
+            <p class="label">Recommended next step</p>
+            <p class="brief__rec" id="br-rec"></p>
+          </div>
+          <div class="brief__bring" id="br-bring" hidden>
+            <p class="label">Bring to the showroom</p>
+            <ul id="br-bring-list"></ul>
+          </div>
+          <p class="brief__foot">{BIZ.showroom.join(', ')} · {BIZ.phone}</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .pl { padding: calc(var(--header-h) + clamp(32px, 6vw, 80px)) 0 clamp(60px, 8vw, 120px); }
+  .pl__grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
+  .pl__h { font-size: clamp(2.6rem, 5.6vw, 5.4rem); margin: 14px 0 20px; }
+  .pl__h em { color: var(--clay); }
+  .pl__steps { list-style: none; padding: 0; margin: 34px 0 30px; display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--line); }
+  .pl__steps li { padding: 12px 6px 0 0; font-size: 13px; color: var(--ink-mute); display: flex; gap: 6px; align-items: baseline; position: relative; }
+  .pl__steps li::before { content: ''; position: absolute; left: 0; top: -1px; height: 2px; width: 0; background: var(--clay); transition: width .6s var(--ease); }
+  .pl__steps li.is-on, .pl__steps li.is-done { color: var(--ink); }
+  .pl__steps li.is-on::before, .pl__steps li.is-done::before { width: 100%; }
+  .pl__step { border: 0; padding: 0; margin: 0; display: grid; gap: 22px; animation: rise .5s var(--ease) both; }
+  .pl__step legend { font-family: var(--f-display); font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin-bottom: 6px; padding: 0; }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } }
+  .pl__help { margin: -10px 0 0; color: var(--ink-mute); font-size: 14.5px; }
+  .pl__cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .pl__card, .pl__chip { position: relative; cursor: pointer; }
+  .pl__card input, .pl__chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .pl__card span { display: flex; align-items: flex-end; min-height: 84px; padding: 14px; border: 1px solid var(--line-strong); background: var(--bone); font-weight: 520; font-size: 15px; transition: background .3s, color .3s, border-color .3s; }
+  .pl__card input:checked + span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .pl__card input:focus-visible + span, .pl__chip input:focus-visible + span { outline: 2px solid var(--clay); outline-offset: 2px; }
+  .pl__q { display: grid; gap: 10px; }
+  .pl__chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pl__chip span { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: 14px; transition: background .3s, color .3s; }
+  .pl__chip input:checked + span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .pl__detail { display: grid; gap: 18px; padding: 20px; border: 1px solid var(--line); background: var(--bone); }
+  .pl__dlabel { margin: 0; color: var(--clay); }
+  .pl__sun { border-left: 2px solid var(--gold); padding: 4px 0 4px 14px; font-size: 14.5px; }
+  .pl__sun b { font-weight: 600; }
+  .pl__hint, .pl__fine { font-size: 13.5px; color: var(--ink-mute); margin: 0; }
+  .pl__offer { margin: 0; padding: 14px 16px; background: var(--paper-2); font-size: 14.5px; }
+  .pl__demo { padding: 12px 14px; border: 1px dashed var(--clay); font-size: 14px; background: color-mix(in srgb, var(--clay) 6%, transparent); }
+  .pl__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 22px; }
+  .pl__check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+  .pl__check input { margin-top: 3px; accent-color: var(--ink); width: 18px; height: 18px; }
+  .pl__err { color: var(--clay); font-size: 14px; margin: 0; min-height: 1.2em; }
+  .pl__nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .pl__nav #pl-next { margin-left: auto; }
+  .pl__done { padding: 28px; background: var(--ink); color: var(--paper); display: grid; gap: 14px; animation: rise .6s var(--ease) both; }
+  .pl__done-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .pl__done .btn { --b-bg: var(--paper); --b-fg: var(--ink); }
+  .pl__done .btn--ghost { --b-bg: transparent; --b-fg: var(--paper); border-color: rgba(243,239,231,.4); }
+
+  .pl__brief { position: sticky; top: calc(var(--header-h) + 20px); }
+  .brief { background: var(--bone); border: 1px solid var(--line); padding: clamp(22px, 3vw, 36px); box-shadow: 0 40px 70px -40px rgba(12,22,24,.35); position: relative; }
+  .brief::before { content: ''; position: absolute; inset: 8px; border: 1px solid var(--line); pointer-events: none; }
+  .brief__head { display: flex; justify-content: space-between; align-items: start; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .brief__ref { font-family: var(--f-display); font-size: 1.8rem; margin: 6px 0 0; letter-spacing: .02em; }
+  .brief__list { margin: 0; }
+  .brief__list div { display: grid; grid-template-columns: 82px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .brief__list dt { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; opacity: .6; padding-top: 3px; }
+  .brief__list dd { margin: 0; font-size: 14.5px; }
+  .brief__list dd.is-empty { color: var(--ink-mute); opacity: .7; font-style: italic; }
+  .brief__list dd.flash { animation: flash 1s var(--ease); }
+  @keyframes flash { from { background: color-mix(in srgb, var(--gold) 45%, transparent); } }
+  .brief__next, .brief__bring { padding-top: 18px; }
+  .brief__rec { font-family: var(--f-display); font-size: 1.35rem; line-height: 1.25; margin: 8px 0 0; }
+  .brief__bring ul { margin: 10px 0 0; padding-left: 18px; font-size: 14px; display: grid; gap: 6px; }
+  .brief__foot { margin: 22px 0 0; font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .05em; opacity: .6; }
+  @media (max-width: 960px) { .pl__grid { grid-template-columns: 1fr; } .pl__brief { position: static; } .pl__cards { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .pl__fields { grid-template-columns: 1fr; } .pl__steps li { font-size: 0; } .pl__steps li .idx { font-size: 11px; } }
+  @media print {
+    :global(.hdr), :global(.ftr), :global(.concept-pill), :global(.fold), .pl__form { display: none !important; }
+    .pl { padding: 0; } .pl__grid { display: block; } .brief { box-shadow: none; }
+  }
+</style>
+
+<script>
+  import { sunPosition, londonDate } from '../lib/sun.js';
+  const form = document.getElementById('pl-form');
+  const steps = [...form.querySelectorAll('.pl__step')];
+  const crumbs = [...document.querySelectorAll('.pl__steps li')];
+  const next = document.getElementById('pl-next'), back = document.getElementById('pl-back');
+  const err = document.getElementById('pl-err');
+  const LABEL = { windows: 'Replace windows', 'front-door': 'A new front door', 'garden-doors': 'Garden doors', conservatory: 'Conservatory or extension', roof: 'New conservatory roof', porch: 'Porch or veranda', kitchen: 'A new kitchen', roofline: 'Roofline, cladding or flat roof', unsure: 'Not sure yet' };
+  let cur = 0;
+  document.getElementById('br-ref').textContent = 'CW-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+
+  // prefill from links elsewhere on the site
+  const q = new URLSearchParams(location.search);
+  const pre = { windows: 'windows', 'front-door': 'front-door', roof: 'roof', hup: 'conservatory', conservatory: 'conservatory', kitchen: 'kitchen' }[q.get('p')];
+  if (pre) form.querySelector(`input[name=project][value="${pre}"]`).checked = true;
+  if (q.get('p') === 'hup') setTimeout(() => { const r = form.querySelector('input[name="conservatory-0"][value="hup! extension"]'); if (r) r.checked = true; render(); });
+  if (q.get('face')) {
+    const f = +q.get('face'); const name = f >= 315 || f < 45 ? 'North' : f < 135 ? 'East' : f < 225 ? 'South' : 'West';
+    setTimeout(() => { const r = form.querySelector(`input[name="conservatory-1"][value="${name}"]`); if (r) r.checked = true; render(); });
+  }
+  if (q.get('doors')) form.querySelector('[name=extra]').value = `Door Studio shortlist: ${q.get('doors')}`;
+
+  const vals = (name) => [...form.querySelectorAll(`[name="${name}"]:checked`)].map((i) => i.value);
+  const val = (name) => vals(name)[0];
+
+  function sunHours(bearing, month, day) {
+    // hours of direct sun on a vertical wall facing `bearing`, Newton Abbot
+    let h = 0; const y = new Date().getFullYear();
+    for (let m = 0; m < 1440; m += 10) {
+      const p = sunPosition(londonDate(y, month, day, Math.floor(m / 60), m % 60));
+      if (p.altitudeDeg <= 1) continue;
+      let diff = Math.abs(((p.bearing - bearing) + 540) % 360 - 180);
+      if (diff < 85) h += 10 / 60;
+    }
+    return h;
+  }
+  const hm = (h) => `${Math.floor(h)}h ${String(Math.round((h % 1) * 60)).padStart(2, '0')}m`;
+
+  function setDD(k, text) {
+    const dd = document.querySelector(`#br-list [data-k="${k}"] dd`);
+    const empty = !text;
+    const t = text || (k === 'project' ? 'Choose what you\'re planning' : '—');
+    if (dd.textContent !== t) { dd.textContent = t; if (!empty) { dd.classList.remove('flash'); void dd.offsetWidth; dd.classList.add('flash'); } }
+    dd.classList.toggle('is-empty', empty);
+  }
+
+  function render() {
+    const ps = vals('project');
+    setDD('project', ps.map((p) => LABEL[p]).join(' · '));
+    const home = [val('property'), val('listed') && val('listed') !== 'No' ? `Listed/conservation: ${val('listed')}` : '', form.town.value.trim()].filter(Boolean).join(' · ');
+    setDD('home', home);
+    // details
+    form.querySelectorAll('.pl__detail').forEach((d) => (d.hidden = !ps.includes(d.dataset.for)));
+    const det = [];
+    ps.forEach((p) => {
+      const block = form.querySelector(`.pl__detail[data-for="${p}"]`); if (!block) return;
+      const names = [...new Set([...block.querySelectorAll('input')].map((i) => i.name))];
+      const parts = names.map((n) => vals(n).join(', ')).filter(Boolean);
+      if (p === 'unsure' && form.notes.value.trim()) parts.push(`"${form.notes.value.trim().slice(0, 80)}"`);
+      if (parts.length) det.push(`${LABEL[p]}: ${parts.join(' · ')}`);
+    });
+    if (form.extra.value.trim()) det.push(form.extra.value.trim().slice(0, 140));
+    setDD('details', det.join(' — '));
+    setDD('timing', [val('when'), val('next'), val('finance')?.startsWith('Yes') ? 'Finance info requested' : ''].filter(Boolean).join(' · '));
+
+    // conservatory sun insight
+    const sun = document.getElementById('pl-sun');
+    const face = val('conservatory-1');
+    if (sun) {
+      const b = { North: 0, East: 90, South: 180, West: 270 }[face];
+      if (b == null) sun.hidden = true;
+      else {
+        sun.hidden = false;
+        const s = sunHours(b, 5, 21), w = sunHours(b, 11, 21);
+        const tip = b === 180 || b === 270 ? 'Plenty of sun — your choice of roof will shape how warm it feels in summer.' : b === 0 ? 'Soft, even light all day — a glazed roof brings in the most daylight.' : 'Bright mornings, cooler afternoons — lovely for breakfast.';
+        sun.innerHTML = `In Newton Abbot, a ${face.toLowerCase()}-facing wall gets direct sun for about <b>${hm(s)}</b> at midsummer and <b>${hm(w)}</b> at midwinter. ${tip} <a href="/light-lab/">Explore it in the Light Lab →</a>`;
+      }
+    }
+
+    // recommendation + checklist
+    const design = ps.some((p) => ['conservatory', 'roof', 'porch', 'kitchen'].includes(p));
+    const recBox = document.getElementById('br-next');
+    recBox.hidden = !ps.length;
+    let rec = design ? 'A design consultation at the Newton Abbot showroom — then a survey at home.' : ps.includes('unsure') ? 'A relaxed chat at the showroom to explore the options.' : 'A free, no-obligation quote and survey at home.';
+    if (val('next') === 'A phone call') rec = 'A phone call from the team to talk it through.';
+    if (val('next') === 'A brochure by email') rec = 'Brochures by email, then a visit when you\'re ready.';
+    document.getElementById('br-rec').textContent = rec;
+    const bring = ['Photos of the outside of your home'];
+    if (ps.some((p) => ['windows', 'front-door', 'garden-doors'].includes(p))) bring.push('Rough measurements of the openings');
+    if (ps.includes('front-door')) bring.push('Your Door Studio shortlist (on your phone)');
+    if (ps.includes('conservatory') || ps.includes('roof')) bring.push('Photos of the garden, and which way it faces');
+    if (ps.includes('kitchen')) bring.push('Room dimensions and where the sink and cooker are now');
+    if (val('listed') === 'Yes') bring.push('Any listing or conservation-area details');
+    if (ps.includes('roofline')) bring.push('Photos of the eaves and guttering');
+    document.getElementById('br-bring').hidden = !ps.length;
+    document.getElementById('br-bring-list').innerHTML = bring.map((b) => `<li>${b}</li>`).join('');
+  }
+
+  function go(i) {
+    cur = i;
+    steps.forEach((s, j) => (s.hidden = j !== i));
+    crumbs.forEach((c, j) => { c.classList.toggle('is-on', j === i); c.classList.toggle('is-done', j < i); });
+    back.hidden = i === 0;
+    next.firstChild.textContent = i === steps.length - 1 ? 'Create my brief ' : 'Continue ';
+    err.textContent = '';
+    const top = document.querySelector('.pl__steps').getBoundingClientRect().top + scrollY - 100;
+    if (scrollY > top) (window.__lenis ? window.__lenis.scrollTo(top) : scrollTo({ top, behavior: 'smooth' }));
+  }
+  next.addEventListener('click', () => {
+    if (cur === 0 && !vals('project').length) { steps[0].querySelector('.pl__help').textContent = 'Choose at least one to continue.'; return; }
+    if (cur === steps.length - 1) {
+      if (!form.name.value.trim() || !form.email.validity.valid || !form.email.value || !form.privacy.checked) {
+        err.textContent = 'Please add your name and a valid email, and agree to the privacy policy.'; return;
+      }
+      steps.forEach((s) => (s.hidden = true));
+      document.getElementById('pl-nav').hidden = true;
+      const done = document.getElementById('pl-done'); done.hidden = false; done.focus();
+      crumbs.forEach((c) => { c.classList.remove('is-on'); c.classList.add('is-done'); });
+      return;
+    }
+    go(cur + 1);
+  });
+  back.addEventListener('click', () => go(Math.max(0, cur - 1)));
+  form.addEventListener('input', render);
+  form.addEventListener('change', render);
+  form.addEventListener('submit', (e) => e.preventDefault());
+  document.getElementById('pl-print').addEventListener('click', () => print());
+  render();
+</script>

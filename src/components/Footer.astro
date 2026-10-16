@@ -1,0 +1,104 @@
+---
+import Logo from './Logo.astro';
+import Arrow from './Arrow.astro';
+import { NAV, TOOLS, BIZ } from '../lib/site.js';
+const { cta = true } = Astro.props;
+---
+{cta && (
+  <section class="fcta section--ink" data-header-dark>
+    <div class="wrap fcta__in">
+      <p class="label label--dim">The showroom · Newton Abbot</p>
+      <h2 class="fcta__h">Come and <em>open</em><br />the real thing.</h2>
+      <p class="lede fcta__p">Feel the weight of a composite door, try the handles, see the colours in daylight. Our Newton Abbot showroom is the easiest way to choose with confidence.</p>
+      <div class="fcta__btns">
+        <a class="btn btn--light" href="/visit/">Plan a showroom visit <Arrow /></a>
+        <a class="btn btn--ghost-light" href={BIZ.phoneHref}>Call {BIZ.phone}</a>
+      </div>
+      <svg class="fcta__frame" viewBox="0 0 400 520" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="398" height="518" stroke="currentColor" />
+        <rect x="22" y="22" width="356" height="476" stroke="currentColor" />
+        <line x1="200" y1="22" x2="200" y2="498" stroke="currentColor" />
+        <line x1="22" y1="170" x2="378" y2="170" stroke="currentColor" />
+      </svg>
+    </div>
+  </section>
+)}
+<footer class="ftr" data-header-dark>
+  <div class="wrap">
+    <div class="ftr__grid">
+      <div class="ftr__col ftr__intro">
+        <Logo size={36} />
+        <p>Windows, doors, conservatories and home improvements — made to measure and installed across the South West since {BIZ.founded}.</p>
+        <p class="coords">50.5281° N · 3.6101° W</p>
+      </div>
+      <div class="ftr__col">
+        <span class="label label--dim">Explore</span>
+        <ul>{NAV.map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+      </div>
+      <div class="ftr__col">
+        <span class="label label--dim">Tools</span>
+        <ul>{TOOLS.map((t) => <li><a href={t.href}>{t.label}</a></li>)}</ul>
+        <span class="label label--dim" style="margin-top:22px">Customers</span>
+        <ul>
+          <li><a href="/visit/#service">Service call request</a></li>
+          <li><a href="/visit/#finance">Finance options</a></li>
+          <li><a href="/visit/#payment">Make a payment</a></li>
+        </ul>
+      </div>
+      <div class="ftr__col">
+        <span class="label label--dim">Showroom</span>
+        <address>{BIZ.address.map((l) => <>{l}<br /></>)}</address>
+        <a class="link" href={BIZ.mapsHref} target="_blank" rel="noopener">Directions</a>
+      </div>
+      <div class="ftr__col">
+        <span class="label label--dim">Talk to us</span>
+        <ul>
+          <li><a href={BIZ.phoneHref}>{BIZ.phone}</a></li>
+          <li><a href={BIZ.phoneAltHref}>{BIZ.phoneAlt}</a></li>
+          <li><a href={BIZ.whatsapp} target="_blank" rel="noopener">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ftr__word" aria-hidden="true">Coastal</div>
+
+    <div class="ftr__legal">
+      <p>{BIZ.legal}, trading as {BIZ.trading}. Registered in England, company no. {BIZ.companyNo}. Registered office: {BIZ.registered}. VAT no. {BIZ.vat}.</p>
+      <p>{BIZ.financeDisclosure}</p>
+      <p class="ftr__concept"><strong>Independent design concept.</strong> This website is an unofficial demonstration created by Conquer AI to propose a new digital experience for Coastal Windows &amp; Conservatories. It is not the company's official website and has not been commissioned or endorsed by them. Interactive tools, visualisations and forms are demonstrations only — nothing you enter is sent anywhere. Visuals are generated illustrations, not photographs of completed installations. For the official site, visit <a href={BIZ.currentSite} target="_blank" rel="noopener">coastal-windows.co.uk</a>.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .fcta { position: relative; overflow: hidden; padding: clamp(90px, 13vw, 190px) 0; }
+  .fcta__in { position: relative; }
+  .fcta__h { font-size: clamp(3rem, 8vw, 8rem); margin: 22px 0 30px; position: relative; z-index: 1; }
+  .fcta__h em { color: var(--gold); }
+  .fcta__p { position: relative; z-index: 1; }
+  .fcta__btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; position: relative; z-index: 1; }
+  .fcta__frame { position: absolute; right: var(--gutter); top: 50%; transform: translateY(-50%); width: min(34vw, 420px); height: auto; opacity: .14; }
+  @media (max-width: 860px) { .fcta__frame { display: none; } }
+
+  .ftr { background: var(--ink); color: var(--paper); padding: 72px 0 36px; border-top: 1px solid var(--line-light); }
+  .ftr__grid { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 36px; }
+  .ftr__col { display: flex; flex-direction: column; gap: 14px; font-size: 15px; }
+  .ftr__intro p { max-width: 34ch; opacity: .75; margin: 0; }
+  .ftr__col ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .ftr__col a { text-decoration: none; opacity: .85; }
+  .ftr__col a:hover { opacity: 1; color: var(--gold); }
+  .ftr__col address { font-style: normal; opacity: .8; line-height: 1.6; }
+  .ftr__col .link { opacity: 1; align-self: start; }
+  .ftr__word {
+    font-family: var(--f-display); font-weight: 340; letter-spacing: -0.045em; line-height: .82;
+    font-size: clamp(6rem, 25vw, 26rem); margin: 64px 0 34px; text-align: center;
+    color: rgba(243,239,231,.92);
+    -webkit-mask-image: linear-gradient(180deg, #000 10%, rgba(0,0,0,.06) 95%); mask-image: linear-gradient(180deg, #000 10%, rgba(0,0,0,.06) 95%);
+    user-select: none;
+  }
+  .ftr__legal { border-top: 1px solid var(--line-light); padding-top: 24px; display: grid; gap: 10px; font-size: 12.5px; line-height: 1.6; opacity: .62; }
+  .ftr__legal p { margin: 0; max-width: 120ch; }
+  .ftr__concept { opacity: 1; color: var(--paper); padding: 14px 16px; border: 1px dashed rgba(243,239,231,.3); margin-top: 8px !important; }
+  .ftr__concept a { color: var(--gold); }
+  @media (max-width: 1000px) { .ftr__grid { grid-template-columns: 1fr 1fr; } .ftr__intro { grid-column: 1 / -1; } }
+</style>

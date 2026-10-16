@@ -1,0 +1,133 @@
+---
+import Arrow from './Arrow.astro';
+---
+<section class="jy section section--bone" aria-labelledby="jy-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="label sec-head__kicker">Two journeys</p>
+        <h2 id="jy-h" data-reveal>A new front door.<br /><em>A whole new room.</em></h2>
+      </div>
+      <div data-reveal style="--d:.1s">
+        <p class="lede">They're very different decisions — so we treat them differently. Slide the door across to see how each one works.</p>
+        <div class="seg jy__seg" role="tablist" aria-label="Choose a journey">
+          <button type="button" role="tab" aria-selected="true" data-side="0" id="jy-tab-0" aria-controls="jy-p0">Replacing windows or doors</button>
+          <button type="button" role="tab" aria-selected="false" data-side="1" id="jy-tab-1" aria-controls="jy-p1">Building or transforming a room</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="jy__door" id="jy" data-side="0" data-reveal>
+      <div class="jy__pane" id="jy-p0" role="tabpanel" aria-labelledby="jy-tab-0">
+        <p class="label jy__k">Journey A · Typically starts with a free quote</p>
+        <h3>Replacing windows <em>or a door</em></h3>
+        <ol class="jy__steps">
+          <li><b>Choose your look</b><span>Shortlist styles and colours here or in the showroom — try the Door Studio to start.</span></li>
+          <li><b>Free, no-obligation quote</b><span>Tell us what you're replacing and we'll arrange a quote.</span></li>
+          <li><b>Surveyed and made to measure</b><span>Every Coastal product is tailored to the customer and made to measure.</span></li>
+          <li><b>Fitted by our own teams</b><span>Nine installation teams cover Devon, Cornwall, Somerset and Dorset.</span></li>
+        </ol>
+        <a class="btn btn--sm" href="/plan/?type=replace">Start a quick quote <Arrow /></a>
+      </div>
+      <div class="jy__pane" id="jy-p1" role="tabpanel" aria-labelledby="jy-tab-1">
+        <p class="label jy__k">Journey B · Typically starts with a design consultation</p>
+        <h3>Building <em>or transforming</em> a room</h3>
+        <ol class="jy__steps">
+          <li><b>A design conversation</b><span>Start in the showroom: conservatories, tiled roofs and hup! extensions, talked through properly.</span></li>
+          <li><b>Survey, design and paperwork</b><span>We'll explain what your project needs, from roof choice to building regulations.</span></li>
+          <li><b>Built by our building teams</b><span>Three building teams; porch interiors finished by our in-house plasterer.</span></li>
+          <li><b>One point of contact</b><span>Electrics and plumbing coordinated with trusted local professionals.</span></li>
+        </ol>
+        <a class="btn btn--sm" href="/plan/?type=transform">Plan a bigger project <Arrow /></a>
+      </div>
+
+      <div class="jy__glider" id="jy-glider" aria-hidden="true">
+        <div class="jy__glass"></div>
+        <div class="jy__handle"><span></span></div>
+        <div class="jy__hint label">Slide</div>
+      </div>
+      <div class="jy__track" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .jy h2 em { color: var(--sea-deep); }
+  .jy__seg { margin-top: 26px; }
+  .jy__door {
+    position: relative; display: grid; grid-template-columns: 1fr 1fr;
+    border: 14px solid #232b2d; border-bottom-width: 22px; background: var(--paper);
+    box-shadow: 0 40px 80px -40px rgba(12,22,24,.45), inset 0 0 0 1px rgba(0,0,0,.2);
+    user-select: none; touch-action: pan-y;
+  }
+  .jy__pane { padding: clamp(28px, 4vw, 64px); display: flex; flex-direction: column; gap: 18px; min-height: 560px; transition: opacity .8s var(--ease), filter .8s var(--ease); }
+  .jy__pane + .jy__pane { border-left: 1px solid var(--line); }
+  .jy__k { opacity: .6; }
+  .jy__pane h3 { font-size: clamp(2rem, 3.4vw, 3.2rem); }
+  .jy__pane h3 em { color: var(--clay); }
+  .jy__steps { list-style: none; margin: 8px 0 auto; padding: 0; counter-reset: s; display: grid; gap: 0; }
+  .jy__steps li { counter-increment: s; display: grid; grid-template-columns: 40px 1fr; gap: 2px 10px; padding: 16px 0; border-top: 1px solid var(--line); }
+  .jy__steps li::before { content: counter(s, decimal-leading-zero); font-family: var(--f-mono); font-size: 11px; opacity: .5; grid-row: span 2; padding-top: 4px; }
+  .jy__steps b { font-weight: 560; }
+  .jy__steps span { font-size: 15px; color: var(--ink-mute); }
+  .jy__pane .btn { align-self: start; }
+
+  .jy__glider { position: absolute; top: 0; bottom: 0; left: 50%; width: 50%; transform: translateX(var(--gx, 0%)); transition: transform 1s var(--ease); cursor: grab; z-index: 2; touch-action: none; }
+  .jy__door[data-side='1'] .jy__glider { --gx: -100%; }
+  .jy__glider.is-drag { transition: none; cursor: grabbing; }
+  .jy__glass { position: absolute; inset: 0; border: 12px solid #2a3335; box-shadow: -18px 0 40px -20px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.12);
+    background: linear-gradient(115deg, rgba(255,255,255,.28), rgba(210,225,224,.18) 40%, rgba(255,255,255,.08) 41%, rgba(200,215,214,.16) 70%, rgba(255,255,255,.22));
+    backdrop-filter: blur(7px) saturate(.8); -webkit-backdrop-filter: blur(7px) saturate(.8); }
+  .jy__handle { position: absolute; top: 50%; left: 22px; width: 12px; height: 140px; margin-top: -70px; border-radius: 6px; background: linear-gradient(90deg, #6d7779, #c9cfcf 45%, #8a9496); box-shadow: 0 4px 10px rgba(0,0,0,.3); }
+  .jy__door[data-side='1'] .jy__handle { left: auto; right: 22px; }
+  .jy__hint { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: var(--ink); background: var(--paper); padding: 6px 10px; border-radius: 999px; }
+  .jy__door[data-side='0'] #jy-p1, .jy__door[data-side='1'] #jy-p0 { opacity: .55; filter: saturate(.4); }
+  .jy__track { position: absolute; left: 0; right: 0; bottom: -22px; height: 22px; background: linear-gradient(#1b2224, #2c3537); }
+
+  @media (max-width: 860px) {
+    .jy__door { grid-template-columns: 1fr; border-width: 10px; }
+    .jy__pane { min-height: 0; }
+    .jy__pane + .jy__pane { border-left: 0; border-top: 1px solid var(--line); }
+    .jy__glider, .jy__track { display: none; }
+    .jy__door[data-side='0'] #jy-p1, .jy__door[data-side='1'] #jy-p0 { display: none; }
+    .jy__seg button { flex: 1 1 auto; }
+  }
+</style>
+
+<script>
+  const door = document.getElementById('jy');
+  const glider = document.getElementById('jy-glider');
+  const tabs = [...document.querySelectorAll('.jy__seg button')];
+  const set = (side) => {
+    door.dataset.side = String(side);
+    glider.style.removeProperty('--gx');
+    tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.side === String(side))));
+  };
+  tabs.forEach((t) => t.addEventListener('click', () => set(+t.dataset.side)));
+  door.querySelectorAll('.jy__pane').forEach((p, i) => p.addEventListener('click', (e) => {
+    if (e.target.closest('a')) return;
+    if (+door.dataset.side !== i && matchMedia('(min-width: 861px)').matches) set(i);
+  }));
+  let start = null;
+  glider.addEventListener('pointerdown', (e) => {
+    start = { x: e.clientX, side: +door.dataset.side, w: door.clientWidth / 2 };
+    glider.setPointerCapture(e.pointerId); glider.classList.add('is-drag');
+  });
+  glider.addEventListener('pointermove', (e) => {
+    if (!start) return;
+    const base = start.side === 1 ? -100 : 0;
+    const pct = Math.max(-100, Math.min(0, base + ((e.clientX - start.x) / start.w) * 100));
+    glider.style.setProperty('--gx', `${pct}%`);
+  });
+  const end = (e) => {
+    if (!start) return;
+    const moved = e.clientX - start.x;
+    glider.classList.remove('is-drag');
+    const base = start.side === 1 ? -100 : 0;
+    const pct = base + (moved / start.w) * 100;
+    set(Math.abs(moved) < 6 ? 1 - start.side : pct < -50 ? 1 : 0);
+    start = null;
+  };
+  glider.addEventListener('pointerup', end);
+  glider.addEventListener('pointercancel', end);
+</script>

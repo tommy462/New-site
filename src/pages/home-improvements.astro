@@ -1,0 +1,246 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Elevations from '../components/Elevations.astro';
+import Arrow from '../components/Arrow.astro';
+const parts = [
+  { k: 'fascia', n: 'Fascias', x: 132, y: 214, t: 'Fascias support the lower edge of the roof — and carry the guttering. Our uPVC roofline products are resistant to rot, warping and discolouration.' },
+  { k: 'soffit', n: 'Soffits', x: 178, y: 236, t: 'Soffits provide ventilation beneath the roof overhang, and finish the underside of the eaves neatly.' },
+  { k: 'gutter', n: 'Guttering', x: 96, y: 236, t: 'Guttering safely channels rainwater away from the home. Press "Make it rain" to watch it work.' },
+  { k: 'downpipe', n: 'Downpipes', x: 112, y: 380, t: 'Downpipes carry water from the gutters down to the drain, keeping it off your walls.' },
+  { k: 'cladding', n: 'Cladding', x: 300, y: 300, t: 'Durable PVC-U shiplap cladding with realistic woodgrain finishes and hidden fixings — or composite Coastline cladding, with minimal expansion or contraction.' },
+  { k: 'flat', n: 'Flat roofing', x: 640, y: 290, t: 'Flat roofs finished in RubberBond FleeceBack EPDM — a single-piece rubber membrane for extensions, porches and garages.' },
+];
+const kit = [
+  { k: 'modern', n: 'Ultra-modern', d: 'Sleek lines and minimalist fixtures — handleless, high-gloss fronts.' },
+  { k: 'contemporary', n: 'Contemporary', d: 'Flat slab doors with slim bar handles and a matt finish.' },
+  { k: 'classic', n: 'Classic shaker', d: 'Framed shaker doors and cup handles for a timeless look.' },
+  { k: 'rustic', n: 'Rustic traditional', d: 'Warm woodgrain and the charming details of a country kitchen.' },
+];
+---
+<Base title="Home improvements & roofline" description="Kitchens, fascias, soffits and guttering, PVC-U shiplap and Coastline cladding, and RubberBond FleeceBack EPDM flat roofing in Newton Abbot and Devon.">
+  <PageHero n="04" kicker="Home & roofline" meta={['Kitchens', 'Roofline & cladding', 'Flat roofing']} title="The details|<em>make</em> the house." lede="Roofline and cladding built to stand Devon's coastal climate, flat roofs that stay watertight, and kitchens designed with you from the first sketch to the final fitting.">
+    <Fragment slot="dim">Roof to worktop</Fragment>
+    <Fragment slot="actions"><a class="btn" href="#anatomy">Explore the roofline <Arrow /></a><a class="btn btn--ghost" href="#kitchens">Kitchens</a></Fragment>
+    <Fragment slot="art"><Elevations kind="roofline" /></Fragment>
+  </PageHero>
+
+  <section class="section section--bone" id="anatomy" aria-labelledby="an-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label sec-head__kicker">Anatomy of a roofline</p>
+          <h2 id="an-h" data-reveal>Every part has<br /><em>a job to do.</em></h2>
+        </div>
+        <p class="lede" data-reveal style="--d:.1s">Tap a marker to see what each part does — or make it rain and follow the water off the roof.</p>
+      </div>
+      <div class="an" id="an">
+        <figure class="an__fig">
+          <svg viewBox="0 0 800 470" class="an__svg" role="img" aria-label="Illustrated house showing fascias, soffits, guttering, downpipes, cladding and a flat roof extension.">
+            <defs>
+              <pattern id="an-ship" width="8" height="22" patternUnits="userSpaceOnUse"><rect width="8" height="22" fill="#d6dbd6" /><rect y="18" width="8" height="4" fill="#bcc4bf" /></pattern>
+              <pattern id="an-tile" width="26" height="14" patternUnits="userSpaceOnUse"><rect width="26" height="14" fill="#4b5052" /><path d="M0 13.5 H26 M13 0 V7 M0 7 H26" stroke="#373b3d" stroke-width="1.2" /></pattern>
+            </defs>
+            <rect width="800" height="470" fill="#ece6da" />
+            <line x1="0" y1="440" x2="800" y2="440" stroke="var(--ink)" stroke-width="2" />
+            <!-- main house -->
+            <rect x="120" y="230" width="380" height="210" fill="#efe9de" stroke="var(--ink)" stroke-width="1.5" />
+            <rect x="250" y="230" width="250" height="140" fill="url(#an-ship)" />
+            <path d="M80 222 L310 70 L540 222 Z" fill="url(#an-tile)" stroke="var(--ink)" stroke-width="1.5" />
+            <!-- fascia boards + soffits -->
+            <rect x="80" y="222" width="460" height="12" fill="#f8f8f5" stroke="var(--ink)" class="an__part" data-part="fascia" />
+            <rect x="120" y="234" width="380" height="6" fill="#e3e3df" stroke="var(--ink)" stroke-width=".8" class="an__part" data-part="soffit" />
+            <!-- gutters -->
+            <path d="M74 230 h472 v10 a4 4 0 0 1 -4 4 h-464 a4 4 0 0 1 -4 -4 z" fill="#2f3436" class="an__part" data-part="gutter" />
+            <path id="an-water-g" d="M540 238 H96" fill="none" stroke="#5aa9d6" stroke-width="4" stroke-dasharray="10 12" class="an__water" />
+            <!-- downpipe -->
+            <path d="M92 244 V430 h-8" fill="none" stroke="#2f3436" stroke-width="10" class="an__part" data-part="downpipe" />
+            <path id="an-water-d" d="M92 244 V430 h-10" fill="none" stroke="#5aa9d6" stroke-width="4" stroke-dasharray="10 12" class="an__water" />
+            <!-- windows + door -->
+            <rect x="150" y="270" width="70" height="80" fill="#cfdde1" stroke="#fbfbf8" stroke-width="6" />
+            <line x1="185" y1="270" x2="185" y2="350" stroke="#fbfbf8" stroke-width="5" />
+            <rect x="300" y="262" width="80" height="80" fill="#cfdde1" stroke="#fbfbf8" stroke-width="6" />
+            <rect x="410" y="262" width="60" height="80" fill="#cfdde1" stroke="#fbfbf8" stroke-width="6" />
+            <rect x="160" y="370" width="50" height="70" fill="#3d4549" />
+            <!-- flat roof extension -->
+            <rect x="500" y="300" width="230" height="140" fill="#efe9de" stroke="var(--ink)" stroke-width="1.5" />
+            <rect x="494" y="288" width="242" height="14" fill="#2a2d2f" class="an__part" data-part="flat" />
+            <rect x="490" y="286" width="250" height="5" fill="#f2f2ef" />
+            <rect x="540" y="330" width="150" height="80" fill="#cfdde1" stroke="#3d4549" stroke-width="5" />
+            <line x1="615" y1="330" x2="615" y2="410" stroke="#3d4549" stroke-width="4" />
+            <!-- rain -->
+            <g id="an-rain" class="an__rain" aria-hidden="true">
+              {Array.from({ length: 34 }, (_, i) => <line x1={70 + i * 20} y1="-20" x2={64 + i * 20} y2="0" style={`--i:${(i * 37) % 17}`} />)}
+            </g>
+            {parts.map((p, i) => (
+              <g class="an__hot" data-part={p.k} tabindex="0" role="button" aria-label={p.n}>
+                <circle cx={p.x} cy={p.y} r="15" />
+                <text x={p.x} y={p.y + 4} text-anchor="middle">{i + 1}</text>
+              </g>
+            ))}
+          </svg>
+          <figcaption class="coords">Illustration · not to scale</figcaption>
+        </figure>
+        <div class="an__side">
+          <div class="an__info" aria-live="polite">
+            <span class="label label--dim" id="an-k">01 · Fascias</span>
+            <h3 id="an-n">Fascias</h3>
+            <p id="an-t">{parts[0].t}</p>
+          </div>
+          <div class="an__list">
+            {parts.map((p, i) => <button type="button" data-part={p.k} aria-pressed={i === 0 ? 'true' : 'false'}><span class="idx">0{i + 1}</span>{p.n}</button>)}
+          </div>
+          <button type="button" class="btn" id="an-rain-btn" aria-pressed="false">Make it rain</button>
+        </div>
+      </div>
+      <script type="application/json" id="an-data" set:html={JSON.stringify(parts)} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cl-h">
+    <div class="wrap clad">
+      <div>
+        <p class="label sec-head__kicker">Cladding & flat roofs</p>
+        <h2 id="cl-h" data-reveal>Built for<br /><em>coastal weather.</em></h2>
+        <p class="lede" data-reveal style="--d:.08s">Crafted to resist weathering for long-term durability in Devon's coastal climate — with an extra layer of insulation and minimal maintenance.</p>
+      </div>
+      <div class="clad__cards">
+        <article data-reveal><span class="idx">A</span><h3>PVC-U shiplap</h3><p>Realistic woodgrain finishes with hidden fixings for a clean appearance. Available in a selection of modern colours and finishes.</p></article>
+        <article data-reveal style="--d:.06s"><span class="idx">B</span><h3>Coastline composite</h3><p>Innovative composite cladding that offers exceptional resilience, with minimal expansion or contraction.</p></article>
+        <article data-reveal style="--d:.12s"><span class="idx">C</span><h3>RubberBond FleeceBack EPDM</h3><p>Flat roofing for extensions, porches and garages — a seamless rubber finish.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--paper2" id="kitchens" aria-labelledby="ki-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label sec-head__kicker">Kitchens</p>
+          <h2 id="ki-h" data-reveal>The centrepiece<br /><em>of your home.</em></h2>
+        </div>
+        <p class="lede" data-reveal style="--d:.1s">Tailor-made kitchens "where design meets functionality" — from ultra-modern sleek lines to the charming details of a rustic traditional look, with our team working closely with you from conception to installation.</p>
+      </div>
+      <div class="ki" id="ki">
+        <figure class="ki__fig" data-style="modern">
+          <svg viewBox="0 0 640 380" class="ki__svg" aria-hidden="true">
+            <rect width="640" height="380" fill="var(--ki-wall)" />
+            <rect x="250" y="40" width="140" height="110" fill="#cfdde1" stroke="#fbfbf8" stroke-width="8" />
+            <line x1="320" y1="40" x2="320" y2="150" stroke="#fbfbf8" stroke-width="6" />
+            {[[30, 40], [130, 40], [410, 40], [510, 40]].map(([x, y]) => <g class="ki__door"><rect x={x} y={y} width="96" height="120" /><rect x={x + 12} y={y + 12} width="72" height="96" class="ki__inner" /><rect x={x + 76} y={y + 96} width="6" height="16" class="ki__h ki__h--bar" /><circle cx={x + 80} cy={y + 104} r="5" class="ki__h ki__h--knob" /></g>)}
+            <rect x="0" y="210" width="640" height="18" class="ki__top" />
+            {[0, 1, 2, 3, 4, 5].map((i) => <g class="ki__door"><rect x={14 + i * 103} y="232" width="98" height="130" /><rect x={26 + i * 103} y="244" width="74" height="106" class="ki__inner" /><rect x={50 + i * 103} y="240" width="50" height="6" class="ki__h ki__h--bar ki__h--hbar" /><path d={`M${52 + i * 103} 246 a12 8 0 0 0 24 0`} class="ki__h ki__h--cup" /></g>)}
+            <rect x="0" y="362" width="640" height="18" fill="#2f3335" />
+            <rect x="0" y="228" width="640" height="4" class="ki__groove" />
+          </svg>
+          <figcaption class="coords">Illustrative style study</figcaption>
+        </figure>
+        <div class="ki__side">
+          <div class="ki__opts" role="radiogroup" aria-label="Kitchen style">
+            {kit.map((k, i) => <button type="button" role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-k={k.k}><span class="idx">0{i + 1}</span><b>{k.n}</b><small>{k.d}</small></button>)}
+          </div>
+          <figure class="ki__q">
+            <blockquote>"We are absolutely thrilled with our new kitchen… From the very beginning, the designer was fantastic."</blockquote>
+            <figcaption>Sabrina Connolly · Google review, as featured on Coastal's website</figcaption>
+          </figure>
+          <a class="btn" href="/plan/?type=transform&p=kitchen">Start a kitchen conversation <Arrow /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h2 em { color: var(--clay); }
+  .an { display: grid; grid-template-columns: 1.6fr 1fr; gap: clamp(20px, 3vw, 48px); align-items: start; }
+  .an__fig { margin: 0; }
+  .an__svg { width: 100%; height: auto; display: block; overflow: hidden; }
+  .an__hot { cursor: pointer; outline: none; }
+  .an__hot circle { fill: var(--clay); stroke: var(--paper); stroke-width: 3; transition: r .3s var(--ease); }
+  .an__hot text { font-family: var(--f-mono); font-size: 12px; fill: var(--paper); font-weight: 600; pointer-events: none; }
+  .an__hot:hover circle, .an__hot:focus-visible circle, .an__hot.is-on circle { fill: var(--ink); }
+  .an__hot::before { content: ''; }
+  .an__part { transition: filter .4s, opacity .4s; }
+  .an.has-sel .an__part { opacity: .55; }
+  .an.has-sel .an__part.is-on { opacity: 1; filter: drop-shadow(0 0 6px rgba(176,80,44,.9)); }
+  .an__water { opacity: 0; transition: opacity .6s; }
+  .an.is-raining .an__water { opacity: 1; animation: flow .9s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -44; } }
+  .an__rain line { stroke: #6aa6c8; stroke-width: 1.4; opacity: 0; }
+  .an.is-raining .an__rain line { animation: fall 1.1s linear infinite; animation-delay: calc(var(--i) * -0.07s); }
+  @keyframes fall { 0% { transform: translateY(0); opacity: 0; } 10% { opacity: .8; } 100% { transform: translateY(260px); opacity: .5; } }
+  .an__side { display: grid; gap: 24px; }
+  .an__info { border-top: 2px solid var(--clay); padding-top: 18px; min-height: 190px; }
+  .an__info h3 { margin: 10px 0 12px; }
+  .an__info p { color: var(--ink-soft); margin: 0; }
+  .an__list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .an__list button { appearance: none; background: var(--paper); border: 1px solid var(--line); padding: 10px 12px; text-align: left; cursor: pointer; display: flex; gap: 10px; align-items: baseline; font-size: 14.5px; }
+  .an__list button[aria-pressed='true'] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+  .an__side .btn { justify-self: start; }
+  @media (max-width: 900px) { .an { grid-template-columns: 1fr; } .an__info { min-height: 0; } }
+
+  .clad { display: grid; grid-template-columns: 1fr 1.6fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
+  .clad h2 { margin-bottom: 24px; }
+  .clad__cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .clad__cards article { border: 1px solid var(--line); padding: 22px; display: grid; gap: 12px; align-content: start; background: var(--bone); }
+  .clad__cards p { font-size: 14.5px; color: var(--ink-mute); margin: 0; }
+  @media (max-width: 1000px) { .clad { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) { .clad__cards { grid-template-columns: 1fr; } }
+
+  .ki { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(20px, 3vw, 48px); align-items: start; }
+  .ki__fig { margin: 0; --ki-wall: #efe9de; }
+  .ki__svg { width: 100%; height: auto; display: block; }
+  .ki__fig :global(.ki__door rect:first-child) { fill: var(--ki-door); stroke: rgba(0,0,0,.15); transition: fill .6s; }
+  .ki__fig :global(.ki__inner) { fill: none; stroke: rgba(0,0,0,.18); stroke-width: 2; opacity: var(--ki-inner, 0); transition: opacity .5s; }
+  .ki__fig :global(.ki__h) { fill: var(--ki-handle, #9aa3a6); opacity: 0; transition: opacity .4s; }
+  .ki__fig :global(.ki__h--cup) { fill: none; stroke: var(--ki-handle, #9aa3a6); stroke-width: 3; }
+  .ki__fig :global(.ki__top) { fill: var(--ki-top); transition: fill .6s; }
+  .ki__fig :global(.ki__groove) { fill: #000; opacity: var(--ki-groove, 0); }
+  .ki__fig[data-style='modern'] { --ki-door: #c9ced0; --ki-top: #f4f4f2; --ki-groove: .35; }
+  .ki__fig[data-style='contemporary'] { --ki-door: #5d6a63; --ki-top: #e9e5dc; --ki-handle: #2a2d2f; }
+  .ki__fig[data-style='contemporary'] :global(.ki__h--bar) { opacity: 1; }
+  .ki__fig[data-style='contemporary'] :global(.ki__h--hbar) { opacity: 0; }
+  .ki__fig[data-style='classic'] { --ki-door: #d9d4c4; --ki-top: #b8a58a; --ki-inner: 1; --ki-handle: #b08d4a; }
+  .ki__fig[data-style='classic'] :global(.ki__h--knob), .ki__fig[data-style='classic'] :global(.ki__h--cup) { opacity: 1; }
+  .ki__fig[data-style='rustic'] { --ki-door: #9b7650; --ki-top: #6b5641; --ki-inner: 1; --ki-handle: #2a2724; --ki-wall: #e8dcc6; }
+  .ki__fig[data-style='rustic'] :global(.ki__h--knob), .ki__fig[data-style='rustic'] :global(.ki__h--cup) { opacity: 1; }
+  .ki__side { display: grid; gap: 22px; }
+  .ki__opts { display: grid; gap: 6px; }
+  .ki__opts button { appearance: none; text-align: left; background: var(--bone); border: 1px solid var(--line); padding: 12px 14px; cursor: pointer; display: grid; grid-template-columns: 30px 1fr; gap: 2px 8px; }
+  .ki__opts button small { grid-column: 2; color: var(--ink-mute); font-size: 13px; }
+  .ki__opts button[aria-checked='true'] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+  .ki__q { margin: 0; border-left: 2px solid var(--clay); padding-left: 16px; }
+  .ki__q blockquote { margin: 0 0 8px; font-family: var(--f-display); font-size: 1.3rem; line-height: 1.25; }
+  .ki__q figcaption { font-size: 12.5px; color: var(--ink-mute); }
+  .ki__side .btn { justify-self: start; }
+  @media (max-width: 900px) { .ki { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const parts = JSON.parse(document.getElementById('an-data').textContent);
+  const an = document.getElementById('an');
+  const select = (k) => {
+    const i = parts.findIndex((p) => p.k === k); const p = parts[i];
+    document.getElementById('an-k').textContent = `0${i + 1} · ${p.n}`;
+    document.getElementById('an-n').textContent = p.n;
+    document.getElementById('an-t').textContent = p.t;
+    an.classList.add('has-sel');
+    an.querySelectorAll('.an__part').forEach((el) => el.classList.toggle('is-on', el.dataset.part === k));
+    an.querySelectorAll('.an__hot').forEach((el) => el.classList.toggle('is-on', el.dataset.part === k));
+    an.querySelectorAll('.an__list button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.part === k)));
+  };
+  an.addEventListener('click', (e) => { const t = e.target.closest('[data-part]'); if (t && !t.classList.contains('an__part')) select(t.dataset.part); });
+  an.addEventListener('keydown', (e) => { const t = e.target.closest('.an__hot'); if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); select(t.dataset.part); } });
+  const rb = document.getElementById('an-rain-btn');
+  rb.addEventListener('click', () => {
+    const on = !an.classList.contains('is-raining');
+    an.classList.toggle('is-raining', on);
+    rb.setAttribute('aria-pressed', String(on)); rb.textContent = on ? 'Stop the rain' : 'Make it rain';
+    if (on) select('gutter');
+  });
+  const ki = document.getElementById('ki');
+  ki.querySelectorAll('[data-k]').forEach((b) => b.addEventListener('click', () => {
+    ki.querySelectorAll('[data-k]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+    ki.querySelector('.ki__fig').dataset.style = b.dataset.k;
+  }));
+</script>
